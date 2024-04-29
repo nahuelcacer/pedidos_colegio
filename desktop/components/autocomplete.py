@@ -1,16 +1,24 @@
 from tkinter import LabelFrame, ttk
 from service.obtener_clientes import obtenerClientes
-from observers.observable_cliente_seleccion import Observable
-
+from observers.observables import Observable
 class ClienteSeleccionadoObserver:
     def __init__(self):
         self.cliente_seleccionado = None
+        self.producto_seleccionado = None
+        self.carrito = []
+    def update(self, *args, **kwargs):
+        if 'cliente' in kwargs:
+            self.cliente_seleccionado = kwargs['cliente']
+        if 'producto' in kwargs:
+            self.producto_seleccionado = kwargs['producto']
+        if 'carrito' in kwargs:
+            self.carrito.append({'producto':self.producto_seleccionado, 'cantidad':kwargs['carrito']})
 
-    def update(self, cliente):
-        self.cliente_seleccionado = cliente
         # Aquí puedes realizar cualquier acción que necesites con el cliente seleccionado
-        print("Cliente seleccionado:", self.cliente_seleccionado)
-
+        # print("Cliente seleccionado:", self.cliente_seleccionado)
+        # print("Producto seleccionado:", self.producto_seleccionado)
+        # print("Carrito:", self.carrito)
+        
 class Autocomplete(Observable):
     
     def __init__(self, root):
@@ -28,7 +36,7 @@ class Autocomplete(Observable):
         self.combobox.bind('<KeyRelease>', self.obtener_text)
         self.combobox.bind("<<ComboboxSelected>>", self.cliente_seleccionado)
 
-
+        
     
     def obtener_text(self, event):
         key = event.keysym
@@ -45,4 +53,4 @@ class Autocomplete(Observable):
 
     def cliente_seleccionado(self,event):
         indice_seleccionado = self.combobox.current()    
-        self.notify_observers(self.data[indice_seleccionado])
+        self.notify_observers(cliente=self.data[indice_seleccionado])
