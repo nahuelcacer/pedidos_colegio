@@ -1,10 +1,12 @@
 import tkinter as tk
-from components.autocomplete import Autocomplete
+from components.autocomplete import Autocomplete, ClienteSeleccionadoObserver
 
 root = tk.Tk()
 
 
-autocomplete = Autocomplete(root)
+autocomplete_cliente = Autocomplete(root)
+observer = ClienteSeleccionadoObserver()
+autocomplete_cliente.register_observer(observer)
 
 
 

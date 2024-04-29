@@ -1,16 +1,20 @@
 from tkinter import LabelFrame, ttk
-import urllib.request
-import json
-def obtenerClientes(q):
-    res = urllib.request.urlopen(f'http://127.0.0.1:8001/clientes/listar?q={q}')
-    datos = res.read().decode('utf-8')  # Leer el cuerpo de la respuesta y decodificarlo
-    lista = json.loads(datos)           # Convertir la cadena JSON a una lista de Python
-    clientes = [cliente['nombre'] for cliente in lista if 'nombre' in cliente]  # Filtrar clientes que tienen la clave 'nombre'
-    return clientes
+from service.obtener_clientes import obtenerClientes
+from observers.observable_cliente_seleccion import Observable
 
-class Autocomplete:
+class ClienteSeleccionadoObserver:
+    def __init__(self):
+        self.cliente_seleccionado = None
+
+    def update(self, cliente):
+        self.cliente_seleccionado = cliente
+        # Aquí puedes realizar cualquier acción que necesites con el cliente seleccionado
+        print("Cliente seleccionado:", self.cliente_seleccionado)
+
+class Autocomplete(Observable):
     
     def __init__(self, root):
+        super().__init__()
         self.root = root
         self.data = obtenerClientes('')  # Aquí deberías poner tus datos reales para la autocompletación
         
@@ -18,24 +22,27 @@ class Autocomplete:
         frame.grid(row=0, column=1)
 
         # Almacena el Combobox como un atributo de instancia
-        self.combobox = ttk.Combobox(frame, values=self.data)
+        self.combobox = ttk.Combobox(frame, values=[cliente['nombre'] for cliente in self.data] )
+        
         self.combobox.grid(row=0, column=0)
-        self.combobox.bind('<Key>', self.obtener_text)
+        self.combobox.bind('<KeyRelease>', self.obtener_text)
         self.combobox.bind("<<ComboboxSelected>>", self.cliente_seleccionado)
 
 
     
     def obtener_text(self, event):
-        texto_ingresado = self.combobox.get()
-        if texto_ingresado:
-            self.combobox['values'] = obtenerClientes(q=texto_ingresado)
-        else:
-            self.combobox['values'] = obtenerClientes('')
+        key = event.keysym
+        if key not in ['Return', 'Tab']:   
+            texto_ingresado = self.combobox.get()
 
+            if texto_ingresado:
+                self.combobox['values'] = [cliente['nombre'] for cliente in obtenerClientes(q=texto_ingresado)]
+            else:
+                self.combobox['values'] = [cliente['nombre'] for cliente in obtenerClientes('')]
 
 
 
 
     def cliente_seleccionado(self,event):
-        selection = self.combobox.get()
-        print(f'SELECCIONADO {selection}')
+        indice_seleccionado = self.combobox.current()    
+        self.notify_observers(self.data[indice_seleccionado])
