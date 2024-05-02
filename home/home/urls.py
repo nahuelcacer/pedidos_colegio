@@ -18,6 +18,8 @@ from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
 from . import views
+from django.views.generic import RedirectView
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', views.custom_login, name='login'),
@@ -25,5 +27,6 @@ urlpatterns = [
     path('', views.home , name='home'),
     path('pedidos/', include('pedidos.urls')),
     path('clientes/', include('clientes.urls')),
-    path('productos/', include('productos.urls'))
+    path('productos/', include('productos.urls')),
+    path('<path:invalid_path>', RedirectView.as_view(url='/', permanent=False)),
 ]

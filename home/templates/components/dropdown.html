@@ -1,0 +1,91 @@
+<div class="dropdown">
+  
+  <a onclick="toggleDropdown()" class="dropbtn">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+    <g
+      id="SVGRepo_tracerCarrier"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    ></g>
+    <g id="SVGRepo_iconCarrier">
+      <path
+        d="M4 6H20M4 12H20M4 18H20"
+        stroke="#000000"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        ></path>
+    </g>
+    </svg>
+  </a>
+
+  <div id="myDropdown" class="dropdown-content">
+    <a href="#">Opción 1</a>
+    <a href="#">Opción 2</a>
+    <a href="#">Opción 3</a>
+  </div>
+</div>
+<style>
+  /* Estilos del botón */
+  .dropbtn {
+    color: white;
+    padding: 12px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+  }
+
+  /* Estilos del contenedor del menú */
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+
+  /* Estilos del contenido del menú */
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+  }
+
+  /* Estilos de los enlaces del menú */
+  .dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+
+  /* Estilos al pasar el mouse sobre los enlaces */
+  .dropdown-content a:hover {
+    background-color: #f1f1f1;
+  }
+
+  /* Mostrar el menú cuando el botón se activa */
+  .show {
+    display: block;
+  }
+</style>
+<script>
+  function toggleDropdown() {
+    var dropdown = document.getElementById("myDropdown");
+    dropdown.classList.toggle("show");
+  }
+
+  // Cerrar el menú si el usuario hace clic fuera de él
+  window.onclick = function (event) {
+    if (!event.target.matches(".dropbtn")) {
+      var dropdowns = document.getElementsByClassName("dropdown-content");
+      for (var i = 0; i < dropdowns.length; i++) {
+        var openDropdown = dropdowns[i];
+        if (openDropdown.classList.contains("show")) {
+          openDropdown.classList.remove("show");
+        }
+      }
+    }
+  };
+</script>
