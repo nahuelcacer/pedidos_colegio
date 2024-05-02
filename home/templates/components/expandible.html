@@ -1,0 +1,53 @@
+<ul class="lista">
+    {% for item in urls %}
+    <li class="item">
+        <div class="item-header">{{item.nombre}}</div>
+        {% for url in item.urls %}
+        <div class="item-content">
+            <a href={{url.url}}>
+
+                {{url.nombre}}
+            </a>
+        </div>
+        {% endfor %}
+    </li>
+    {% endfor %}
+</ul>
+<style>
+    .lista {
+        background-color: #f9f9f9;
+        list-style: none;
+        padding: 0;
+    }
+
+    .item {
+        width: 100%;
+    }
+
+    .item-header {
+        padding: 10px;
+        cursor: pointer;
+    }
+
+    .item-content {
+        display: none;
+        padding: 10px;
+    }
+
+    .item-content.visible {
+        display: block;
+    }
+</style>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var items = document.querySelectorAll('.item');
+
+        items.forEach(function (item) {
+            var header = item.querySelector('.item-header');
+
+            header.addEventListener('click', function () {
+                item.querySelector('.item-content').classList.toggle('visible');
+            });
+        });
+    });
+</script>

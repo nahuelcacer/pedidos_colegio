@@ -8,8 +8,9 @@
     </form>
     {% if messages %}
         {% for message in messages %}
-        <div style="background-color: red; padding: 2px; border-radius: 5px;">
-            <span style="color:white">{{message}}</span>
+        <div id="formessage"></div>
+        <div style="background-color: red; padding: 4px; border-radius: 5px;">
+            <span style="color:white; font-size: 18px; font-weight: 500;">{{message}}</span>
 
         </div>
         {% endfor %}

@@ -2,7 +2,9 @@ from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from home.urls_frontend import ADMINISTRADOR
+from home.urls_frontend import GRUPOS_URLS
+
+
 def custom_login(request):
     if request.user.is_authenticated:
         return redirect('home')
@@ -22,11 +24,13 @@ def custom_login(request):
 def home(request):
     usuario = request.user
     if usuario.is_authenticated:
-        if usuario.groups.filter(name="ADMINISTRADOR").exists():
-            context = {
+        URLS = []
+        for url in usuario.groups.all():
+            if url.name in GRUPOS_URLS:
+                URLS.append(GRUPOS_URLS[url.name])
+        print(URLS)
+        return render(request, "home.html", context={'urls':URLS})
 
-            }
-        print(f'usuario autenticado, {usuario}')
     else:
         print('NO ENCONTRADO')
-    return render(request, "home.html", context={'urls':ADMINISTRADOR})
+        return render(request, "home.html")
