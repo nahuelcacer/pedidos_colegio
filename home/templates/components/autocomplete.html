@@ -1,0 +1,67 @@
+<div class="autocomplete">
+    <input type="text" id="myInput" placeholder="Buscar...">
+    <div id="autocomplete-list" class="autocomplete-items"></div>
+</div>
+
+<style>
+    .autocomplete {
+        position: relative;
+        display: inline-block;
+    }
+
+    .autocomplete-items {
+        position: absolute;
+        border: 1px solid #d4d4d4;
+        border-radius: 5px;
+        background-color: #fff;
+        z-index: 99;
+        width: 100%;
+    }
+
+    .autocomplete-items div {
+        padding: 10px;
+        cursor: pointer;
+    }
+
+    .autocomplete-items div:hover {
+        background-color: #e9e9e9;
+    }
+</style>
+
+<script>
+    var countries = ["Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Anguilla", "Antarctica", "Antigua and Barbuda", "Argentina", "Armenia", "Aruba", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bermuda", "Bhutan", "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei", "Bulgaria", "Burkina Faso", "Burundi", "Cabo Verde", "Cambodia", "Cameroon", "Canada", "Central African Republic", "Chad", "Chile", "China", "Colombia", "Comoros", "Congo", "Costa Rica", "Croatia", "Cuba", "Cyprus", "Czech Republic", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Eswatini", "Ethiopia", "Fiji", "Finland", "France", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Greece", "Grenada", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Honduras", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Israel", "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia", "Moldova", "Monaco", "Mongolia", "Montenegro", "Morocco", "Mozambique", "Myanmar", "Namibia", "Nauru", "Nepal", "Netherlands", "New Zealand", "Nicaragua", "Niger", "Nigeria", "North Korea", "North Macedonia", "Norway", "Oman", "Pakistan", "Palau", "Palestine", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Qatar", "Romania", "Russia", "Rwanda", "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Serbia", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Korea", "South Sudan", "Spain", "Sri Lanka", "Sudan", "Suriname", "Sweden", "Switzerland", "Syria", "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Timor-Leste", "Togo", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "Uruguay", "Uzbekistan", "Vanuatu", "Vatican City", "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe"];
+
+    document.getElementById("myInput").addEventListener("input", function () {
+        var val = this.value;
+        var autocompleteList = document.getElementById("autocomplete-list");
+        autocompleteList.innerHTML = "";
+        if (val.length > 0) {
+            var matchingCountries = countries.filter(function (country) {
+                return country.toLowerCase().startsWith(val.toLowerCase());
+            });
+            matchingCountries.forEach(function (country) {
+                var item = document.createElement("div");
+                item.textContent = country;
+                autocompleteList.appendChild(item);
+            });
+            autocompleteList.style.display = "block";
+        } else {
+            autocompleteList.style.display = "none";
+        }
+    });
+
+    document.addEventListener("click", function (e) {
+        var autocompleteList = document.getElementById("autocomplete-list");
+        if (!e.target.matches("#myInput")) {
+            autocompleteList.style.display = "none";
+        }
+    });
+
+    document.getElementById("autocomplete-list").addEventListener("click", function (e) {
+        if (e.target && e.target.nodeName == "DIV") {
+            document.getElementById("myInput").value = e.target.textContent;
+            this.style.display = "none";
+        }
+    });
+
+</script>

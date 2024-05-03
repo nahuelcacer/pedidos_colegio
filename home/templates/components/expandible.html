@@ -1,15 +1,29 @@
 <ul class="lista">
     {% for item in urls %}
     <li class="item">
-        <div class="item-header">{{item.nombre}}</div>
-        {% for url in item.urls %}
-        <div class="item-content">
-            <a href={{url.url}}>
-
-                {{url.nombre}}
-            </a>
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 16px;"
+            onclick="expandir(this)">
+            <div>{{item.nombre}}</div>
+            <svg width="18px" height="18px" viewBox="0 0 1024 1024" class="icon" version="1.1"
+                xmlns="http://www.w3.org/2000/svg" fill="#000000" transform="rotate(0)" style="transition: transform 0.3s;">
+                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                <g id="SVGRepo_iconCarrier">
+                    <path
+                        d="M917.333333 364.8L851.2 298.666667 512 637.866667 172.8 298.666667 106.666667 364.8 512 768z"
+                        fill="#000000"></path>
+                </g>
+            </svg>
         </div>
-        {% endfor %}
+        <div class="item-content" style="display: none;">
+            {% for url in item.urls %}
+            <div>
+                <a href={{url.url}}>
+                    {{url.nombre}}
+                </a>
+            </div>
+            {% endfor %}
+        </div>
     </li>
     {% endfor %}
 </ul>
@@ -19,13 +33,14 @@
         list-style: none;
         padding: 0;
     }
-
+  
     .item {
         width: 100%;
+        cursor: pointer;
     }
-
+  
     .item-header {
-        padding: 10px;
+        padding: 12px 16px;
         cursor: pointer;
     }
 
@@ -39,15 +54,10 @@
     }
 </style>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var items = document.querySelectorAll('.item');
-
-        items.forEach(function (item) {
-            var header = item.querySelector('.item-header');
-
-            header.addEventListener('click', function () {
-                item.querySelector('.item-content').classList.toggle('visible');
-            });
-        });
-    });
+    function expandir(elemento) {
+        var contenido = elemento.nextElementSibling;
+        contenido.style.display = contenido.style.display === "none" ? "block" : "none";
+        var svgIcon = elemento.querySelector('svg.icon');
+        svgIcon.style.transform = svgIcon.style.transform === "rotate(180deg)" ? "rotate(0deg)" : "rotate(180deg)";
+    }
 </script>

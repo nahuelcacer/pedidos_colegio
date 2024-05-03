@@ -2,7 +2,7 @@ GRUPOS_URLS = {
     'RECEPCION': {
         'nombre': 'Pedidos',
         'urls': [
-            {'nombre': 'Agregar', 'url': '/'},
+            {'nombre': 'Agregar', 'url': 'pedidos/agregar/'},
         ]
     },
     'ADMINISTRADOR': {
