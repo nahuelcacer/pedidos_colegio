@@ -8,14 +8,14 @@
 
 <style>
     .autocomplete {
-        position: relative;
-        padding-right: 30px;
+        position: absolute;
+        /* padding-right: 30px; */
     }
 
     .autocomplete button {
         display: none;
         position: absolute;
-        right: 40px;
+        right: 20px;
         /* Ajusta según sea necesario */
         top: 50%;
         transform: translateY(-50%);
@@ -77,16 +77,16 @@
     var autocomplete_list = document.getElementById("autocomplete-list")
 
 
-    var clientes = JSON.parse('{{clientes|escapejs}}');
+    var countries = JSON.parse('{{clientes|escapejs}}');
     inputAutocomplete.addEventListener("input", function () {
         var val = this.value;
         var autocompleteList = autocomplete_list;
         autocompleteList.innerHTML = "";
         if (val.length > 0) {
-            var matchingclientes = clientes.filter(function (country) {
+            var matchingCountries = countries.filter(function (country) {
                 return country.nombre.toLowerCase().startsWith(val.toLowerCase()) || country.identificacion.toLowerCase().startsWith(val.toLowerCase());
             });
-            matchingclientes.forEach(function (country) {
+            matchingCountries.forEach(function (country) {
                 var item = document.createElement("div");
                 item.textContent = country.nombre;
                 item.setAttribute("key", country.identificacion)
@@ -106,7 +106,7 @@
     });
 
     autocomplete_list.addEventListener("click", function (e) {
-        cliente_seleccionado = clientes.find((cliente) => cliente.identificacion == e.target.getAttribute("key"))
+        cliente_seleccionado = countries.find((cliente) => cliente.identificacion == e.target.getAttribute("key"))
         if (e.target && e.target.nodeName == "DIV") {
             seleccionPedido.seleccionarCliente(cliente_seleccionado)
             inputAutocomplete.value = e.target.textContent;
