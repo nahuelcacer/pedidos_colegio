@@ -1,28 +1,54 @@
 {% load static %}
 <div class="autocomplete">
     <input type="text" id="myInput" placeholder="Buscar...">
+    <button id="clearButton">&#10006;</button>
     <div id="autocomplete-list" class="autocomplete-items"></div>
+
 </div>
 
 <style>
+    .autocomplete {
+        position: relative;
+        padding-right: 30px;
+    }
+
+    .autocomplete button {
+        display: none;
+        position: absolute;
+        right: 40px;
+        /* Ajusta según sea necesario */
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: inherit;
+        /* Usa el tamaño de fuente del input */
+        color: inherit;
+        /* Usa el color de texto del input */
+        outline: none;
+    }
+
+
     #myInput {
         width: 400px;
         height: 40px;
         border-radius: 5px;
         border: 1px solid #808080;
         padding-left: 10px;
+
     }
-    #myInput:hover{
-        border: 2px solid ;
+
+    #myInput:hover {
+        border: 2px solid;
     }
+
     #myInput:focus {
-        outline:none
-    }::placeholder{
-        font-size: 14px;
+        outline: none
     }
-    .autocomplete {
-        position: relative;
-        display: inline-block;
+
+    ::placeholder {
+        font-size: 14px;
     }
 
     .autocomplete-items {
@@ -45,17 +71,22 @@
 </style>
 
 
-<script >
-    var countries = JSON.parse('{{clientes|escapejs}}');
-    document.getElementById("myInput").addEventListener("input", function () {
+<script>
+    var clearButton = document.getElementById("clearButton")
+    var inputAutocomplete = document.getElementById("myInput")
+    var autocomplete_list = document.getElementById("autocomplete-list")
+
+
+    var clientes = JSON.parse('{{clientes|escapejs}}');
+    inputAutocomplete.addEventListener("input", function () {
         var val = this.value;
-        var autocompleteList = document.getElementById("autocomplete-list");
+        var autocompleteList = autocomplete_list;
         autocompleteList.innerHTML = "";
         if (val.length > 0) {
-            var matchingCountries = countries.filter(function (country) {
+            var matchingclientes = clientes.filter(function (country) {
                 return country.nombre.toLowerCase().startsWith(val.toLowerCase()) || country.identificacion.toLowerCase().startsWith(val.toLowerCase());
             });
-            matchingCountries.forEach(function (country) {
+            matchingclientes.forEach(function (country) {
                 var item = document.createElement("div");
                 item.textContent = country.nombre;
                 item.setAttribute("key", country.identificacion)
@@ -68,19 +99,24 @@
     });
 
     document.addEventListener("click", function (e) {
-        var autocompleteList = document.getElementById("autocomplete-list");
+        var autocompleteList = autocomplete_list;
         if (!e.target.matches("#myInput")) {
             autocompleteList.style.display = "none";
         }
     });
 
-    document.getElementById("autocomplete-list").addEventListener("click", function (e) {
-        cliente_seleccionado = countries.find((cliente) => cliente.identificacion == e.target.getAttribute("key"))
+    autocomplete_list.addEventListener("click", function (e) {
+        cliente_seleccionado = clientes.find((cliente) => cliente.identificacion == e.target.getAttribute("key"))
         if (e.target && e.target.nodeName == "DIV") {
-            seleccionPedido.seleccionarCliente(cliente_seleccionado )
-            document.getElementById("myInput").value = e.target.textContent;
+            seleccionPedido.seleccionarCliente(cliente_seleccionado)
+            inputAutocomplete.value = e.target.textContent;
+            clearButton.style.display = "block";
             this.style.display = "none";
         }
     });
 
+    clearButton.addEventListener("click", function () {
+        document.getElementById("myInput").value = "";
+        clearButton.style.display = "none";
+    });
 </script>
