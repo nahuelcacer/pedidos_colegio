@@ -1,9 +1,25 @@
+{% load static %}
 <div class="autocomplete">
     <input type="text" id="myInput" placeholder="Buscar...">
     <div id="autocomplete-list" class="autocomplete-items"></div>
 </div>
 
 <style>
+    #myInput {
+        width: 400px;
+        height: 40px;
+        border-radius: 5px;
+        border: 1px solid #808080;
+        padding-left: 10px;
+    }
+    #myInput:hover{
+        border: 2px solid ;
+    }
+    #myInput:focus {
+        outline:none
+    }::placeholder{
+        font-size: 14px;
+    }
     .autocomplete {
         position: relative;
         display: inline-block;
@@ -28,7 +44,8 @@
     }
 </style>
 
-<script>
+
+<script >
     var countries = JSON.parse('{{clientes|escapejs}}');
     document.getElementById("myInput").addEventListener("input", function () {
         var val = this.value;
@@ -36,11 +53,12 @@
         autocompleteList.innerHTML = "";
         if (val.length > 0) {
             var matchingCountries = countries.filter(function (country) {
-                return country.toLowerCase().startsWith(val.toLowerCase());
+                return country.nombre.toLowerCase().startsWith(val.toLowerCase()) || country.identificacion.toLowerCase().startsWith(val.toLowerCase());
             });
             matchingCountries.forEach(function (country) {
                 var item = document.createElement("div");
-                item.textContent = country;
+                item.textContent = country.nombre;
+                item.setAttribute("key", country.identificacion)
                 autocompleteList.appendChild(item);
             });
             autocompleteList.style.display = "block";
@@ -57,7 +75,9 @@
     });
 
     document.getElementById("autocomplete-list").addEventListener("click", function (e) {
+        cliente_seleccionado = countries.find((cliente) => cliente.identificacion == e.target.getAttribute("key"))
         if (e.target && e.target.nodeName == "DIV") {
+            seleccionPedido.seleccionarCliente(cliente_seleccionado )
             document.getElementById("myInput").value = e.target.textContent;
             this.style.display = "none";
         }

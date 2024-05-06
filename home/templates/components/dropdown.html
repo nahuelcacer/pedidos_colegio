@@ -55,7 +55,7 @@
   .dropdown-content {
     display: none;
     width: 300px;
-    position: relative;
+    position: absolute;
     left: 10px;
     top: 30px;
     background-color: #f9f9f9;
@@ -86,6 +86,7 @@
   function toggleDropdown() {
     var dropdown = document.getElementById("myDropdown");
     dropdown.classList.toggle("show");
+    seleccionPedido.obtenerPedido()
   }
 
   // Cerrar el menú si el usuario hace clic fuera de él
