@@ -1,17 +1,53 @@
 {% extends "home.html" %}
 
 {% block content %}
-    <section>
-        <div>
+<section>
 
-            
-            {% include 'components/autocomplete.html' with clientes=clientes %}
+    <div class="container-pedidos">
+        <div class="container-modulos">
+            <div>
+
+                {% include 'components/autocomplete.html' with clientes=clientes %}
+            </div>
+            <div id="clientenombre">
+                Cliente: </div>
+
         </div>
-    </section>
-    <style>
-        section {
-            width: 80%;
-            margin:auto;
-        }
-    </style>
+        <div class="container-modulos">
+            <!-- Contenido del segundo contenedor -->
+            <h1>Datos del cliente</h1>
+        </div>
+    </div>
+</section>
+<script>
+    document.addEventListener('cambioAutocomplete', function (event) {
+        // Obtener el nuevo valor del detalle del evento
+        
+        const nuevoValor = event.detail.valor;
+        console.log(nuevoValor)
+        // Cambiar el div según el nuevo valor del autocomplete
+        const divACambiar = document.getElementById('clientenombre');
+        divACambiar.textContent = "Cliente: " + nuevoValor.nombre;
+    });
+</script>
+<style>
+    section {
+        width: 80%;
+        height: 800px;
+        margin: auto;
+    }
+
+    .container-pedidos {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        /* Dos columnas de igual tamaño */
+        gap: 20px;
+    }
+
+    .container-modulos {
+        display: grid;
+        grid-template-rows: 1fr 1fr;
+        gap: 20px;
+    }
+</style>
 {% endblock content %}

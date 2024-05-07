@@ -109,6 +109,9 @@
         cliente_seleccionado = countries.find((cliente) => cliente.identificacion == e.target.getAttribute("key"))
         if (e.target && e.target.nodeName == "DIV") {
             seleccionPedido.seleccionarCliente(cliente_seleccionado)
+
+            const eventoCambioAutocomplete = new CustomEvent('cambioAutocomplete', { detail: { valor: cliente_seleccionado } });
+            document.dispatchEvent(eventoCambioAutocomplete);
             inputAutocomplete.value = e.target.textContent;
             clearButton.style.display = "block";
             this.style.display = "none";

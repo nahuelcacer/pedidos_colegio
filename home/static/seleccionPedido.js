@@ -5,6 +5,7 @@ const seleccionPedido = (() => {
 
     const seleccionarCliente = (cliente) => {
         clienteSeleccionado = cliente;
+
     };
 
     const seleccionarProducto = (producto) => {
@@ -24,10 +25,11 @@ const seleccionPedido = (() => {
         }
     }
 
+ 
     return {
         seleccionarCliente,
         seleccionarProducto,
         seleccionarCantidad,
-        obtenerPedido
+        obtenerPedido,
     }
 })();
