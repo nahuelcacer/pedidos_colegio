@@ -24,13 +24,4 @@ def custom_login(request):
 def home(request):
     usuario = request.user
     if usuario.is_authenticated:
-        URLS = []
-        for url in usuario.groups.all():
-            if url.name in GRUPOS_URLS:
-                URLS.append(GRUPOS_URLS[url.name])
-        print(URLS)
-        return render(request, "home.html", context={'urls':URLS})
-
-    else:
-        print('NO ENCONTRADO')
         return render(request, "home.html")

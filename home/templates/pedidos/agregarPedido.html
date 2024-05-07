@@ -2,7 +2,11 @@
 
 {% block content %}
     <section>
-       {% include 'components/autocomplete.html' with clientes=clientes %}
+        <div>
+
+            
+            {% include 'components/autocomplete.html' with clientes=clientes %}
+        </div>
     </section>
     <style>
         section {
