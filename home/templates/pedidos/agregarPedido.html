@@ -9,8 +9,7 @@
 
                 {% include 'components/autocomplete.html' with clientes=clientes %}
             </div>
-            <div id="clientenombre">
-                Cliente: </div>
+            {% include 'pedidos/mostrarCliente.html' %}
 
         </div>
         <div class="container-modulos">
@@ -22,11 +21,11 @@
 <script>
     document.addEventListener('cambioAutocomplete', function (event) {
         // Obtener el nuevo valor del detalle del evento
-        
+
         const nuevoValor = event.detail.valor;
-        console.log(nuevoValor)
         // Cambiar el div según el nuevo valor del autocomplete
         const divACambiar = document.getElementById('clientenombre');
+
         divACambiar.textContent = "Cliente: " + nuevoValor.nombre;
     });
 </script>
@@ -37,6 +36,10 @@
         margin: auto;
     }
 
+    .clientenombre {
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        padding: 20px;
+    }
     .container-pedidos {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -46,8 +49,8 @@
 
     .container-modulos {
         display: grid;
-        grid-template-rows: 1fr 1fr;
-        gap: 20px;
+        grid-template-rows: auto auto;
+        gap: 40px;
     }
 </style>
 {% endblock content %}

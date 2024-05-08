@@ -1,42 +1,43 @@
 {% load static %}
 <div class="autocomplete">
-    <input type="text" id="myInput" placeholder="Buscar...">
+    <input type="text" id="myInput" placeholder="Buscar cliente...">
     <button id="clearButton">&#10006;</button>
+    </input>
     <div id="autocomplete-list" class="autocomplete-items"></div>
 
 </div>
 
 <style>
     .autocomplete {
-        position: absolute;
-        /* padding-right: 30px; */
+        position: relative;
+        /* Otros estilos necesarios */
     }
 
-    .autocomplete button {
+    #clearButton {
         display: none;
         position: absolute;
-        right: 20px;
-        /* Ajusta según sea necesario */
         top: 50%;
         transform: translateY(-50%);
+        right: 20px;
+        /* Ajusta según sea necesario */
         background: none;
         border: none;
         cursor: pointer;
         font-size: inherit;
-        /* Usa el tamaño de fuente del input */
         color: inherit;
-        /* Usa el color de texto del input */
         outline: none;
     }
 
-
     #myInput {
-        width: 400px;
+        width: calc(100% - 40px);
+        /* Ajusta según sea necesario para dejar espacio al botón */
         height: 40px;
         border-radius: 5px;
         border: 1px solid #808080;
-        padding-left: 10px;
-
+        padding-right: 20px;
+        padding-left: 20px;
+        /* Ajusta según sea necesario */
+        /* Otros estilos necesarios */
     }
 
     #myInput:hover {
@@ -76,7 +77,7 @@
     var inputAutocomplete = document.getElementById("myInput")
     var autocomplete_list = document.getElementById("autocomplete-list")
 
-
+ 
     var countries = JSON.parse('{{clientes|escapejs}}');
     inputAutocomplete.addEventListener("input", function () {
         var val = this.value;
@@ -119,6 +120,8 @@
     });
 
     clearButton.addEventListener("click", function () {
+        const eventoCambioAutocomplete = new CustomEvent('cambioAutocomplete', { detail: { valor: {nombre:''}} });
+        document.dispatchEvent(eventoCambioAutocomplete);
         document.getElementById("myInput").value = "";
         clearButton.style.display = "none";
     });
