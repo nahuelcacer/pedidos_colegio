@@ -1,3 +1,4 @@
+
 <div class="seleccionCliente">
     <div class="marco" style="border-bottom: 1px solid #808080;">
         <p style="color: #0000009d;">
@@ -5,19 +6,19 @@
             Seleccion de Cliente
         </p>
     </div>
-    <div class="body-seleccion">
+    <div class="body-seleccion marco">
         <ul>
-            <div id="clienteNombre">Cliente:</div>
-            <div id="clienteId">ID:</div>
-           
- 
+
+            {% include 'icons/person.html' %}
+            {% include 'icons/person_id.html' %}
+            {% include 'icons/person_escribano.html' %}
         </ul>
         <ul>
             <li>
-                s
+                sssssssssssss
             </li>
         </ul>
-    
+
     </div>
 </div>
 <style>
@@ -29,13 +30,13 @@
     }
 
     .marco {
-        padding: 15px 0 15px 20px;
-        border-bottom: 1px solid #808080;
+        padding: 15px 20px 15px 20px;
+        /* border-bottom: 1px solid #808080; */
     }
 
     .body-seleccion {
         display: flex;
-        justify-content: space-around;
+        justify-content: space-between;
     }
 
     .body-seleccion ul {
@@ -46,19 +47,12 @@
     .body-seleccion li {
         display: block;
     }
+
+    .datosCliente {
+        display: flex;
+        align-items: center;
+        padding: 10px 0 10px 0;
+        gap: 10px;
+
+    }
 </style>
-<script>
-    document.addEventListener('cambioAutocomplete', function (event) {
-        // Obtener el nuevo valor del detalle del evento
-
-        const nuevoValor = event.detail.valor;
-        console.log(nuevoValor)
-        // Cambiar el div según el nuevo valor del autocomplete
-        const nombre = document.getElementById('clienteNombre');
-        const id = document.getElementById('clienteId');
-
-        id.textContent = "ID: " + nuevoValor.identificacion
-        nombre.textContent = "Cliente: " + nuevoValor.nombre
-
-    });
-</script>

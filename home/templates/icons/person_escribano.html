@@ -1,0 +1,27 @@
+<script>
+    document.addEventListener('cambioAutocomplete', function (event) {
+        const nuevoValor = event.detail.valor;
+
+        let circle = document.getElementById("circle");
+        if (nuevoValor.estado) {
+            circle.style.backgroundColor = "green";
+        }else {
+            circle.style.backgroundColor = "grey";
+
+        }
+    });
+</script>
+<p class="datosCliente">
+    <span id="circle"></span>
+    <span id="escribano">Escribano</span>
+</p>
+<style>
+    #circle {
+        margin: 0 10px 0 5px;
+        width: 10px;
+        height: 10px;
+        background-color: grey;
+        border-radius: 50%;
+        display: inline-block; /* Añadido para que el span tenga un tamaño */
+    }
+</style>
