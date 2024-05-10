@@ -2,26 +2,37 @@
     document.addEventListener('cambioAutocomplete', function (event) {
         const nuevoValor = event.detail.valor;
 
-        let circle = document.getElementById("circle");
-        if (nuevoValor.estado) {
-            circle.style.backgroundColor = "green";
-        }else {
-            circle.style.backgroundColor = "grey";
-
+        // Obtiene el <span> con la clase "datosCliente"
+        let datosClienteSpan = document.querySelector('.escribanoEstado');
+            console.log(nuevoValor)
+        // Si el estado es verdadero, agrega el <span> con el id "circle"
+        if (nuevoValor.escribano) {
+            // Crea el elemento <span> con el id "circle"
+            let circleSpan = document.createElement('span');
+            circleSpan.id = 'circle';
+            circleSpan.textContent = 'Escribano'; // Puedes establecer el texto según sea necesario
+            datosClienteSpan.appendChild(circleSpan);
+        } else {
+            // Si el estado es falso, elimina el <span> con el id "circle" si existe
+            let circleSpan = datosClienteSpan.querySelector('#circle');
+            if (circleSpan) {
+                datosClienteSpan.removeChild(circleSpan);
+            }
         }
     });
 </script>
 <p class="datosCliente">
-    <span id="circle"></span>
-    <span id="escribano">Escribano</span>
+    <span class="escribanoEstado"></span>
+    <!-- <span id="escribano">Escribano</span> -->
 </p>
 <style>
     #circle {
-        margin: 0 10px 0 5px;
-        width: 10px;
-        height: 10px;
-        background-color: grey;
-        border-radius: 50%;
-        display: inline-block; /* Añadido para que el span tenga un tamaño */
+        color: #ffffff;
+        font-size: 12px;
+        font-weight:600;
+        border: 2px solid green;
+        padding: 2px 6px 2px 6px;
+        border-radius: 15px;
+        background-color: green
     }
 </style>
