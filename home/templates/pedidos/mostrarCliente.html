@@ -1,56 +1,93 @@
+{% load static %}
+<script>
+  document.addEventListener("cambioAutocomplete", function (event) {
+    const nuevoValor = event.detail.valor;
+    console.log(nuevoValor)
+    const { email, escribano, identificacion, nombre, telefono } = nuevoValor;
+
+    const nombre_span = document.getElementById("nombre");
+    const nombre_id = document.getElementById("id");
+    const nombre_email = document.getElementById("email");
+    const nombre_telefono = document.getElementById("telefono");
+
+    nombre_span.textContent = nombre;
+    nombre_id.textContent = identificacion;
+
+    if(email) {
+        const img = document.createElement('img');
+        img.src = "{% static 'svg_icons/person_email.svg' %}"
+        nombre_email.appendChild(img)
+        nombre_email.innerHTML += email
+    }else{
+        nombre_email.textContent = ""
+    }
+
+    if(telefono){
+        const img = document.createElement('img');
+        img.src = "{% static 'svg_icons/person_telefono.svg' %}"
+        nombre_telefono.appendChild(img)
+        nombre_telefono.innerHTML += telefono
+    }
+    else{
+        nombre_telefono.textContent = ""
+    }
+  });
+</script>
 <div class="seleccionCliente">
-    <div class="marco" style="border-bottom: 1px solid #808080;">
-        <p style="color: #0000009d;">
-
-            Seleccion de Cliente
+  <div class="marco" style="border-bottom: 1px solid #808080">
+    <p style="color: #0000009d">Seleccion de Cliente</p>
+  </div>
+  <div class="body-seleccion marco">
+    <ul>
+      <p class="datosCliente">
+        <img src="{% static 'svg_icons/person_name.svg' %}"></img>
+        <span id="nombre"> </span>
+      </p>
+      <p class="datosCliente">
+        <img src="{% static 'svg_icons/person_id.svg' %}"></img>
+        <span id="id"> </span>
+      </p>
+    </ul>
+    <ul>
+        <p class="datosCliente" id="email">
         </p>
-    </div>
-    <div class="body-seleccion marco">
-        <ul>
+        <p class="datosCliente" id="telefono">
 
-            {% include 'icons/person.html' %}
-            {% include 'icons/person_id.html' %}
-            {% include 'icons/person_escribano.html' %}
-        </ul>
-        <ul>
-            {% include 'icons/person_email.html' %}
-
-        </ul>
-
-    </div>
+        </p>
+    </ul>
+  </div>
 </div>
 <style>
-    .seleccionCliente {
-        border-radius: 5px;
-        height: 200px;
-        border: 1px solid #808080;
-        background-color: #ffffff;
-    }
+  .seleccionCliente {
+    border-radius: 5px;
+    height: 200px;
+    border: 1px solid #808080;
+    background-color: #ffffff;
+  }
 
-    .marco {
-        padding: 15px 20px 15px 20px;
-        /* border-bottom: 1px solid #808080; */
-    }
+  .marco {
+    padding: 15px 20px 15px 20px;
+    /* border-bottom: 1px solid #808080; */
+  }
 
-    .body-seleccion {
-        display: flex;
-        justify-content: space-between;
-    }
+  .body-seleccion {
+    display: flex;
+    justify-content: space-between;
+  }
 
-    .body-seleccion ul {
-        list-style-type: none;
-        padding: 0;
-    }
+  .body-seleccion ul {
+    list-style-type: none;
+    padding: 0;
+  }
 
-    .body-seleccion li {
-        display: block;
-    }
+  .body-seleccion li {
+    display: block;
+  }
 
-    .datosCliente {
-        display: flex;
-        align-items: center;
-        padding: 10px 0 10px 0;
-        gap: 10px;
-
-    }
+  .datosCliente {
+    display: flex;
+    align-items: center;
+    padding: 10px 0 10px 0;
+    gap: 10px;
+  }
 </style>
