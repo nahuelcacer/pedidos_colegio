@@ -3,30 +3,142 @@
   <div class="container-pedidos">
     <nav style="display:flex; gap:20px; background-color:#f9f9f9">
 
-        <a href="#">Agregar</a>
-        <input placeholder="Buscar..."></input>
+      <a href="#" class="link-cliente" style=" display: flex;align-items: center;justify-content: center;"><svg
+          width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+          <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+          <g id="SVGRepo_iconCarrier">
+            <path d="M4 12H20M12 4V20" stroke="#6b84ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            </path>
+          </g>
+        </svg>AGREGAR</a>
+      <input placeholder="Buscar..." id="input-buscar-cliente"
+        style="width: 200px;height: 40px;border-radius: 5px;border: 1px solid #808080;padding-right: 20px;padding-left: 20px;"></input>
     </nav>
-    {% for cliente in clientes%}
     <div>
-        <a href="#" >
-            {{cliente.nombre}}
-        </a>
-    </div>
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Nombre</th>
+            <th scope="col">DNI/CUIT</th>
+            <th scope="col">Telefono</th>
+            <th scope="col">Email</th>
+          </tr>
+        </thead>
+        <tbody id="clientes-container">
+          {% for cliente in clientes %}
+          <tr> <!-- Se añade la fila -->
+            <td>
+              <a href="{{ cliente.identificacion }}" class="link-cliente">
+                {{ cliente.nombre }}
+              </a>
+            </td>
+            <td>
+              {{ cliente.identificacion }} <!-- Asumiendo que hay un campo dni_cuit en cliente -->
+            </td>
+            <td>
+              {% if cliente.telefono is not None %}
+              {{cliente.telefono}}
+              {% endif %}
+            </td>
+            <td>
+              {% if cliente.email is not None %}
+              {{cliente.email}}
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
 
-    {%endfor %}
+    </div>
   </div>
 </section>
+<script>
+  var inputBuscarCliente = document.getElementById("input-buscar-cliente");
+  var clientesContainer = document.getElementById("clientes-container");
+
+  inputBuscarCliente.addEventListener("input", function () {
+    var val = this.value;
+    fetch(`http://127.0.0.1:8002/clientes/buscar/?q=${val}`)
+      .then(res => res.json())
+      .then(res => {
+        // Limpiar el contenedor antes de agregar los nuevos resultados
+        clientesContainer.innerHTML = '';
+
+        res.forEach(element => {
+          var tr = document.createElement('tr');
+
+          var tdNombre = document.createElement('td');
+          var aNombre = document.createElement('a');
+          aNombre.href = element.identificacion;
+          aNombre.textContent = element.nombre;
+          aNombre.className = 'link-cliente';
+          tdNombre.appendChild(aNombre);
+          tr.appendChild(tdNombre);
+
+          var tdIdentificacion = document.createElement('td');
+          tdIdentificacion.textContent = element.identificacion;
+          tr.appendChild(tdIdentificacion);
+
+          var tdTelefono = document.createElement('td');
+          if (element.telefono !== null) {
+            tdTelefono.textContent = element.telefono;
+          }
+          tr.appendChild(tdTelefono);
+
+          var tdEmail = document.createElement('td');
+          if (element.email !== null) {
+            tdEmail.textContent = element.email;
+          }
+          tr.appendChild(tdEmail);
+
+          clientesContainer.appendChild(tr);
+        });
+      });
+
+    // Limpiar el contenedor de clientes antes de la búsqueda
+    clientesContainer.innerHTML = '';
+  });
+</script>
 <style>
-    .container-pedidos {
-        border-radius: 5px;
-        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
-        padding: 30px;
-        background-color: #ffffff;
-        display: flex;
-        flex-direction:column;
-        grid-template-columns: 1fr 1fr;
-        /* Dos columnas de igual tamaño */
-        gap: 20px;
-      }
+  .link-cliente {
+    color: #6b84ff;
+    text-decoration: none;
+    display: block;
+  }
+
+  .link-cliente:hover {
+    color: #2b3569;
+  }
+
+  .container-pedidos {
+    border-radius: 5px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+    padding: 30px;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    grid-template-columns: 1fr 1fr;
+    /* Dos columnas de igual tamaño */
+    gap: 20px;
+  }
+
+  table {
+    border-collapse: collapse;
+    font-family: sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+  }
+
+  th {
+    background-color: #6b84ff63;
+    border: 0.5px solid rgba(128, 128, 128, 0.479);
+  }
+
+  th,
+  td {
+    padding: 8px 10px;
+  }
 </style>
 {% endblock content %}
