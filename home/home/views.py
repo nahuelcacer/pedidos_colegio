@@ -2,7 +2,12 @@ from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from home.urls_frontend import GRUPOS_URLS
+
+
+
+
+
+
 
 
 def custom_login(request):

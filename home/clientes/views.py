@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Cliente
+from .models import Cliente, Contacto
 from .serializers import ClienteSerializer
 from django.http import JsonResponse
 import json
@@ -19,11 +19,14 @@ def mostrar_cliente(request,id):
     cliente_seleccionado = Cliente.objects.get(identificacion=id)
     cliente_seleccionado_serializado = ClienteSerializer(cliente_seleccionado).data
 
+    # contacto_cliente = Contacto.objects.get(id=cliente_seleccionado.contacto.id)
+    # print(contacto_cliente)
+
     context = {
         'cliente':cliente_seleccionado_serializado
     }
 
-    return render(request, 'clientes/mostrarCliente.html', context)
+    return render(request, 'clientes/mostrarPerfilCliente.html', context)
 
 def obtener_clientes(request):
     q = request.GET.get('q')  # Obtener el valor de 'q' de los parámetros GET en la URL
@@ -36,3 +39,5 @@ def obtener_clientes(request):
     todos_los_clientes_serilizados = ClienteSerializer(clientes, many=True)
     return JsonResponse(todos_los_clientes_serilizados.data, safe=False)
  
+def agregar_clientes(request):
+    return render(request, 'clientes/agregarCliente.html')
