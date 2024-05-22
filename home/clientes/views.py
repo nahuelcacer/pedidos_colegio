@@ -40,4 +40,6 @@ def obtener_clientes(request):
     return JsonResponse(todos_los_clientes_serilizados.data, safe=False)
  
 def agregar_clientes(request):
+    if request.method == 'POST':
+        print(request.POST)
     return render(request, 'clientes/agregarCliente.html')
