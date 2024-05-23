@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Cliente, Contacto
 from .serializers import ClienteSerializer
 from django.http import JsonResponse
@@ -41,5 +41,22 @@ def obtener_clientes(request):
  
 def agregar_clientes(request):
     if request.method == 'POST':
-        print(request.POST)
+        nombre = request.POST['nombre']
+        identificacion = request.POST['identificacion']
+        escribano = request.POST['escribano']
+        email = request.POST['email']
+        cliente, created = Cliente.objects.get_or_create(
+            nombre=nombre,
+            identificacion=identificacion,
+            escribano=escribano
+        )
+        if created:
+            created.agregarContacto(email)
+        
     return render(request, 'clientes/agregarCliente.html')
+
+
+def eliminar_cliente(request, identificacion):
+    cliente_a_eliminar = Cliente.objects.get(identificacion=identificacion)
+    cliente_a_eliminar.delete()
+    return redirect('clientes/listarClientes')

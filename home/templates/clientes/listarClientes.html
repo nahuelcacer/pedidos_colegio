@@ -47,6 +47,11 @@
               {{cliente.email}}
               {% endif %}
             </td>
+            <td>
+              {% if cliente.identificacion %}
+                <a href="{% url 'eliminarCliente' cliente.identificacion %}" >Eliminar</a>
+              {% endif %}
+            </td>
           </tr>
           {% endfor %}
         </tbody>

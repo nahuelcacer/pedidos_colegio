@@ -1,50 +1,100 @@
-{% extends 'home.html' %}
-{% block content %}
+{% extends 'home.html' %} {% block content %}
 <section>
-    <div class="container-pedidos">
-        <form action="{% url 'agregarClientes' %}" method="post">
-            {% csrf_token %}
-            <input name="nombre" type="text" placeholder="Nombre"
-                style="width: 200px;height: 40px;border-radius: 5px;border: 1px solid #808080;padding-right: 20px;padding-left: 20px;" />
-            <input name="identificacion" type="text" placeholder="Cuit/Dni"
-                style="width: 200px;height: 40px;border-radius: 5px;border: 1px solid #808080;padding-right: 20px;padding-left: 20px;" />
+  <div class="container-pedidos">
+    <form action="{% url 'agregarClientes' %}" method="post">
+      {% csrf_token %}
+      <input
+        name="nombre"
+        type="text"
+        placeholder="Nombre"
+        style="
+          width: 200px;
+          height: 40px;
+          border-radius: 5px;
+          border: 1px solid #808080;
+          padding-right: 20px;
+          padding-left: 20px;
+        "
+      />
+      <input
+        name="identificacion"
+        type="text"
+        placeholder="Cuit/Dni"
+        style="
+          width: 200px;
+          height: 40px;
+          border-radius: 5px;
+          border: 1px solid #808080;
+          padding-right: 20px;
+          padding-left: 20px;
+        "
+      />
 
-
-
-            <div style="display: flex;">
-                <label for="escribano">Escribano</label>
-                <input name="escribano" id="escribano" type="checkbox" />
-
-            </div>
-            <br>
-            <input name="email" type="text" placeholder="Email"
-                style="width: 200px;height: 40px;border-radius: 5px;border: 1px solid #808080;padding-right: 20px;padding-left: 20px;">
-            <input name="telefono" type="text" placeholder="Telefono"
-                style="width: 200px;height: 40px;border-radius: 5px;border: 1px solid #808080;padding-right: 20px;padding-left: 20px;">
-            <button style="width: 240px; height: 40px; border-radius: 5px; background-color: #6b84ff; color: white;">
-                Agregar</button>
-        </form>
-    </div>
+      <div style="display: flex">
+        <label for="escribano">Escribano</label>
+        <input type="hidden" name="escribano" value="False" />
+        <input name="escribano" id="escribano" type="checkbox" value="True" />
+      </div>
+      <br />
+      <input
+        name="email"
+        type="text"
+        placeholder="Email"
+        style="
+          width: 200px;
+          height: 40px;
+          border-radius: 5px;
+          border: 1px solid #808080;
+          padding-right: 20px;
+          padding-left: 20px;
+        "
+      />
+      <input
+        name="telefono"
+        type="text"
+        placeholder="Telefono"
+        style="
+          width: 200px;
+          height: 40px;
+          border-radius: 5px;
+          border: 1px solid #808080;
+          padding-right: 20px;
+          padding-left: 20px;
+        "
+      />
+      <button
+        style="
+          width: 240px;
+          height: 40px;
+          border-radius: 5px;
+          background-color: #6b84ff;
+          color: white;
+        "
+      >
+        Agregar
+      </button>
+    </form>
+  </div>
 </section>
 <style>
-    /* Estilos para el checkbox */
-    input[type="checkbox"] {
-        width: 15px;
-        height: 15px;
-        border-radius: 5px;
-        /* Puedes agregar más estilos aquí */
-    }
+  /* Estilos para el checkbox */
+  input[type="checkbox"] {
+    width: 15px;
+    height: 15px;
+    border-radius: 5px;
+    /* Puedes agregar más estilos aquí */
+  }
 
-    /* Estilos para el label */
-    label {
-        font-family: Arial, sans-serif;
-        /* Fuente del label */
-        font-size: 14px;
-        /* Tamaño de la fuente del label */
-        color: #333;
-        /* Color del texto del label */
-        margin-right: 10px;
-        /* Espacio entre el label y el checkbox */
-    }
+  /* Estilos para el label */
+  label {
+    font-family: Arial, sans-serif;
+    /* Fuente del label */
+    font-size: 14px;
+    /* Tamaño de la fuente del label */
+    color: #333;
+    /* Color del texto del label */
+    margin-right: 10px;
+    /* Espacio entre el label y el checkbox */
+  }
 </style>
 {% endblock %}
