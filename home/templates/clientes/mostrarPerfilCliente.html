@@ -1,7 +1,7 @@
 {% extends 'home.html'%}
 {% block content %}
 <section>
-  <div >
+  <div>
     <div class="form-container">
       <label for="nombre" class="form-label">NOMBRE</label>
       <input id="nombre" value="{{cliente.nombre}}" class="input-estilo">
@@ -12,39 +12,56 @@
       <label for="escribano" class="form-label">ESCRIBANO</label>
       <input id="escribano" type="checkbox" value="{{cliente.escribano}}"></input>
     </div>
+    <br>
+    
+    <div class="form-container">
+      {% if cliente_obj.contacto %}
+      <label for="telefono" class="form-label">TELEFONO</label>
+      <label>{{cliente_obj.contacto.telefono}}</label>
+      {% include 'tools/litEditButton.html' %}
+      <a>delete</a>
+      {% endif %}
+
+      <br></br>
+      {% if cliente_obj.email %}
+      <label for="telefono" class="form-label">EMAIL</label>
+      <label>{{cliente_obj.email.email}}</label>
+      {% endif %}
+
+    </div>
   </div>
 </section>
 <style>
-.form-container {
-  background-color: #ffffff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  max-width: 400px;
-  width: 100%;
-}
+  .form-container {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+  }
 
-.form-label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: bold;
-  color: #333333;
-}
+  .form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #333333;
+  }
 
-.input-estilo {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 20px;
-  border: 1px solid #cccccc;
-  border-radius: 5px;
-  font-size: 16px;
-  box-sizing: border-box;
-}
+  .input-estilo {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+  }
 
-.input-estilo:focus {
-  border-color: #66afe9;
-  outline: none;
-  box-shadow: 0 0 8px rgba(102, 175, 233, 0.6);
-}
+  .input-estilo:focus {
+    border-color: #66afe9;
+    outline: none;
+    box-shadow: 0 0 8px rgba(102, 175, 233, 0.6);
+  }
 </style>
 {% endblock %}

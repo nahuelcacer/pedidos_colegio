@@ -3,11 +3,7 @@
   <div class="container-pedidos">
     <form action="{% url 'agregarClientes' %}" method="post">
       {% csrf_token %}
-      <input
-        name="nombre"
-        type="text"
-        placeholder="Nombre"
-        style="
+      <input name="nombre" type="text" placeholder="Nombre" style="
           width: 200px;
           height: 40px;
           border-radius: 5px;
@@ -15,12 +11,9 @@
           padding-right: 20px;
           padding-left: 20px;
         "
-      />
-      <input
-        name="identificacion"
-        type="text"
-        placeholder="Cuit/Dni"
-        style="
+        required
+        />
+      <input name="identificacion" type="text" placeholder="Cuit/Dni" style="
           width: 200px;
           height: 40px;
           border-radius: 5px;
@@ -28,7 +21,8 @@
           padding-right: 20px;
           padding-left: 20px;
         "
-      />
+        required
+        />
 
       <div style="display: flex">
         <label for="escribano">Escribano</label>
@@ -36,41 +30,29 @@
         <input name="escribano" id="escribano" type="checkbox" value="True" />
       </div>
       <br />
-      <input
-        name="email"
-        type="text"
-        placeholder="Email"
-        style="
+      <input name="email" type="text" placeholder="Email" style="
           width: 200px;
           height: 40px;
           border-radius: 5px;
           border: 1px solid #808080;
           padding-right: 20px;
           padding-left: 20px;
-        "
-      />
-      <input
-        name="telefono"
-        type="text"
-        placeholder="Telefono"
-        style="
+        " />
+      <input name="telefono" type="text" placeholder="Telefono" style="
           width: 200px;
           height: 40px;
           border-radius: 5px;
           border: 1px solid #808080;
           padding-right: 20px;
           padding-left: 20px;
-        "
-      />
-      <button
-        style="
+        " />
+      <button style="
           width: 240px;
           height: 40px;
           border-radius: 5px;
           background-color: #6b84ff;
           color: white;
-        "
-      >
+        ">
         Agregar
       </button>
     </form>
