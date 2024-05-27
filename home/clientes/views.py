@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect,get_object_or_404
 from .models import Cliente, Contacto
 from .serializers import ClienteSerializer
 from django.http import JsonResponse
@@ -67,3 +67,40 @@ def eliminar_cliente(request, identificacion):
     cliente_a_eliminar = Cliente.objects.get(identificacion=identificacion)
     cliente_a_eliminar.delete()
     return redirect('listarClientes')
+
+
+def actualizar_contacto(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            contacto_id = data.get('id')
+            telefono = data.get('telefono')
+            contacto_seleccionado = Contacto.objects.get(id=contacto_id)
+            contacto_seleccionado.telefono = telefono
+            contacto_seleccionado.save()
+
+            # Aquí puedes agregar la lógica para actualizar el contacto en la base de datos
+
+            return JsonResponse({"status": "success", "id": contacto_id, "telefono": telefono})
+        except json.JSONDecodeError:
+            return JsonResponse({"status": "error", "message": "Invalid JSON"}, status=400)
+    else:
+        return JsonResponse({"status": "error", "message": "Invalid method"}, status=405)
+
+
+def actualizar_cliente(request, identificacion):
+    cliente_a_actualizar = get_object_or_404(Cliente, identificacion=identificacion)
+
+    if request.method == 'POST':
+        nombre = request.POST.get('nombre')
+        nueva_identificacion = request.POST.get('identificacion')
+        # escribano = request.POST.get('escribano') == 'on'
+
+        # Actualiza los campos del cliente
+        cliente_a_actualizar.nombre = nombre
+        cliente_a_actualizar.identificacion = nueva_identificacion
+        # cliente_a_actualizar.escribano = escribano
+        cliente_a_actualizar.save()
+
+        # Redirige a la vista de mostrarCliente usando el nuevo identificador
+        return redirect('mostrarCliente', id=cliente_a_actualizar.identificacion)

@@ -18,7 +18,7 @@
         <div class="item-content" style="display: none;">
             {% for url in item.urls %}
             <div>
-                <a href={{url.url}}>
+                <a href="{% url url.url %}">
                     {{url.nombre}}
                 </a>
             </div>
