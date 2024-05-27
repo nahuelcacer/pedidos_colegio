@@ -67,3 +67,28 @@ def eliminar_cliente(request, identificacion):
     cliente_a_eliminar = Cliente.objects.get(identificacion=identificacion)
     cliente_a_eliminar.delete()
     return redirect('listarClientes')
+
+
+def actualizar_contacto(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            contacto_id = data.get('id')
+            telefono = data.get('telefono')
+            contacto_seleccionado = Contacto.objects.get(id=contacto_id)
+            contacto_seleccionado.telefono = telefono
+            contacto_seleccionado.save()
+
+            # Aquí puedes agregar la lógica para actualizar el contacto en la base de datos
+
+            return JsonResponse({"status": "success", "id": contacto_id, "telefono": telefono})
+        except json.JSONDecodeError:
+            return JsonResponse({"status": "error", "message": "Invalid JSON"}, status=400)
+    else:
+        return JsonResponse({"status": "error", "message": "Invalid method"}, status=405)
+
+
+def actualizar_cliente(request, identificacion):
+    cliente_a_actualizar = Cliente.objects.get(identificacion=identificacion)
+    print(cliente_a_actualizar)
+    return redirect('mostrarCliente')
