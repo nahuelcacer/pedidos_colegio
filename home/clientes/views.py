@@ -93,12 +93,13 @@ def actualizar_cliente(request, identificacion):
 
     if request.method == 'POST':
         nombre = request.POST.get('nombre')
+        escribano = request.POST.get('escribano')
+        print(escribano)
         nueva_identificacion = request.POST.get('identificacion')
         # escribano = request.POST.get('escribano') == 'on'
 
         # Actualiza los campos del cliente
         cliente_a_actualizar.nombre = nombre
-        cliente_a_actualizar.identificacion = nueva_identificacion
         # cliente_a_actualizar.escribano = escribano
         cliente_a_actualizar.save()
 
