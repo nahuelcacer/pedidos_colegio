@@ -8,9 +8,8 @@
         <label for="nombre" class="form-label">NOMBRE</label>
         <input name="nombre" id="nombre" value="{{cliente.nombre}}" class="input-estilo" />
 
-        <!-- <label for="identificacion" class="form-label">DNI/CUIT</label> -->
-        <input name="identificacion" id="identificacion" value="{{cliente.identificacion}}" class="input-estilo"
-          hidden />
+        <label for="identificacion" class="form-label">DNI/CUIT</label> 
+        <input name="identificacion" id="identificacion" value="{{cliente.identificacion}}" class="input-estilo"/>
 
         <label for="escribano" class="form-label">ESCRIBANO</label>
         <input id="escribano" name="escribano" type="checkbox" {% if cliente.escribano %}checked{% endif %} />

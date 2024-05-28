@@ -10,7 +10,7 @@ class Contacto(models.Model):
     
 class Cliente(models.Model):
     nombre = models.CharField(max_length=240)
-    identificacion = models.CharField(max_length=15, primary_key=True)
+    identificacion = models.CharField(max_length=15)
     estado = models.BooleanField(default=True)
     escribano = models.BooleanField(default=False)
     email = models.ForeignKey(Email, models.CASCADE, null=True) 

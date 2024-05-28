@@ -16,9 +16,10 @@ def listar_clientes(request):
     
 
 def mostrar_cliente(request,id):
-    cliente_seleccionado = Cliente.objects.get(identificacion=id)
+
+    cliente_seleccionado = Cliente.objects.get(id=id)
     cliente_seleccionado_serializado = ClienteSerializer(cliente_seleccionado).data
-    # print(cliente_seleccionado.contacto.telefono)
+    print(cliente_seleccionado.id)
     # contacto_cliente = Contacto.objects.get(id=cliente_seleccionado.contacto.id)
     # print(contacto_cliente)
 
@@ -63,8 +64,8 @@ def agregar_clientes(request):
     return render(request, 'clientes/agregarCliente.html')
 
 
-def eliminar_cliente(request, identificacion):
-    cliente_a_eliminar = Cliente.objects.get(identificacion=identificacion)
+def eliminar_cliente(request, id):
+    cliente_a_eliminar = Cliente.objects.get(id=id)
     cliente_a_eliminar.delete()
     return redirect('listarClientes')
 

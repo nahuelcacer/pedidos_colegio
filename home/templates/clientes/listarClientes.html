@@ -30,7 +30,7 @@
           {% for cliente in clientes %}
           <tr> <!-- Se añade la fila -->
             <td>
-              <a href="{{ cliente.identificacion }}" class="link-cliente">
+              <a href="{{ cliente.id }}" class="link-cliente">
                 {{ cliente.nombre }}
               </a>
             </td>
@@ -48,8 +48,8 @@
               {% endif %}
             </td>
             <td>
-              {% if cliente.identificacion %}
-                <a href="{% url 'eliminarCliente' cliente.identificacion %}" >Eliminar</a>
+              {% if cliente.id %}
+                <a href="{% url 'eliminarCliente' cliente.id %}" >Eliminar</a>
               {% endif %}
             </td>
           </tr>
