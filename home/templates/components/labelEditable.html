@@ -1,0 +1,8 @@
+<div>
+    <label for="telefono" class="form-label">EMAIL</label>
+    <div style="display: flex; justify-content: flex-end; gap: 5px">
+
+        <div class="editable">{{cliente_obj.email.email}}</div>
+        {% include 'components/ed_telefono.html' with id_edit="editButtonDelete" id_delete="deleteButtonDelete" %}
+    </div>
+</div>
