@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect,get_object_or_404
-from .models import Cliente, Contacto
+from .models import Cliente, Contacto, Email
 from .serializers import ClienteSerializer
 from django.http import JsonResponse
 import json
@@ -87,6 +87,25 @@ def actualizar_contacto(request):
             return JsonResponse({"status": "error", "message": "Invalid JSON"}, status=400)
     else:
         return JsonResponse({"status": "error", "message": "Invalid method"}, status=405)
+
+def actualizar_email(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            email_id = data.get('id')
+            email = data.get('email')
+            contacto_seleccionado = Email.objects.get(id=email_id)
+            contacto_seleccionado.email = email
+            contacto_seleccionado.save()
+
+            # Aquí puedes agregar la lógica para actualizar el contacto en la base de datos
+
+            return JsonResponse({"status": "success", "id": email_id, "telefono": email})
+        except json.JSONDecodeError:
+            return JsonResponse({"status": "error", "message": "Invalid JSON"}, status=400)
+    else:
+        return JsonResponse({"status": "error", "message": "Invalid method"}, status=405)
+    
 
 
 def actualizar_cliente(request, identificacion):

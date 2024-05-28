@@ -35,3 +35,25 @@ function updateTelefono(telefono, id, url) {
         console.error("Error:", error);
     });
 }
+
+function updateEmail(email, id , url ){
+    const csrftoken = getCookie("csrftoken");
+    fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": csrftoken,
+        },
+        body: JSON.stringify({
+            id: id,
+            email: email,
+        }),
+    })
+    .then((response) => response.json())
+    .then((data) => {
+        console.log("Success:", data);
+    })
+    .catch((error) => {
+        console.error("Error:", error);
+    });
+}

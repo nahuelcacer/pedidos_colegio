@@ -1,34 +1,30 @@
 document.addEventListener("DOMContentLoaded", function () {
-    var editButton = document.getElementById("editButton");
-    var labelTelefono = document.getElementById("telefono");
+    var telefonoEditButton = document.getElementById("telefonoeditButton");
+    var telefonoLabel = document.getElementById("telefono");
+    var emailEditButton = document.getElementById("emaileditButton");
+    var emailLabel = document.getElementById("email");
 
-    editButton.addEventListener("click", function () {
-        if (labelTelefono.contentEditable === "false") {
-            makeEditable(labelTelefono, editButton);
-        } else {
-            makeNonEditable(labelTelefono, editButton);
-            var contactId = labelTelefono.getAttribute("data-contact-id");
-            var updateUrl = labelTelefono.getAttribute("data-contact-url");
+    telefonoEditButton.addEventListener("click", function () {
+        if(telefonoLabel.contentEditable ==="false"){
+            makeEditable(telefonoLabel, telefonoEditButton)
+        }else{
+            makeNonEditable(telefonoLabel, telefonoEditButton)
+            var id = telefonoLabel.getAttribute('data-id')
+            var url = telefonoLabel.getAttribute('data-url')
+            updateTelefono(telefonoLabel.innerText, id, url)
+        }
+    });
 
-            updateTelefono(labelTelefono.innerText, contactId, updateUrl);
+    emailEditButton.addEventListener("click", function () {
+        if (emailLabel.contentEditable ==="false"){
+            makeEditable(emailLabel,emailEditButton);
+        }else {
+            makeNonEditable(emailLabel,emailEditButton);
+            var id = emailLabel.getAttribute('data-id')
+            var url = emailLabel.getAttribute('data-url')
+            updateEmail(emailLabel.innerText,id,url )
+
         }
     });
 });
 
-
-document.addEventListener("DOMContentLoaded", function () {
-    var button = document.getElementById("editButtonDelete");
-    var label = document.getElementById("deleteButtonDelete");
-
-    button.addEventListener("click", function () {
-        if (label.contentEditable === "false") {
-            makeEditable(label, button);
-        } else {
-            makeNonEditable(label, button);
-            var contactId = label.getAttribute("data-contact-id");
-            var updateUrl = label.getAttribute("data-contact-url");
-
-            // updateTelefono(labelTelefono.innerText, contactId, updateUrl);
-        }
-    });
-});
