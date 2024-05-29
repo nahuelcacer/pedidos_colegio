@@ -27,16 +27,16 @@ function updateTelefono(telefono, id, url) {
             telefono: telefono,
         }),
     })
-    .then((response) => response.json())
-    .then((data) => {
-        console.log("Success:", data);
-    })
-    .catch((error) => {
-        console.error("Error:", error);
-    });
+        .then((response) => response.json())
+        .then((data) => {
+            console.log("Success:", data);
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+        });
 }
 
-function updateEmail(email, id , url ){
+function updateEmail(email, id, url) {
     const csrftoken = getCookie("csrftoken");
     fetch(url, {
         method: "POST",
@@ -49,11 +49,55 @@ function updateEmail(email, id , url ){
             email: email,
         }),
     })
-    .then((response) => response.json())
-    .then((data) => {
-        console.log("Success:", data);
+        .then((response) => response.json())
+        .then((data) => {
+            console.log("Success:", data);
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+        });
+}
+
+function crearTelefono(telefono, id, url) {
+    const csrftoken = getCookie("csrftoken");
+    fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": csrftoken,
+        },
+        body: JSON.stringify({
+            id: id,
+            telefono: telefono,
+        }),
     })
-    .catch((error) => {
-        console.error("Error:", error);
-    });
+        .then((response) => response.json())
+        .then((data) => {
+            console.log("Success:", data);
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+        });
+}
+
+function crearEmail(email, id, url) {
+    const csrftoken = getCookie("csrftoken");
+    fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": csrftoken,
+        },
+        body: JSON.stringify({
+            id: id,
+            email: email,
+        }),
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            console.log("Success:", data);
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+        });
 }

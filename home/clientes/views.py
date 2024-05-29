@@ -3,7 +3,7 @@ from .models import Cliente, Contacto, Email
 from .serializers import ClienteSerializer
 from django.http import JsonResponse
 import json
-
+from .tools import destructureResponse
 # Create your views here.
 def listar_clientes(request):
     todos_los_clientes = Cliente.objects.all()
@@ -125,3 +125,28 @@ def actualizar_cliente(request, identificacion):
 
         # Redirige a la vista de mostrarCliente usando el nuevo identificador
         return redirect('mostrarCliente', id=cliente_a_actualizar.identificacion)
+
+def agregar_contacto(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            print(data)
+            cliente_id = data.get('id')
+            telefono = data.get('telefono')
+            contacto_seleccionado = Cliente.objects.get(id=cliente_id)
+            contacto_seleccionado.agregarContacto(telefono)
+
+            # Aquí puedes agregar la lógica para actualizar el contacto en la base de datos
+
+            return JsonResponse({"status": "success", "id": cliente_id, "telefono": telefono})
+        except json.JSONDecodeError:
+            return JsonResponse({"status": "error", "message": "Invalid JSON"}, status=400)
+    else:
+        return JsonResponse({"status": "error", "message": "Invalid method"}, status=405)
+
+def agregar_email(request):
+    data = destructureResponse(request)
+    if data:
+        cliente = Cliente.objects.get(id=data.get('id'))
+        cliente.agregarEmail(data.get('email'))
+    return JsonResponse({'msg': f'Se agrego correctamente {cliente.email.email}'})

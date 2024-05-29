@@ -46,7 +46,9 @@
         {% include 'components/clientes/labelEditable.html' with title="TELEFONO" data=cliente_obj.contacto.telefono id="telefono" data_id=cliente_obj.contacto.id data_url=update_contact_url%} 
 
       {% else %}
-        {% include 'components/clientes/labelEditableSinObj.html' with title="TELEFONO" id="telefono" %}
+        {% url 'agregarContacto' as data_contacto_url %}
+        
+        {% include 'components/clientes/labelEditableSinObj.html' with title="TELEFONO" id="telefono" url=data_contacto_url cliente_id=cliente_obj.id%}
       {% endif %}
 
       <br />
@@ -55,9 +57,8 @@
         {% url 'actualizarEmail' as update_email_url%}
         {% include 'components/clientes/labelEditable.html' with title="EMAIL" data=cliente_obj.email.email id="email" data_id=cliente_obj.email.id data_url=update_email_url %} 
       {% else %}
-        {% include 'components/clientes/labelEditableSinObj.html' with title="EMAIL" id="email" %}
-
-      
+        {% url 'agregarEmail' as data_email_url %}
+        {% include 'components/clientes/labelEditableSinObj.html' with title="EMAIL" id="email" url=data_email_url cliente_id=cliente_obj.id %}
       {% endif %}
     </div>
   </div>
