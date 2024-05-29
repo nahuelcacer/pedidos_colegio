@@ -1,10 +1,9 @@
 <div>
     
     <label for={{id}} class="form-label" >{{title}}</label>
-    {{obj.telefono}}
     <div style="display: flex; justify-content: flex-end; gap: 5px">
 
         <div class="editable" contenteditable="false" id={{id}} data-id={{data_id}} data-url={{data_url}}>{{data}}</div>
-        {% include 'components/ed_telefono.html' with id_edit=id|add:"editButton"  id_delete="deleteButtonDelete" %}
+        {% include 'components/clientes/ed_telefono.html' with id_edit=id|add:"editButton"  id_delete="deleteButtonDelete" %}
     </div>
 </div>

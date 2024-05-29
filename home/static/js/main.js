@@ -1,8 +1,10 @@
 document.addEventListener("DOMContentLoaded", function () {
+
     var telefonoEditButton = document.getElementById("telefonoeditButton");
     var telefonoLabel = document.getElementById("telefono");
     var emailEditButton = document.getElementById("emaileditButton");
     var emailLabel = document.getElementById("email");
+
 
     telefonoEditButton.addEventListener("click", function () {
         if(telefonoLabel.contentEditable ==="false"){
@@ -26,5 +28,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
         }
     });
+
+});
+document.addEventListener("DOMContentLoaded", function () {
+
+    var telefonolabelAdd = document.getElementById("telefonolabelAdd")
+    var telefonoButtonAdd = document.getElementById("telefonobuttonAdd");
+
+    telefonoButtonAdd.addEventListener("click", function(){
+        if(telefonolabelAdd.contentEditable === "false"){
+
+            makeEditable(telefonolabelAdd, telefonoButtonAdd)
+        }else {
+            makeNonEditable(telefonolabelAdd, telefonoButtonAdd)
+        }
+    })
+
 });
 
