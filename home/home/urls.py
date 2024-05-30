@@ -24,7 +24,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', views.custom_login, name='login'),
     path('logout/', auth_views.LogoutView.as_view(next_page="login"), name='logout'),  # Utiliza LogoutView para la vista de logout
-    path('', views.home , name='home'),
+    path('', views.my_view , name='home'),
     path('pedidos/', include('pedidos.urls')),
     path('clientes/', include('clientes.urls')),
     path('productos/', include('productos.urls')),
