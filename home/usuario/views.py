@@ -22,5 +22,5 @@ class CustomAuthToken(ObtainAuthToken):
     
     def get(self , request):
         return Response({
-            'MSG':"Redireccionar a login view"
+            'msg':"Redireccionar a login view"
         })

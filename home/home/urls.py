@@ -23,4 +23,5 @@ from usuario.views import CustomAuthToken
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', CustomAuthToken.as_view()),
+    path('clientes/', include('clientes.urls'))
 ]
