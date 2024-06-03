@@ -19,10 +19,10 @@ from django.urls import path, include
 from django.contrib.auth import views as auth_views
 from . import views
 from django.views.generic import RedirectView
-
+from usuario.views import CustomAuthToken
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('login/', views.custom_login, name='login'),
+    path('login/', CustomAuthToken.as_view()),
     path('logout/', auth_views.LogoutView.as_view(next_page="login"), name='logout'),  # Utiliza LogoutView para la vista de logout
     path('', views.my_view , name='home'),
     path('pedidos/', include('pedidos.urls')),

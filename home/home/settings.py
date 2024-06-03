@@ -40,7 +40,9 @@ INSTALLED_APPS = [
     'clientes.apps.ClientesConfig',
     'productos.apps.ProductosConfig',
     'pedidos.apps.PedidosConfig',
+    'usuario.apps.UsuarioConfig',
     'rest_framework',
+    'rest_framework.authtoken', 
     'corsheaders'
     
 ]
