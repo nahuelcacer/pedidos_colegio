@@ -23,10 +23,4 @@ from usuario.views import CustomAuthToken
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', CustomAuthToken.as_view()),
-    path('logout/', auth_views.LogoutView.as_view(next_page="login"), name='logout'),  # Utiliza LogoutView para la vista de logout
-    path('', views.my_view , name='home'),
-    path('pedidos/', include('pedidos.urls')),
-    path('clientes/', include('clientes.urls')),
-    path('productos/', include('productos.urls')),
-    path('<path:invalid_path>', RedirectView.as_view(url='/', permanent=False)),
 ]
