@@ -20,7 +20,7 @@ class ClienteSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Cliente
-        fields = ['nombre', 'identificacion', 'escribano', 'contacto', 'email', 'created_at']
+        fields = ['id','nombre', 'identificacion', 'escribano', 'contacto', 'email', 'created_at']
 
     def create(self, validated_data):
         # Extraer los datos del objeto de contacto si están presentes
@@ -38,7 +38,7 @@ class ClienteSerializer(serializers.ModelSerializer):
 
         return cliente
 
-        def update(self, instance, validated_data):
+    def update(self, instance, validated_data):
             contacto_data = validated_data.pop('contacto', None)
             email_data = validated_data.pop('email', None)
 
@@ -58,11 +58,11 @@ class ClienteSerializer(serializers.ModelSerializer):
                     
             if email_data:
                 # Si existe, actualizar el email; de lo contrario, crearlo
-                email = Email.objects.get(cliente=instance.id)
-                if email:
+                try:
+                    email = Email.objects.get(cliente=instance.id)
                     email.email = email_data.get('email', email.email)
                     email.save()
-                else:
+                except Email.DoesNotExist:
                     Email.objects.create(cliente=instance, **email_data)
 
             return instance
@@ -78,10 +78,10 @@ class ClienteSerializer(serializers.ModelSerializer):
         data.pop('created_at')
         # Serializar los objetos de contacto y correo electrónico si existen
         if contacto_instance:
-            contacto_serializer = ContactoSerializer(contacto_instance, many=True)
-            data['contacto'] = contacto_serializer.data
+            contacto = contacto_instance.last()
+            data['telefono'] = contacto.telefono
         if email_instance:
-            email_serializer = EmailSerializer(email_instance, many=True)
-            data['email'] = email_serializer.data
+            email = email_instance.last()
+            data['email'] = email.email
 
         return data
