@@ -1,17 +1,16 @@
-import { useEffect } from "react";
-import axios from 'axios'
+import { useContext } from "react";
+
+import AuthContext from "./context/AuthContext";
 
 
 
 
 function App() {
-  useEffect(()=> {
-    axios.get('http://127.0.0.1:8000/')
-    .then(res=>console.log(res))
-  }, [])
+  const { logoutUser } = useContext(AuthContext);
   return (
     <div className="App">
-      <h1>asd</h1>
+      <h1>INICIO</h1>
+      <button onClick={logoutUser}>Logout</button>
     </div>
   );
 }
