@@ -1,7 +1,6 @@
 import { Button, TextField } from "@mui/material";
 import { styled } from "@mui/system";
 import React from "react";
-import loginFetch from "../service/loginUser";
 import { useNavigate } from "react-router-dom";
 
 const Container = styled("div")({
@@ -23,24 +22,36 @@ const ButtonWrapper = styled("div")({
   alignSelf: "center",
 });
 
-
-
-
 const LoginPage = () => {
-  const navigate = useNavigate()
-  const loginUser = async (e) => {
-    try {
+  const navigate = useNavigate();
 
-      const response = await loginFetch(e.target.username.value, e.target.password.value);
-      const data = response.token
-      localStorage.setItem('authTokens', JSON.stringify(data));
-      navigate('/')
+  const loginUser = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch("http://127.0.0.1:8002/login/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: e.target.username.value,
+          password: e.target.password.value,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Login failed');
+      }
+
+      const data = await response.json();
+      localStorage.setItem('authTokens', JSON.stringify(data.token));
+      navigate('/'); // Redirect to home page after successful login
+    } catch (error) {
+      console.error('Error during login:', error);
+      // Handle the error appropriately (e.g., display an error message to the user)
     }
-    catch (error) {
-      console.error('Error durante el login:', error);
-      // Maneja el error de la solicitud (por ejemplo, problemas de red)
-    }
-  }
+  };
+
   return (
     <Container>
       <Form onSubmit={loginUser}>

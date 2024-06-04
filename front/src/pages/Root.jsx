@@ -1,11 +1,17 @@
 import React, { useContext } from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet, useNavigate } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
 
 const Root = () => {
   const token = localStorage.getItem('authTokens');
   const isAuthenticated = token ? true : false;
-  const { logoutUser } = useContext(AuthContext)
+
+  let navigate = useNavigate()
+  const logout = () => {
+    localStorage.removeItem('authTokens')
+    navigate('login/')
+  }
+  // const { logoutUser } = useContext(AuthContext)
   if (isAuthenticated) {
 
 
@@ -23,7 +29,7 @@ const Root = () => {
                 <a href={`/contacts/2`} style={{ textDecoration: 'none', color: '#007bff' }}>Your Friend</a>
               </li>
               <li>
-                <a onClick={logoutUser} style={{textDecoration:'none', color:'#007bff'}}>Logout</a>
+                <a onClick={logout} style={{textDecoration:'none', color:'#007bff'}}>Logout</a>
               </li>
             </ul>
           </nav>
