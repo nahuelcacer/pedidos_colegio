@@ -1,7 +1,8 @@
 import { Button, TextField } from "@mui/material";
 import { styled } from "@mui/system";
-import React, { useContext } from "react";
-import AuthContext from "../context/AuthContext";
+import React from "react";
+import loginFetch from "../service/loginUser";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled("div")({
   display: "flex",
@@ -22,14 +23,24 @@ const ButtonWrapper = styled("div")({
   alignSelf: "center",
 });
 
-const LoginPage = () => {
-    const { loginUser, user, logoutUser } = useContext(AuthContext);
-  
-    const handleSubmit = (event) => {
-      event.preventDefault();
-      loginUser();
-    };
 
+
+
+const LoginPage = () => {
+  const navigate = useNavigate()
+  const loginUser = async (e) => {
+    try {
+
+      const response = await loginFetch(e.target.username.value, e.target.password.value);
+      const data = response.token
+      localStorage.setItem('authTokens', JSON.stringify(data));
+      navigate('/')
+    }
+    catch (error) {
+      console.error('Error durante el login:', error);
+      // Maneja el error de la solicitud (por ejemplo, problemas de red)
+    }
+  }
   return (
     <Container>
       <Form onSubmit={loginUser}>

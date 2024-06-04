@@ -22,6 +22,11 @@ const RequireAuth = ({ children }) => {
 
 const router = createBrowserRouter([
   {
+    path: "login/",
+    element: <LoginPage></LoginPage>,
+    errorElement: <ErrorPage></ErrorPage>
+  },
+  {
     path: "/",
     element: <Root></Root>,
     errorElement: <ErrorPage></ErrorPage>,
@@ -33,19 +38,13 @@ const router = createBrowserRouter([
     ]
   }
 ])
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <RouterProvider router={router}>
-
-    </RouterProvider>
-    {/* <Router>
       <AuthProvider>
-        <Routes>
-          <Route path='/' element={<App/>}></Route>
-          <Route path="/login" element={<LoginPage />} ></Route>
-        </Routes>
       </AuthProvider>
-    </Router> */}
+    </RouterProvider>
   </React.StrictMode>
 );

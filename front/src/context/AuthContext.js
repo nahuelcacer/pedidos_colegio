@@ -24,13 +24,13 @@ export const AuthProvider = ({ children }) => {
 
         try {
             const response = await loginFetch(e.target.username.value, e.target.password.value);
-            const data = response.token 
+            const data = response.token
             setAuthTokens(data);
             setUser(data);
             localStorage.setItem('authTokens', JSON.stringify(data));
             setIsAuthenticated(true);
-            navigate('/');
-           
+            // navigate('/')
+
         } catch (error) {
             console.error('Error durante el login:', error);
             // Maneja el error de la solicitud (por ejemplo, problemas de red)
@@ -43,7 +43,7 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem('authTokens')
         setIsAuthenticated(false)
         console.log('navigateto')
-        navigate('/')
+        // navigate('/')
 
     }
     let contextData = {
@@ -55,8 +55,10 @@ export const AuthProvider = ({ children }) => {
 
     }
     return (
-        <AuthContext.Provider value={contextData}>
-            {children}
-        </AuthContext.Provider>
+
+            <AuthContext.Provider value={contextData}>
+
+                {children}
+            </AuthContext.Provider>
     )
 }  
