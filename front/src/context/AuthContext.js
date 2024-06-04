@@ -1,5 +1,6 @@
 import { createContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import loginFetch from "../service/loginUser";
 
 
 
@@ -17,35 +18,31 @@ export const AuthProvider = ({ children }) => {
         () => localStorage.getItem('authTokens') ? true : false
     )
     let navigate = useNavigate()
+
     let loginUser = async (e) => {
-        e.preventDefault()
-        console.log('Form ')
-        let response = await fetch("http://127.0.0.1:8000/login/", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ 'username': e.target.username.value, 'password': e.target.password.value })
-        })
-        let data = await response.json();
-        console.log(data)
-        // console.log({ "data": jwt_decode(data.access)})
-        console.log(response)
-        if (response.status === 200) {
-            setAuthTokens(data)
-            setUser(data)
-            localStorage.setItem('authTokens', JSON.stringify(data))
-            setIsAuthenticated(true)
-            navigate('/')
+        e.preventDefault();
+
+        try {
+            const response = await loginFetch(e.target.username.value, e.target.password.value);
+            const data = response.token 
+            setAuthTokens(data);
+            setUser(data);
+            localStorage.setItem('authTokens', JSON.stringify(data));
+            setIsAuthenticated(true);
+            navigate('/');
+           
+        } catch (error) {
+            console.error('Error durante el login:', error);
+            // Maneja el error de la solicitud (por ejemplo, problemas de red)
         }
+    };
 
-
-    }
     let logoutUser = () => {
         setAuthTokens(null)
         setUser(null)
         localStorage.removeItem('authTokens')
         setIsAuthenticated(false)
+        console.log('navigateto')
         navigate('/')
 
     }
@@ -54,7 +51,7 @@ export const AuthProvider = ({ children }) => {
         isAuthenticated: isAuthenticated,
         loginUser: loginUser,
         logoutUser: logoutUser,
-        
+
 
     }
     return (
