@@ -20,8 +20,12 @@ from django.contrib.auth import views as auth_views
 from . import views
 from django.views.generic import RedirectView
 from usuario.views import CustomAuthToken
+from django.views.generic import TemplateView
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', CustomAuthToken.as_view()),
-    path('clientes/', include('clientes.urls'))
+    path('clientes/', include('clientes.urls')),
+    path('', TemplateView.as_view(template_name="index.html")),
 ]
