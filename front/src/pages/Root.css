@@ -1,0 +1,18 @@
+.container_main {
+    display: grid;
+    grid-template-columns: 2fr 6fr;
+    grid-template-rows: 50px 1fr;
+    grid-template-areas:
+        'sidebar header'
+        'sidebar main'
+}
+
+#sidebar {
+    grid-area: sidebar;
+    width: 200px;
+}
+
+#main {
+    grid-area: main;
+
+}
