@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Navigate, Route, Routes, createBrowserRouter, 
 import App from './App';
 import { AuthProvider } from './context/AuthContext';
 import LoginPage from './pages/LoginPage';
-import Root from './pages/Root';
+import Root from './pages/main/Root';
 import ErrorPage from './pages/ErrorPage';
 
 

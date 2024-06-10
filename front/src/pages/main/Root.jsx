@@ -1,7 +1,10 @@
 import React, { useContext } from 'react';
 import { Navigate, Outlet, useNavigate } from 'react-router-dom';
-import AuthContext from '../context/AuthContext';
-import '../pages/Root.css'
+import AuthContext from '../../context/AuthContext';
+import './Root.css'
+import Sidebar from '../../component/sidebar/Sidebar';
+
+
 const Root = () => {
   const token = localStorage.getItem('authTokens');
   const isAuthenticated = token ? true : false;
@@ -17,23 +20,7 @@ const Root = () => {
 
     return (
       <div class="container_main">
-        <div id="sidebar">
-          <h1>Usuario</h1>
-          <input placeholder='Search...' />
-          <nav>
-            <ul style={{ listStyleType: 'none', padding: 0 }}>
-              <li>
-                <a >Your Name</a>
-              </li>
-              <li>
-                <a >Your Friend</a>
-              </li>
-              <li>
-                <a onClick={logout} >Logout</a>
-              </li>
-            </ul>
-          </nav>
-        </div>
+        <Sidebar></Sidebar>
         <div id="main">
           <Outlet />
         </div>
