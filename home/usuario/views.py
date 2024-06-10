@@ -2,6 +2,8 @@ from django.shortcuts import render
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.response import Response
+from django.contrib.auth import login
+
 # Create your views here.
 
 
@@ -12,15 +14,22 @@ class CustomAuthToken(ObtainAuthToken):
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
         token, created = Token.objects.get_or_create(user=user)
-        print(user)
 
-
+        login(request, user)
         return Response({
             'user':user.username,
             'token':token.key
         })
     
-    def get(self , request):
-        return Response({
-            'msg':"Redireccionar a login view"
-        })
+    def get(self, request):
+            user = request.user
+            print(user)
+            if user.is_authenticated:
+                return Response({
+                    'user':user.username,
+                    'email':user.email
+                })
+            else:
+                return Response({
+                    'msg': "Redireccionar a login view"
+                })

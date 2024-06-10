@@ -1,15 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./Sidebar.css";
 import Usuario from "../user/Usuario";
+import { getUser } from "../../service/user";
 
-// 1: su funcion es permitir la navegacion entre las urlsç
-// 2: props = urls y usuario
-// 3:
-const user = {
-  username:"Nahuel",
-  email:"nahuelcaceres@escribanoschaco.com",
-}
+
+
 const Sidebar = () => {
+
+  const fetchData = async () => { // Define una función asincrónica
+    const user = await getUser(); // Usa await dentro de la función asincrónica
+    setUser(user) // Haz lo que necesites con el usuario
+  };
+
+  
+  const [user, setUser] = useState(null)
+  useEffect(()=>{
+    fetchData()
+  },[])
   return (
     <nav className="root_nav" id="sidebar">
       <Usuario {...user}></Usuario>

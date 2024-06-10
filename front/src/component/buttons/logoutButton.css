@@ -1,0 +1,17 @@
+.logoutButton:hover #logoutIcon path {
+    fill: #ff0000;
+    border-radius: 50px;
+
+}
+#logoutIcon path {
+    fill: #ff00007a; /* Color inicial de relleno */
+    transition: fill 0.3s;
+}
+
+.logoutButton:hover {
+    cursor: pointer;
+}
+.logoutButton {
+    display: inline-block;
+    line-height: 0;
+}

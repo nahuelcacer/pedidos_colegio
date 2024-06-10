@@ -1,7 +1,6 @@
 import { createContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import loginFetch from "../service/user";
-
+import { loginFetch } from '../service/user'
 
 
 const AuthContext = createContext()
