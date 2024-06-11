@@ -3,7 +3,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.response import Response
 from django.contrib.auth import login
-
+from home.context_processors import urls_context
 # Create your views here.
 
 
@@ -23,11 +23,13 @@ class CustomAuthToken(ObtainAuthToken):
     
     def get(self, request):
             user = request.user
-            print(user)
+            urls = urls_context(request)
+            print(urls)
             if user.is_authenticated:
                 return Response({
                     'user':user.username,
-                    'email':user.email
+                    'email':user.email,
+                    'urls':urls
                 })
             else:
                 return Response({
