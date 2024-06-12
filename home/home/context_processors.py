@@ -1,12 +1,8 @@
 from home.urls_frontend import GRUPOS_URLS
 
-def urls_context(request):
-    usuario = request.user
-    urls = []
-
-    if usuario.is_authenticated:
-        for url in usuario.groups.all():
-            if url.name in GRUPOS_URLS:
-                urls.append(GRUPOS_URLS[url.name])
-
-    return {'urls': urls}
+def urls_context(user):
+    context = {'urls': []}
+    for group in user.groups.all():
+        if group.name in GRUPOS_URLS:
+            context['urls'].extend(GRUPOS_URLS[group.name])
+    return context

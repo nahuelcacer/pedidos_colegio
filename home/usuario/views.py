@@ -23,9 +23,8 @@ class CustomAuthToken(ObtainAuthToken):
     
     def get(self, request):
             user = request.user
-            urls = urls_context(request)
-            print(urls)
             if user.is_authenticated:
+                urls = urls_context(user)
                 return Response({
                     'user':user.username,
                     'email':user.email,

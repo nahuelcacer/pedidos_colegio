@@ -1,6 +1,5 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Navigate, Outlet, useNavigate } from 'react-router-dom';
-import AuthContext from '../../context/AuthContext';
 import './Root.css'
 import Sidebar from '../../component/sidebar/Sidebar';
 

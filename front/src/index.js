@@ -7,6 +7,9 @@ import { AuthProvider } from './context/AuthContext';
 import LoginPage from './pages/LoginPage';
 import Root from './pages/main/Root';
 import ErrorPage from './pages/ErrorPage';
+import MainPedidos from './pages/pedidos/MainPedidos';
+import AgregarClientes from './pages/clientes/AgregarClientes';
+import MainClientes from './pages/clientes/MainClientes';
 
 
 
@@ -32,7 +35,19 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage></ErrorPage>,
     children: [
       {
-        path: 'home/',
+        path: 'pedidos/',
+        element: <MainPedidos></MainPedidos>
+      },
+      {
+        path: 'clientes/',
+        element: <MainClientes></MainClientes>
+      },
+      {
+        path: 'clientes/agregar/',
+        element: <AgregarClientes></AgregarClientes>,
+      },
+      {
+        path: 'pedidos/',
         element: <App></App>
       }
     ]
