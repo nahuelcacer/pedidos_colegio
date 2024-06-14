@@ -3,8 +3,13 @@ from rest_framework.response import Response
 from rest_framework import status
 from .models import Cliente
 from .serializers import ClienteSerializer
+from rest_framework.decorators import authentication_classes, permission_classes
+from rest_framework.authentication import SessionAuthentication, TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 
-@api_view(['GET', 'POST', 'PUT', 'PATCH'])
+@api_view(['GET'])
+@authentication_classes([SessionAuthentication,TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def cliente_lista(request, pk=None):
     if request.method == 'GET':
         if pk:

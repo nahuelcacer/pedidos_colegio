@@ -1,36 +1,41 @@
-from django.shortcuts import render
-from rest_framework.authtoken.models import Token
-from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from django.contrib.auth import login
-from home.context_processors import urls_context
-# Create your views here.
+from .serializers import UserSerializer
+from django.contrib.auth.models import User
+from rest_framework.authtoken.models import Token
+from rest_framework import status
+from django.shortcuts import get_object_or_404
+
+@api_view(['POST'])
+def login(request):
+    user = get_object_or_404(User, username=request.data['username'])
+    if not user.check_password(request.data['password']):
+        return Response({"detail":"Not found."}, status=status.HTTP_404_NOT_FOUND)
+    token, created = Token.objects.get_or_create(user=user)
+    serializer = UserSerializer(instance=user)
 
 
-
-class CustomAuthToken(ObtainAuthToken):
-    def post(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.data,context={'request': request})
-        serializer.is_valid(raise_exception=True)
-        user = serializer.validated_data['user']
-        token, created = Token.objects.get_or_create(user=user)
-
-        login(request, user)
-        return Response({
-            'user':user.username,
-            'token':token.key
-        })
+    return Response({"token":token.key, "user": serializer.data})
     
-    def get(self, request):
-            user = request.user
-            if user.is_authenticated:
-                urls = urls_context(user)
-                return Response({
-                    'user':user.username,
-                    'email':user.email,
-                    'urls':urls
-                })
-            else:
-                return Response({
-                    'msg': "Redireccionar a login view"
-                })
+
+@api_view(['POST'])
+def signup(request):
+    serializer = UserSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        user = User.objects.get(username=request.data['username'])
+        user.set_password(request.data['password'])
+        user.save()
+        token = Token.objects.create(user=user)
+        return Response({"token":token.key, "user":serializer.data})
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+from rest_framework.decorators import authentication_classes, permission_classes
+from rest_framework.authentication import SessionAuthentication, TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
+@api_view(['GET'])
+@authentication_classes([SessionAuthentication,TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def test_token(request):
+    return Response("passed for {}".format(request.user.email))
