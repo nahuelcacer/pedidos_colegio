@@ -1,7 +1,7 @@
 export const loginFetch = async (e, navigate) => {
     e.preventDefault()
     try {
-        const response = await fetch("http://127.0.0.1:8002/api/login/", {
+        const response = await fetch("http://127.0.0.1:8002/user/login/", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -18,6 +18,8 @@ export const loginFetch = async (e, navigate) => {
   
         const data = await response.json();
         localStorage.setItem('authTokens', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user))
+        localStorage.setItem('urls', JSON.stringify(data.urls))
         navigate('/'); // Redirect to home page after successful login
       } catch (error) {
         console.error('Error during login:', error);
@@ -30,21 +32,3 @@ export const logoutFetch = async (navigate) => {
     navigate('/')
 }
 
-export const getUser = async () => {
-    const token = localStorage.getItem('authTokens')
-    try {
-        const response = await fetch("http://127.0.0.1:8002/api/login/", {
-            method: 'GET',
-            headers: {
-              'Authorization': `Token ${token}`, // Sin comillas adicionales alrededor del token
-              'Content-Type': 'application/json'
-            }
-        });
-        const data = await response.json();
-        const user = data; // Suponiendo que 'user' es el campo que contiene la información del usuario en la respuesta JSON
-        return user;
-    } catch (error) {
-        console.error('Error:', error);
-        return null; // O devuelve un valor por defecto o maneja el error según lo necesites
-    }
-}

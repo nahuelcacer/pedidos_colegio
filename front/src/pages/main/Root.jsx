@@ -8,12 +8,7 @@ const Root = () => {
   const token = localStorage.getItem('authTokens');
   const isAuthenticated = token ? true : false;
 
-  let navigate = useNavigate()
-  const logout = () => {
-    localStorage.removeItem('authTokens')
-    navigate('login/')
-  }
-  // const { logoutUser } = useContext(AuthContext)
+  
   if (isAuthenticated) {
 
 

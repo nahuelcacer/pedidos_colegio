@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 from rest_framework import status
 from django.shortcuts import get_object_or_404
+from home.urls_frontend import GRUPOS_URLS
 
 @api_view(['POST'])
 def login(request):
@@ -14,8 +15,16 @@ def login(request):
     token, created = Token.objects.get_or_create(user=user)
     serializer = UserSerializer(instance=user)
 
+    group_names = [group.name for group in user.groups.all()]
 
-    return Response({"token":token.key, "user": serializer.data})
+    # Asignar las URLs basadas en los nombres de los grupos
+    assigned_urls = []
+
+    for group in group_names:
+        for url in GRUPOS_URLS.get(group):
+            assigned_urls.append(url)
+            
+    return Response({"token":token.key, "user": serializer.data, 'urls': assigned_urls})
     
 
 @api_view(['POST'])
@@ -34,6 +43,7 @@ def signup(request):
 from rest_framework.decorators import authentication_classes, permission_classes
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
+
 @api_view(['GET'])
 @authentication_classes([SessionAuthentication,TokenAuthentication])
 @permission_classes([IsAuthenticated])

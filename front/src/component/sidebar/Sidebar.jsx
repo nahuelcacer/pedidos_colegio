@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./Sidebar.css";
 import Usuario from "../user/Usuario";
-import { getUser } from "../../service/user";
 import { Link } from "react-router-dom";
 
 const Url = ({ url, isSelected, onClick }) => {
@@ -15,13 +14,12 @@ const Url = ({ url, isSelected, onClick }) => {
   );
 };
 
-const ListaUrls = ({ user }) => {
+const ListaUrls = ({ urls }) => {
   const [selectedIndex, setSelectedIndex] = useState(null);
-
-  if (user != null) {
+  if (urls != null) {
     return (
       <ul>
-        {user.urls.urls.map((item, index) => (
+        {urls.map((item, index) => (
           <Url
             key={index}
             url={item}
@@ -37,25 +35,19 @@ const ListaUrls = ({ user }) => {
 
 
 const Sidebar = () => {
-  const [user, setUser] = useState(null)
-
-  const fetchData = async () => { // Define una función asincrónica
-    const user = await getUser(); // Usa await dentro de la función asincrónica
-    setUser(user) // Haz lo que necesites con el usuario
-    console.log(user)
-  };
-
-
-  useEffect(() => {
-    fetchData()
-
-  }, [])
+  const [user, setUser] = useState(
+    () => localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null
+  )
+  const [urls, setUrls] = useState(
+    () => localStorage.getItem('urls') ? JSON.parse(localStorage.getItem('urls')) : null
+  )
+  console.log(user)
   return (
     <nav className="root_nav" id="sidebar">
       <Usuario {...user}></Usuario>
 
       <div>
-        <ListaUrls user={user}></ListaUrls>
+        <ListaUrls urls={urls}></ListaUrls>
       </div>
     </nav>
   );
