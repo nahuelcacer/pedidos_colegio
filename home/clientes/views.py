@@ -7,13 +7,16 @@ from rest_framework.decorators import authentication_classes, permission_classes
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 
-@api_view(['GET'])
-@authentication_classes([SessionAuthentication,TokenAuthentication])
+
+
+@api_view(['GET', 'POST', 'PUT', 'PATCH'])
+@authentication_classes([SessionAuthentication, TokenAuthentication])
 @permission_classes([IsAuthenticated])
+
 def cliente_lista(request, pk=None):
     if request.method == 'GET':
         if pk:
-            cliente = Cliente.objects.get(pk=pk)
+            cliente = get_object_or_404(Cliente, pk=pk)
             serializer = ClienteSerializer(cliente)
         else:
             clientes = Cliente.objects.all()
@@ -29,7 +32,7 @@ def cliente_lista(request, pk=None):
 
     elif request.method in ['PUT', 'PATCH']:
         if pk:
-            cliente = Cliente.objects.get(pk=pk)
+            cliente = get_object_or_404(Cliente, pk=pk)
             serializer = ClienteSerializer(cliente, data=request.data, partial=(request.method == 'PATCH'))
             if serializer.is_valid():
                 serializer.save()

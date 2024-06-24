@@ -15,7 +15,7 @@ const Root = () => {
     return (
       <div class="container_main">
         <Sidebar></Sidebar>
-        <div id="main">
+        <div id="header">
           <Outlet />
         </div>
       </div>
