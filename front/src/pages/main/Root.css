@@ -1,5 +1,6 @@
 .container_main {
-    background-color: white;
+    background-color: rgba(212, 230, 255, 0.13);
+    height: 100vh;
     display: grid;
     grid-template-columns: 1fr 5fr;
     grid-template-rows: 50px 1fr;
