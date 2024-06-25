@@ -1,14 +1,23 @@
-import { Autocomplete } from '@mui/material'
-import React, { useEffect } from 'react'
+import { Autocomplete, TextField } from '@mui/material'
+import React, { useEffect, useState } from 'react'
 import { getClientes } from '../../service/clientes'
+import SeleccionPedido from './SeleccionPedido'
 
 const MainPedidos = () => {
-    useEffect(()=>{
-        getClientes()
-    },[])
+  const [pedido, setPedido] = useState({
+    cliente:null,
+    pedido:[]
+  })
+
+
+ 
   return (
-    <div>
-        {/* <Autocomplete></Autocomplete> */}
+    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.5fr' }}>
+      <div>
+      <SeleccionPedido></SeleccionPedido>
+
+      </div>
+      <div className='card'>sss</div>
     </div>
   )
 }
