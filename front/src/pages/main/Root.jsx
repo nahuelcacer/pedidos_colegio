@@ -3,12 +3,11 @@ import { Navigate, Outlet, useNavigate } from 'react-router-dom';
 import './Root.css'
 import Sidebar from '../../component/sidebar/Sidebar';
 
-
 const Root = () => {
   const token = localStorage.getItem('authTokens');
   const isAuthenticated = token ? true : false;
 
-  
+
   if (isAuthenticated) {
 
 

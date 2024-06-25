@@ -6,6 +6,7 @@ from .serializers import ClienteSerializer
 from rest_framework.decorators import authentication_classes, permission_classes
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
+from django.db.models import Q
 
 
 
@@ -15,13 +16,17 @@ from rest_framework.permissions import IsAuthenticated
 
 def cliente_lista(request, pk=None):
     if request.method == 'GET':
-        if pk:
-            cliente = get_object_or_404(Cliente, pk=pk)
-            serializer = ClienteSerializer(cliente)
+        queryset = Cliente.objects.all()
+        q = request.query_params.get('q', None)
+
+        if q:
+            queryset = queryset.filter(Q(nombre__icontains=q) | Q(identificacion__icontains=q))
+            serializer = ClienteSerializer(queryset, many=True)
+            return Response(serializer.data)
         else:
-            clientes = Cliente.objects.all()
-            serializer = ClienteSerializer(clientes, many=True)
-        return Response(serializer.data)
+            serializer = ClienteSerializer(queryset, many=True)
+            return Response(serializer.data)
+            
 
     elif request.method == 'POST':
         serializer = ClienteSerializer(data=request.data)

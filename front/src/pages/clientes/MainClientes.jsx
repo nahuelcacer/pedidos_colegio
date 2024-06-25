@@ -15,22 +15,28 @@ import { ReactComponent as PlusIcon } from "../../icons/plus-svgrepo-com.svg";
 
 const MainClientes = () => {
   const [clientes, setClientes] = useState([]);
+  const [search, setSearch] = useState('')
+
+  const searchParams = new URLSearchParams({
+    q:search,
+    escribano:false
+  })
 
   useEffect(() => {
-    getClientes()
+    getClientes(searchParams)
       .then((res) => {
         setClientes(res); // Asignar res.data a clientes
       })
       .catch((error) => {
         console.error("Error al obtener clientes:", error);
       });
-  }, []);
+  }, [search]);
 
   return (
     <div className="card">
       <h1>Clientes</h1>
 
-      <Table sx={{ width: "500px" }} size="small">
+      <Table size="small">
         <TableHead>
           <div style={{display:'flex', flexDirection:'column', gap:'10px'}}>
             <div>
@@ -46,7 +52,7 @@ const MainClientes = () => {
               </Link>
             </div>
             <div>
-              <TextField size="small"></TextField>
+              <TextField size="small" name="search" onChange={(e)=>{setSearch(e.target.value)}}></TextField>
             </div>
           </div>
           <TableRow sx={{ backgroundColor: "#F9FAFB", borderRadius: "15px" }}>

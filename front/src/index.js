@@ -12,17 +12,6 @@ import AgregarClientes from './pages/clientes/AgregarClientes';
 import MainClientes from './pages/clientes/MainClientes';
 
 
-
-const RequireAuth = ({ children }) => {
-  const token = localStorage.getItem('authTokens');
-  const isAuthenticated = token ? true : false;
-
-  if (!isAuthenticated) {
-    return <Navigate to='/login' />
-  }
-  return children
-}
-
 const router = createBrowserRouter([
   {
     path: "login/",

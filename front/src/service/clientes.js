@@ -1,7 +1,7 @@
-export const getClientes = async () => {
+export const getClientes = async (searchParams) => {
     const token = localStorage.getItem('authTokens')
     try {
-        const response = await fetch("http://127.0.0.1:8002/clientes/",
+        const response = await fetch(`http://127.0.0.1:8002/clientes?${searchParams}`,
             {
                 method: 'GET',
                 headers:
@@ -21,6 +21,7 @@ export const getClientes = async () => {
 
 
 export const addClientes = async (datos) => {
+    
     const token = localStorage.getItem('authTokens')
     try {
         const response = await fetch("http://127.0.0.1:8002/clientes/",
