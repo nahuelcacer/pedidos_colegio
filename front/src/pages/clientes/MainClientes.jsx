@@ -7,19 +7,22 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableFooter,
   TableHead,
   TableRow,
   TextField,
 } from "@mui/material";
 import { ReactComponent as PlusIcon } from "../../icons/plus-svgrepo-com.svg";
+import TableFooterPaginator from "../../component/tools/TableFooterPaginator";
+import FadeMenu from "./MenuClientes";
 
 const MainClientes = () => {
   const [clientes, setClientes] = useState([]);
   const [search, setSearch] = useState('')
 
   const searchParams = new URLSearchParams({
-    q:search,
-    escribano:false
+    q: search,
+    escribano: false
   })
 
   useEffect(() => {
@@ -32,13 +35,35 @@ const MainClientes = () => {
       });
   }, [search]);
 
+
+
+
+  // PAGINADOR
+  const itemsPerPage = 15; // Puedes ajustar la cantidad de elementos por página según tus necesidades
+  const totalPages = Math.ceil(clientes.length / itemsPerPage);
+
+  // Estado del paginador
+  const [currentPage, setCurrentPage] = useState(1);
+
+  // Función para cambiar la página
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
+
+  // Calcular los índices de los elementos a mostrar en la página actual
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+
+
+  const clientesVisibles = clientes.slice(startIndex, endIndex);
+
   return (
     <div className="card">
       <h1>Clientes</h1>
 
       <Table size="small">
         <TableHead>
-          <div style={{display:'flex', flexDirection:'column', gap:'10px'}}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             <div>
               <Link to={"agregar/"}>
                 <Button size="small" variant="outlined">
@@ -52,7 +77,7 @@ const MainClientes = () => {
               </Link>
             </div>
             <div>
-              <TextField size="small" name="search" onChange={(e)=>{setSearch(e.target.value)}}></TextField>
+              <TextField size="small" name="search" onChange={(e) => { setSearch(e.target.value) }}></TextField>
             </div>
           </div>
           <TableRow sx={{ backgroundColor: "#F9FAFB", borderRadius: "15px" }}>
@@ -71,7 +96,7 @@ const MainClientes = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {clientes.map((cliente) => (
+          {clientesVisibles.map((cliente) => (
             <TableRow>
               <TableCell>{cliente.nombre}</TableCell>
               <TableCell>{cliente.identificacion}</TableCell>
@@ -83,11 +108,19 @@ const MainClientes = () => {
                 )}
               </TableCell>
               <TableCell>
-              <svg width="24px" height="24px" viewBox="0 0 24 24" fill="#000000" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title></title> <g id="Complete"> <g id="F-More"> <path d="M8,12a2,2,0,1,1-2-2A2,2,0,0,1,8,12Zm10-2a2,2,0,1,0,2,2A2,2,0,0,0,18,10Zm-6,0a2,2,0,1,0,2,2A2,2,0,0,0,12,10Z" id="Horizontal"></path> </g> </g> </g></svg>
+                <FadeMenu cliente={cliente.identificacion}></FadeMenu>
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
+        <TableFooter>
+          <TableRow>
+            <TableCell colSpan={4}>
+              <TableFooterPaginator totalPages={totalPages} currentPage={currentPage} handlePageChange={handlePageChange} />
+            </TableCell>
+          </TableRow>
+        </TableFooter>
+        
       </Table>
     </div>
   );
