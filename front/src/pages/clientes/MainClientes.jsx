@@ -96,7 +96,7 @@ const MainClientes = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {clientesVisibles.map((cliente) => (
+          {clientesVisibles.length > 0 ? clientesVisibles.map((cliente) => (
             <TableRow>
               <TableCell>{cliente.nombre}</TableCell>
               <TableCell>{cliente.identificacion}</TableCell>
@@ -111,7 +111,7 @@ const MainClientes = () => {
                 <FadeMenu cliente={cliente.identificacion}></FadeMenu>
               </TableCell>
             </TableRow>
-          ))}
+          )) : <TableCell colSpan={4}><p style={{textAlign:'center', fontSize:'14px', margin:'10px 0 10px 0'}}>No se encontraron registros</p> </TableCell>}
         </TableBody>
         <TableFooter>
           <TableRow>
@@ -120,7 +120,7 @@ const MainClientes = () => {
             </TableCell>
           </TableRow>
         </TableFooter>
-        
+
       </Table>
     </div>
   );

@@ -44,3 +44,15 @@ def cliente_lista(request, pk=None):
                 return Response(serializer.data)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         return Response({'error': 'Cliente no encontrado'}, status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['GET', 'POST', 'PUT', 'PATCH'])
+@authentication_classes([SessionAuthentication, TokenAuthentication])
+@permission_classes([IsAuthenticated])
+
+def cliente_detalle(request, pk=None):
+    if request.method == 'GET':
+        query = Cliente.objects.get(identificacion=pk)
+        serializer = ClienteSerializer(query)
+
+        return Response(serializer.data)
