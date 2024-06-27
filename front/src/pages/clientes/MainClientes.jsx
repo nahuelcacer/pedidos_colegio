@@ -66,11 +66,11 @@ const MainClientes = () => {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             <div>
               <Link to={"agregar/"}>
-                <Button size="small" variant="outlined">
+                <Button size="small" variant="contained">
                   <PlusIcon
                     width="24px"
                     height="24px"
-                    stroke="#1976D2"
+                    stroke="#ffffff"
                   ></PlusIcon>
                   agregar
                 </Button>

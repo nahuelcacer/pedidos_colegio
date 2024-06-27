@@ -3,13 +3,13 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { detailCliente } from '../../service/clientes'
 import { formatDateTime } from '../../tools/formateDate'
 import { Button } from '@mui/material'
-
+import { palette } from '../../theme' 
 
 const InfoCliente = ({label, data}) => {
     return (
         <div style={{display:'flex', flexDirection:'row', margin:'10px 0 10px 0'}}>
              <p style={{width: '100px', margin: 0}}>{label}</p> {/* Set the desired width for the label */}
-             <p style={{color: '#126bef', fontWeight: '400', margin: 0}}>{data}</p>
+             <p style={{color: palette.text, fontWeight: '400', margin: 0}}>{data}</p>
         </div>
     )
 }
@@ -18,8 +18,8 @@ const ButtonsHandler = () => {
     const navigate = useNavigate()
     return (
         <div style={{display:'flex', gap:'10px'}}> 
-            <Button onClick={() => {navigate(-1)}} variant='outlined' >Volver</Button>
-            <Button variant='contained' color='error'>Eliminar</Button>
+            <Button onClick={() => {navigate(-1)}} style={{ backgroundColor: palette.primary, color: 'white', borderColor: palette.primary }} >Volver</Button>
+            <Button variant='contained' color='error' >Eliminar</Button>
         </div>
     )
 }
