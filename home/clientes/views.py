@@ -7,6 +7,7 @@ from rest_framework.decorators import authentication_classes, permission_classes
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from django.db.models import Q
+from django.shortcuts import get_object_or_404
 
 
 
@@ -37,7 +38,7 @@ def cliente_lista(request, pk=None):
 
     elif request.method in ['PUT', 'PATCH']:
         if pk:
-            cliente = get_object_or_404(Cliente, pk=pk)
+            cliente = get_object_or_404(Cliente, identificacion=pk)
             serializer = ClienteSerializer(cliente, data=request.data, partial=(request.method == 'PATCH'))
             if serializer.is_valid():
                 serializer.save()
