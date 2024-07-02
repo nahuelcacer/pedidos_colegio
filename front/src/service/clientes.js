@@ -66,3 +66,22 @@ export const detailCliente = async (pk) => {
         return null; // O devuelve un valor por defecto o maneja el error según lo necesites
     }
 }
+
+export const updateCliente = async (pk, data) => {
+    const token = getToken();
+    try {
+        const response = await fetch(`http://127.0.0.1:8002/clientes/${pk}`, {
+            method: 'PUT',
+            body: JSON.stringify(data),
+            headers: {
+                'Authorization': `Token ${token}`,
+                'Content-Type': 'application/json'
+            },
+        });
+        const responseData = await response.json(); // Renombrado de 'data' a 'responseData'
+        return responseData;
+    } catch (error) {
+        console.error('Error:', error);
+        return null;
+    }
+};

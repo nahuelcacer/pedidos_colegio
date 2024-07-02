@@ -25,11 +25,12 @@
 }
 .escribano {
     font-weight: 700;
-    color: rgb(43, 150, 43);
-    font-size: 12px;
-    padding: 2px 3px;
-    border: 1px solid rgba(119, 189, 119, 0.342);
-    border-radius: 7px;
-    background-color: rgb(178, 223, 178);
+    color: rgb(64 135 241);
+    font-size: 14;
+    padding: 2px 6px;
+    /* border: 1px solid rgb(64 135 241); */
+    border-radius: 15px;
+    width: 65px;
+    background-color: rgba(170, 195, 233, 0.507);
 
 }

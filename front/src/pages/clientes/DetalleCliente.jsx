@@ -1,44 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { detailCliente } from "../../service/clientes";
+import { detailCliente, updateCliente } from "../../service/clientes";
 import { formatDateTime } from "../../tools/formateDate";
 import { Button } from "@mui/material";
 import { palette } from "../../theme";
-
-const EditCliente = ({ label, data, name }) => {
-  const [inputValue, setInputValue] = useState(data);
-
-  useEffect(() => {
-    setInputValue(data);
-  }, [data]);
-
-  const handleChange = (e) => {
-    setInputValue(e.target.value);
-  };
-
-  return (
-    <div
-      style={{ display: "flex", flexDirection: "row", margin: "10px 0 10px 0" }}
-    >
-      <p style={{ width: "100px", margin: 0 }}>{label}</p>
-      <input value={inputValue} name={name} onChange={handleChange}></input>
-    </div>
-  );
-};
-
-const InfoCliente = ({ label, data }) => {
-  return (
-    <div
-      style={{ display: "flex", flexDirection: "row", margin: "10px 0 10px 0" }}
-    >
-      <p style={{ width: "100px", margin: 0 }}>{label}</p>{" "}
-      {/* Set the desired width for the label */}
-      <p style={{ color: palette.text, fontWeight: "400", margin: 0 }}>
-        {data}
-      </p>
-    </div>
-  );
-};
 
 const ButtonsHandler = () => {
   const navigate = useNavigate();
@@ -56,16 +21,17 @@ const ButtonsHandler = () => {
       >
         Volver
       </Button>
-      <Button type="submit">Guardar</Button>
+      {/* <Button type="submit">Guardar</Button> */}
       <Button variant="contained" color="error">
         Eliminar
       </Button>
     </div>
   );
 };
+
 const DetalleCliente = () => {
   const { id } = useParams();
-  const [cliente, setCliente] = useState(null);
+  const [cliente, setCliente] = useState({});
 
   useEffect(() => {
     detailCliente(id)
@@ -75,32 +41,40 @@ const DetalleCliente = () => {
       .catch((error) => {
         console.error("Error al obtener clientes:", error);
       });
-  }, []);
+  }, [id]);
 
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setCliente({ ...cliente, [name]: value })
+  }
   return (
     <div className="card">
       <h2>Cliente</h2>
-      <form>
-        <EditCliente
-          label="Nombre"
-          data={cliente?.nombre}
-          name="nombre"
-        ></EditCliente>
-        <EditCliente
-          label="DNI/CUIT"
-          data={cliente?.identificacion}
-          nombre="identificacion"
-        ></EditCliente>
-        <InfoCliente
-          label="Creado"
-          data={formatDateTime(cliente?.created_at)}
-        ></InfoCliente>
-        <InfoCliente
-          label="Escribano   "
-          data={cliente?.escribano}
-        ></InfoCliente>
-        <ButtonsHandler></ButtonsHandler>
-      </form>
+
+      <div style={{ display: "flex", flexDirection: "row", margin: "10px 0 10px 0" }}>
+        <p style={{ width: "100px", margin: 0 }}>Nombre</p>
+        <input name='nombre' value={cliente.nombre} onChange={(e) => { handleChange(e) }}></input>
+      </div>
+      <div style={{ display: "flex", flexDirection: "row", margin: "10px 0 10px 0" }}>
+        <p style={{ width: "100px", margin: 0 }}>DNI/CUIT</p>
+        <input name='identificacion' value={cliente.identificacion} onChange={(e) => { handleChange(e) }}></input>
+      </div>
+
+      <div style={{ display: "flex", flexDirection: "row", margin: "10px 0 10px 0" }}>
+        <p style={{ width: "100px", margin: 0 }}>Escribano </p>
+
+        <select name="escribano" value={cliente.escribano} onChange={handleChange}>
+          <option value={true}>SI</option>
+          <option value={false}>NO</option>
+        </select>
+      </div>
+
+      <div style={{ display: "flex", flexDirection: "row", margin: "10px 0 10px 0" }}>
+        <p style={{ width: "100px", margin: 0 }}>Fecha</p>
+        <p style={{ color: palette.text, fontWeight: "400", margin: 0 }}>{formatDateTime(cliente.created_at)}</p>
+      </div>
+
+      <Button variant="contained" onClick={(e)=>{updateCliente(id,cliente)}}>Guardar</Button>
     </div>
   );
 };
