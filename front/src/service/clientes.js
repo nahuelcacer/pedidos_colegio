@@ -1,3 +1,5 @@
+import { toast } from 'react-toastify';
+
 const getToken = () => {
     const token = localStorage.getItem('authTokens')
     return token
@@ -40,6 +42,19 @@ export const addClientes = async (datos) => {
                 body: JSON.stringify(datos)
             })
         const data = await response.json();
+        if (response.ok) {
+            toast.success('Cliente agregado con éxito', {
+                autoClose:2000,
+                position: "bottom-right",
+                
+            });
+        } else {
+            toast.error('Error al agregar el cliente', {
+                autoClose:2000,
+                position: "bottom-right",
+                
+            });
+        }
         return data;
     } catch (error) {
         console.error('Error:', error);
@@ -78,10 +93,26 @@ export const updateCliente = async (pk, data) => {
                 'Content-Type': 'application/json'
             },
         });
-        const responseData = await response.json(); // Renombrado de 'data' a 'responseData'
+        const responseData = await response.json();
+
+        if (response.ok) {
+            toast.success('Cliente actualizado con éxito', {
+                autoClose:2000,
+                position: "bottom-right",
+
+            });
+        } else {
+            toast.error('Error al actualizar el cliente', {
+                autoClose:2000,
+                position: "bottom-right",
+
+            });
+        }
+
         return responseData;
     } catch (error) {
+        toast.error('Error al actualizar el cliente');
         console.error('Error:', error);
         return null;
     }
-};
+};;
