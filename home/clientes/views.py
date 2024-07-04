@@ -2,7 +2,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Cliente
-from .serializers import ClienteSerializer
+from .serializers import ClienteSerializer, ClienteCompletoSerializer
 from rest_framework.decorators import authentication_classes, permission_classes
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -54,6 +54,6 @@ def cliente_lista(request, pk=None):
 def cliente_detalle(request, pk=None):
     if request.method == 'GET':
         query = Cliente.objects.get(identificacion=pk)
-        serializer = ClienteSerializer(query)
+        serializer = ClienteCompletoSerializer(query)
 
         return Response(serializer.data)

@@ -17,7 +17,24 @@ const ButtonsHandler = () => {
 const DetalleCliente = () => {
   const { id } = useParams();
   const [cliente, setCliente] = useState({});
+  const [editingContacto, setEditingContacto] = useState(false);
+  const [newContacto, setNewContacto] = useState('');
+  const handleAgregarClick = () => {
+    setEditingContacto(true);
+  };
 
+  const handleSaveContacto = () => {
+    // Aquí podrías guardar el nuevo contacto en la base de datos o hacer lo necesario
+    console.log('Guardando contacto:', newContacto);
+    setEditingContacto(false);
+    setNewContacto('');
+  };
+
+  const handleCancelContacto = () => {
+    setEditingContacto(false);
+    setNewContacto('');
+  }
+  
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -102,32 +119,50 @@ const DetalleCliente = () => {
           {formatDateTime(cliente.created_at)}
         </p>
       </div>
-      <div style={{ display: 'flex', gap: '40px', marginTop: '20px' }} >
-        <div >
-
-          <Button
-            onClick={() => {
-              navigate(-1);
-            }}
-            variant="outlined"
-          >
-            Volver
-          </Button>
+      <div>
+        <h4>Contacto</h4>
+        {cliente.contactos? <div></div>:<div>{editingContacto ? (
+        <div>
+          <input
+            type="text"
+            value={newContacto}
+            onChange={(e) => setNewContacto(e.target.value)}
+            placeholder="Nuevo contacto"
+          />
+          <button onClick={handleSaveContacto}>Guardar</button>
+          <button onClick={handleCancelContacto}>Cancelar</button>
         </div>
-        <div style={{ display: 'flex', gap: '10px'}}>
+      ) : (
+        <button variant="contained" onClick={handleAgregarClick}>
+          Agregar
+        </button>
+      )}</div>}
+      </div>
+      <div>
+        <h4>Email</h4>
+        {cliente.emails? <div></div>:<Button variant="contained">agregar</Button>}
 
-          <Button
-            variant="contained"
-            onClick={(e) => {
-              updateCliente(id, cliente);
-            }}
-          >
-            Guardar
-          </Button>
-          <Button variant="contained" color="error">
-            Eliminar
-          </Button>
-        </div>
+      </div>
+      <div style={{display:'flex', gap:'10px',marginTop:'20px'}}>
+        <Button
+          onClick={() => {
+            navigate(-1);
+          }}
+          variant="contained"
+        >
+          Volver
+        </Button>
+        <Button
+          variant="contained"
+          onClick={(e) => {
+            updateCliente(id, cliente);
+          }}
+        >
+          Guardar
+        </Button>
+        <Button variant="contained" color="error">
+          Eliminar
+        </Button>
       </div>
     </div>
   );
