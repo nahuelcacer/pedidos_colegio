@@ -17,7 +17,24 @@ const ButtonsHandler = () => {
 const DetalleCliente = () => {
   const { id } = useParams();
   const [cliente, setCliente] = useState({});
+  const [editingContacto, setEditingContacto] = useState(false);
+  const [newContacto, setNewContacto] = useState('');
+  const handleAgregarClick = () => {
+    setEditingContacto(true);
+  };
 
+  const handleSaveContacto = () => {
+    // Aquí podrías guardar el nuevo contacto en la base de datos o hacer lo necesario
+    console.log('Guardando contacto:', newContacto);
+    setEditingContacto(false);
+    setNewContacto('');
+  };
+
+  const handleCancelContacto = () => {
+    setEditingContacto(false);
+    setNewContacto('');
+  }
+  
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -101,6 +118,30 @@ const DetalleCliente = () => {
         <p style={{ color: palette.text, fontWeight: "400", margin: 0 }}>
           {formatDateTime(cliente.created_at)}
         </p>
+      </div>
+      <div>
+        <h4>Contacto</h4>
+        {cliente.contactos? <div></div>:<div>{editingContacto ? (
+        <div>
+          <input
+            type="text"
+            value={newContacto}
+            onChange={(e) => setNewContacto(e.target.value)}
+            placeholder="Nuevo contacto"
+          />
+          <button onClick={handleSaveContacto}>Guardar</button>
+          <button onClick={handleCancelContacto}>Cancelar</button>
+        </div>
+      ) : (
+        <button variant="contained" onClick={handleAgregarClick}>
+          Agregar
+        </button>
+      )}</div>}
+      </div>
+      <div>
+        <h4>Email</h4>
+        {cliente.emails? <div></div>:<Button variant="contained">agregar</Button>}
+
       </div>
       <div style={{display:'flex', gap:'10px',marginTop:'20px'}}>
         <Button

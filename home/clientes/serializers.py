@@ -6,7 +6,7 @@ from .models import Cliente, Contacto, Email
 class ContactoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Contacto
-        fields = ['id','telefono']  # Quitamos 'cliente' ya que se manejará automáticamente
+        fields = ['id','telefono'] 
 
 class EmailSerializer(serializers.ModelSerializer):
     class Meta:
@@ -15,73 +15,27 @@ class EmailSerializer(serializers.ModelSerializer):
 
 
 class ClienteSerializer(serializers.ModelSerializer):
-    # contacto = ContactoSerializer(required=False)  # Hacer el campo 'contacto' opcional
-    # email = EmailSerializer(required=False)
 
     class Meta:
         model = Cliente
         fields = ['id','nombre', 'identificacion', 'escribano', 'created_at']
 
-    # def create(self, validated_data):
-    #     # Extraer los datos del objeto de contacto si están presentes
-    #     contacto_data = validated_data.pop('contacto', None)
-    #     email_data = validated_data.pop('email', None)
-        
-    #     # Crear el cliente
-    #     cliente = Cliente.objects.create(**validated_data)
-        
-    #     # Si hay datos para el objeto de contacto, crearlo
-    #     if contacto_data:
-    #         Contacto.objects.create(cliente=cliente, **contacto_data)
-    #     if email_data:
-    #         Email.objects.create(cliente=cliente, **email_data)
 
-    #     return cliente
+class ClienteCompletoSerializer(serializers.ModelSerializer):
+    contactos = ContactoSerializer(many=True, read_only=True)
+    emails = EmailSerializer(many=True, read_only=True)
 
-    # def update(self, instance, validated_data):
-    #         contacto_data = validated_data.pop('contacto', None)
-    #         email_data = validated_data.pop('email', None)
+    class Meta:
+        model = Cliente
+        fields = '__all__'
+    
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
 
-    #         instance.nombre = validated_data.get('nombre', instance.nombre)
-    #         instance.identificacion = validated_data.get('identificacion', instance.identificacion)
-    #         instance.escribano = validated_data.get('escribano', instance.escribano)
-    #         instance.save()
 
-    #         if contacto_data:
-    #             # Si existe, actualizar el contacto; de lo contrario, crearlo
-    #             contacto = Contacto.objects.get(cliente=instance.id)
-    #             if contacto:
-    #                 contacto.telefono = contacto_data.get('telefono', contacto.telefono)
-    #                 contacto.save()
-    #             else:
-    #                 Contacto.objects.create(cliente=instance, **contacto_data)
-                    
-    #         if email_data:
-    #             # Si existe, actualizar el email; de lo contrario, crearlo
-    #             try:
-    #                 email = Email.objects.get(cliente=instance.id)
-    #                 email.email = email_data.get('email', email.email)
-    #                 email.save()
-    #             except Email.DoesNotExist:
-    #                 Email.objects.create(cliente=instance, **email_data)
+        contacto = Contacto.objects.filter(cliente=instance.id)
+        email = Email.objects.filter(cliente=instance.id)
 
-    #         return instance
-
-    # def to_representation(self, instance):
-    #     data = super().to_representation(instance)
-
-    #     # Obtener los objetos de contacto y correo electrónico asociados
-    #     contacto_instance = Contacto.objects.filter(cliente=instance.id)
-    #     email_instance = Email.objects.filter(cliente=instance.id)
-        
-    #     data['creado_en'] = instance.created_at.strftime('%d-%m-%Y')
-    #     data.pop('created_at')
-    #     # Serializar los objetos de contacto y correo electrónico si existen
-    #     if contacto_instance:
-    #         contacto = contacto_instance.last()
-    #         data['telefono'] = contacto.telefono
-    #     if email_instance:
-    #         email = email_instance.last()
-    #         data['email'] = email.email
-
-    #     return data
+        representation['contactos'] = ContactoSerializer(contacto, many=True).data if contacto.exists() else None
+        representation['emails'] = EmailSerializer(email, many=True).data if email.exists() else None
+        return representation
