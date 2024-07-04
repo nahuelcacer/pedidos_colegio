@@ -39,7 +39,7 @@ const MainClientes = () => {
 
 
   // PAGINADOR
-  const itemsPerPage = 15; // Puedes ajustar la cantidad de elementos por página según tus necesidades
+  const itemsPerPage = 10; // Puedes ajustar la cantidad de elementos por página según tus necesidades
   const totalPages = Math.ceil(clientes.length / itemsPerPage);
 
   // Estado del paginador
@@ -62,24 +62,28 @@ const MainClientes = () => {
       <h1>Clientes</h1>
 
       <Table size="small">
-        <TableHead>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            <div>
-              <Link to={"agregar/"}>
-                <Button size="small" variant="contained">
-                  <PlusIcon
-                    width="24px"
-                    height="24px"
-                    stroke="#ffffff"
-                  ></PlusIcon>
-                  agregar
-                </Button>
-              </Link>
+        <TableHead >
+          <TableCell colSpan={4}>
+
+            <div style={{ display: 'flex', flexDirection: 'row', gap: '10px', justifyContent: 'space-between' }}>
+
+              <div>
+                <TextField sx={{width:'350px'}} size="small" name="search" placeholder="Busca un cliente..." onChange={(e) => { setSearch(e.target.value) }}></TextField>
+              </div>
+              <div>
+                <Link to={"agregar/"}>
+                  <Button size="small" variant="contained">
+                    <PlusIcon
+                      width="24px"
+                      height="24px"
+                      stroke="#ffffff"
+                    ></PlusIcon>
+                    agregar
+                  </Button>
+                </Link>
+              </div>
             </div>
-            <div>
-              <TextField size="small" name="search" onChange={(e) => { setSearch(e.target.value) }}></TextField>
-            </div>
-          </div>
+          </TableCell>
           <TableRow sx={{ backgroundColor: "#F9FAFB", borderRadius: "15px" }}>
             <TableCell>
               <p className="title_table">NOMBRE</p>
@@ -111,7 +115,7 @@ const MainClientes = () => {
                 <FadeMenu cliente={cliente.identificacion}></FadeMenu>
               </TableCell>
             </TableRow>
-          )) : <TableCell colSpan={4}><p style={{textAlign:'center', fontSize:'14px', margin:'10px 0 10px 0'}}>No se encontraron registros</p> </TableCell>}
+          )) : <TableCell colSpan={4}><p style={{ textAlign: 'center', fontSize: '14px', margin: '10px 0 10px 0' }}>No se encontraron registros</p> </TableCell>}
         </TableBody>
         <TableFooter>
           <TableRow>

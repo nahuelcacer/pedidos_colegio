@@ -102,26 +102,32 @@ const DetalleCliente = () => {
           {formatDateTime(cliente.created_at)}
         </p>
       </div>
-      <div style={{display:'flex', gap:'10px',marginTop:'20px'}}>
-        <Button
-          onClick={() => {
-            navigate(-1);
-          }}
-          variant="contained"
-        >
-          Volver
-        </Button>
-        <Button
-          variant="contained"
-          onClick={(e) => {
-            updateCliente(id, cliente);
-          }}
-        >
-          Guardar
-        </Button>
-        <Button variant="contained" color="error">
-          Eliminar
-        </Button>
+      <div style={{ display: 'flex', gap: '40px', marginTop: '20px' }} >
+        <div >
+
+          <Button
+            onClick={() => {
+              navigate(-1);
+            }}
+            variant="outlined"
+          >
+            Volver
+          </Button>
+        </div>
+        <div style={{ display: 'flex', gap: '10px'}}>
+
+          <Button
+            variant="contained"
+            onClick={(e) => {
+              updateCliente(id, cliente);
+            }}
+          >
+            Guardar
+          </Button>
+          <Button variant="contained" color="error">
+            Eliminar
+          </Button>
+        </div>
       </div>
     </div>
   );
