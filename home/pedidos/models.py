@@ -15,7 +15,7 @@ class Pedido(models.Model):
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
     fecha = models.DateTimeField(auto_now_add=True)
     estado = models.OneToOneField(EstadoPedido, on_delete=models.CASCADE, null=True)
-    user_creator = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
+    user_creator = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 
 
     def agregarEstado(self):
@@ -39,13 +39,17 @@ class Pedido(models.Model):
     def obtener_fecha(self):
         return self.fecha.strftime("%d-%m-%Y")
 
-class PedidoProducto(models.Model):
+class PedidoItem(models.Model):
     pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE)
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
     cantidad = models.IntegerField()
+    precio_unitario = models.IntegerField(null=True, default=None)
 
-
-
+    def save(self, *args, **kwargs):
+        # Si es una nueva instancia, guarda el precio del producto en el momento del pedido
+        if not self.pk:
+            self.precio_unitario = self.producto.precio
+        super().save(*args, **kwargs)
 
 # ==============================================TRACKING===============================================
 PASOS_DEL_TRAMITE = {

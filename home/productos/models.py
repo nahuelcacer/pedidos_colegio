@@ -12,7 +12,7 @@ class Producto(models.Model):
     precio = models.IntegerField()
     notarial = models.BooleanField(default=False)
     entrega = models.ForeignKey(Entrega, models.CASCADE, null=True)
-
+    
 
     # entrega = {
     #     'limite_mañana':2,

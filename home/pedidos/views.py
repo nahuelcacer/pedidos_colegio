@@ -10,8 +10,8 @@ from rest_framework.permissions import IsAuthenticated
 
 
 @api_view(['GET', 'POST'])
-@authentication_classes([SessionAuthentication, TokenAuthentication])
-@permission_classes([IsAuthenticated])
+# @authentication_classes([SessionAuthentication, TokenAuthentication])
+# @permission_classes([IsAuthenticated])
 def pedido(request, pk=None):
     if request.method == 'GET':
         todos = Pedido.objects.all()
@@ -20,7 +20,8 @@ def pedido(request, pk=None):
     
     elif request.method == 'POST':
         serializer = PedidoSerializer(data=request.data)
+        print(request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUES)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

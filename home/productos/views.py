@@ -1,17 +1,26 @@
 from django.shortcuts import render
 from .models import Producto
 from .serializers import ProductoSerializer
-from django.http import JsonResponse
-
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.decorators import authentication_classes, permission_classes, api_view
+from rest_framework.authentication import SessionAuthentication, TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 # Create your views here.
 
 
-def obtener_productos(request):
-    q = request.GET.get('q')
-    producto = Producto.objects.all()
-        
-    if q:
-        producto = producto.filter(nombre__icontains=q) | producto.filter(precio__icontains=q)
-
-    todos_los_producto_serilizados = ProductoSerializer(producto, many=True)
-    return JsonResponse(todos_los_producto_serilizados.data, safe=False)
+@api_view(['GET', 'POST'])
+# @authentication_classes([SessionAuthentication, TokenAuthentication])
+# @permission_classes([IsAuthenticated])
+def producto(request, pk=None):
+    if request.method == 'GET':
+        todos = Producto.objects.all()
+        serializados = ProductoSerializer(todos, many=True).data
+        return Response(serializados)
+    
+    elif request.method == 'POST':
+        serializer = ProductoSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
