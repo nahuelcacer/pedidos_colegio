@@ -1,9 +1,6 @@
 import { toast } from 'react-toastify';
+import { getToken } from './token';
 
-const getToken = () => {
-    const token = localStorage.getItem('authTokens')
-    return token
-}
 
 export const getClientes = async (searchParams) => {
     const token = getToken()

@@ -1,6 +1,7 @@
 import { Autocomplete, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { getClientes } from "../../service/clientes";
+import { getPedidos } from "../../service/pedidos";
 
 const SeleccionPedido = () => {
   const [clientes, setClientes] = useState([]);
@@ -14,6 +15,11 @@ const SeleccionPedido = () => {
       .catch((error) => {
         console.error("Error al obtener clientes:", error);
       });
+
+      getPedidos()
+      .then((res)=> {
+        console.log(res)
+      })
   }, []);
   return (
     <div className="card">

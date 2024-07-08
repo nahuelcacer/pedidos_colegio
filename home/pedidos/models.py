@@ -1,6 +1,8 @@
 from django.db import models
 from clientes.models import Cliente
 from productos.models import Producto
+from django.contrib.auth.models import User
+
 
 # Create your models here.
 
@@ -13,6 +15,8 @@ class Pedido(models.Model):
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
     fecha = models.DateTimeField(auto_now_add=True)
     estado = models.OneToOneField(EstadoPedido, on_delete=models.CASCADE, null=True)
+    user_creator = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
+
 
     def agregarEstado(self):
         nuevo_estado = EstadoPedido.objects.create(factura=False,recibo=False,en_preparacion=False)
