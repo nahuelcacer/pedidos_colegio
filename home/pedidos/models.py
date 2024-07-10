@@ -40,7 +40,7 @@ class Pedido(models.Model):
         return self.fecha.strftime("%d-%m-%Y")
 
 class PedidoItem(models.Model):
-    pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE)
+    pedido = models.ForeignKey(Pedido,related_name='pedido_items',  on_delete=models.CASCADE)
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
     cantidad = models.IntegerField()
     precio_unitario = models.IntegerField(null=True, default=None)

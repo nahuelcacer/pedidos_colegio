@@ -1,13 +1,21 @@
+# serializers.py
 from rest_framework import serializers
 from .models import Pedido, PedidoItem
 from clientes.serializers import ClienteCompletoSerializer
 from usuario.serializers import UserSerializer
-
+from productos.serializers import ProductoSerializer
 
 class PedidoItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = PedidoItem
         fields = ['producto', 'cantidad', 'precio_unitario']
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        producto_serializado = ProductoSerializer(instance.producto).data
+        representation['producto'] = producto_serializado
+        return representation
+
 
 class PedidoSerializer(serializers.ModelSerializer):
     pedido_items = PedidoItemSerializer(many=True)
@@ -22,15 +30,17 @@ class PedidoSerializer(serializers.ModelSerializer):
         for pedido_item_data in pedido_items_data:
             PedidoItem.objects.create(pedido=pedido, **pedido_item_data)
         return pedido
-        
+
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         cliente_serializado = ClienteCompletoSerializer(instance.cliente).data
         user_serializado = UserSerializer(instance.user_creator).data
+        pedido_items = PedidoItem.objects.filter(pedido=instance.id)
 
+        # Use the related manager to access the pedido_items
+        representation['pedido_items'] = PedidoItemSerializer(pedido_items, many=True).data
         representation['cliente'] = cliente_serializado
         representation['user_creator'] = user_serializado
         return representation
-    
 
 
