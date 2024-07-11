@@ -34,27 +34,35 @@ const Paginador = ({ children, data, itemsPerPage = 10, headers, title, setSearc
     const colspan = headers.length
     return (
         <Table>
+
             <TableHead>
                 <TableRow>
                     <h2>{title}</h2>
-                    
+
                 </TableRow>
             </TableHead>
             <TableHead>
                 <TableCell colSpan={colspan}>
-                    <TextField sx={{
-                        '& .MuiOutlinedInput-root': {
-                            borderRadius: '25px',
-                        },
-                    }} size='small' placeholder='Buscar...' onChange={(e) => { setSearch(e.target.value) }} InputProps={{
-                        startAdornment: (
-                            <InputAdornment position="start">
-                                <SearchIcon />
-                            </InputAdornment>
-                        ),
-                    }}></TextField>
+                    <div style={{display:'flex', flexDirection:'row', justifyContent:'space-between'}}>
+                        <TextField sx={{
+                            '& .MuiOutlinedInput-root': {
+                                borderRadius: '25px',
+                            },
+                        }} size='small' placeholder='Buscar...' onChange={(e) => { setSearch(e.target.value) }} InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <SearchIcon />
+                                </InputAdornment>
+                            ),
+                        }}></TextField>
+                        {buttonAdd && (
+                            <div style={{ marginBottom: '16px' }}>
+                                {buttonAdd}
+                            </div>
+                        )}
+                    </div>
                 </TableCell>
-                
+
             </TableHead>
             <TableHead>
                 {headers.map(header => {

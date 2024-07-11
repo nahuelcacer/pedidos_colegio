@@ -2,9 +2,17 @@ import { Button, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/m
 import React, { Children, useEffect, useState } from 'react'
 import { getProductos } from '../../service/productos'
 import Paginador from '../../component/paginador/Paginador'
+import { Link } from 'react-router-dom'
 
 
 
+const ButtonAdd = () => {
+    return (
+        <Link to={'agregar/'}>
+            <Button variant="contained" color="primary">Agregar</Button>
+        </Link>
+    )
+}
 const ListData = ({ data }) => (
     <>
         {data.map((producto) => (
@@ -32,7 +40,7 @@ const MainProductos = () => {
     }, [search])
     return (
         <div className='card'>
-            <Paginador data={productos} headers={headers} title={"Productos"} setSearch={setSearch}>
+            <Paginador data={productos} headers={headers} title={"Productos"} setSearch={setSearch} buttonAdd={<ButtonAdd/>}>
                 {(dataVisibles) => (
                     <ListData data={dataVisibles} />
                 )}
