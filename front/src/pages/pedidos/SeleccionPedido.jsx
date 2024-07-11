@@ -12,9 +12,9 @@ const SeleccionPedido = () => {
   const [productoselecccionado, setProductoSeleccionado] = useState(null)
   const [clienteSeleccionado, setClienteSeleccionado] = useState(null)
   const [errors, setErrors] = useState({ clienteSeleccionado: false, productoselecccionado: false, cantidad: false });
+  const [items, setItems] = useState([])
 
-
-  const agregarPedido = () => {
+  const agregarItem = () => {
     if (!clienteSeleccionado || !productoselecccionado || !cantidad) {
       setErrors({
         clienteSeleccionado: !clienteSeleccionado,
@@ -23,14 +23,14 @@ const SeleccionPedido = () => {
       });
       return;
     }
-
-    console.log('Pedido agregado:', { cliente, producto, cantidad });
+    setItems([...items, { producto: productoselecccionado, cantidad }]);
+    console.log('Item agregado:', { producto: productoselecccionado, cantidad });
   };
 
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
       event.preventDefault(); // Prevent form submission if inside a form
-      agregarPedido();
+      agregarItem();
     }
   };
   useEffect(() => {
@@ -60,14 +60,14 @@ const SeleccionPedido = () => {
             <TextField {...params}
               label="Seleccion un cliente"
               onKeyDown={handleKeyPress}
-              errors={errors.clienteSeleccionado}
+              error={errors.clienteSeleccionado}
               helperText={errors.clienteSeleccionado ? 'El cliente es obligatorio' : ''}
             />
           )}
           getOptionLabel={(option) => option.nombre}
         ></Autocomplete>
       </div>
-      <div style={{ display: 'grid', gridTemplateColumns: '3fr 1fr', marginTop: '50px', gap: '20px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '3fr 1fr', marginTop: '20px', gap: '20px' }}>
 
         <Autocomplete
           onChange={(event, newValue) => {
@@ -77,7 +77,8 @@ const SeleccionPedido = () => {
           key={(option) => option.id || option.nombre}
           options={producto}
           renderInput={(params) => (
-            <TextField {...params} label="Selecciona un producto"
+            <TextField {...params} 
+              label="Selecciona un producto"
               onKeyDown={handleKeyPress}
               error={errors.productoselecccionado}
               helperText={errors.productoselecccionado ? 'El producto es obligatorio' : ''}
@@ -97,7 +98,12 @@ const SeleccionPedido = () => {
           placeholder="Cantidad"
           onKeyDown={handleKeyPress}
           error={errors.cantidad}
-          helperText={errors.cantidad ? 'Este campo es obligatorio' : ''}
+          helperText={errors.cantidad ? 'Ingrese cantidad' : ''}
+          InputProps={{
+            style: {
+              color: errors.cantidad ? 'red' : 'inherit',
+            },
+          }}
         >
         </TextField>
       </div>
