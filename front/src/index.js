@@ -11,6 +11,7 @@ import MainPedidos from './pages/pedidos/MainPedidos';
 import AgregarClientes from './pages/clientes/AgregarClientes';
 import MainClientes from './pages/clientes/MainClientes';
 import DetalleCliente from './pages/clientes/DetalleCliente';
+import MainProductos from './pages/productos/MainProductos';
 
 
 const router = createBrowserRouter([
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
         path: 'clientes/:id',
         element: <DetalleCliente></DetalleCliente>,
       },
+      {
+        path: 'productos/',
+        element: <MainProductos></MainProductos>
+      }
     ]
   }
 ])

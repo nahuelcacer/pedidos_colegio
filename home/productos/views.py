@@ -6,6 +6,8 @@ from rest_framework import status
 from rest_framework.decorators import authentication_classes, permission_classes, api_view
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
+from django.db.models import Q
+
 # Create your views here.
 
 
@@ -14,9 +16,17 @@ from rest_framework.permissions import IsAuthenticated
 # @permission_classes([IsAuthenticated])
 def producto(request, pk=None):
     if request.method == 'GET':
-        todos = Producto.objects.all()
-        serializados = ProductoSerializer(todos, many=True).data
-        return Response(serializados)
+        queryset = Producto.objects.all()
+        q = request.query_params.get('q', None)
+
+        if q:
+            queryset = queryset.filter(Q(nombre__icontains=q) | Q(precio__icontains=q))
+            serializer = ProductoSerializer(queryset, many=True)
+            return Response(serializer.data)
+        else:
+            
+            serializados = ProductoSerializer(queryset, many=True).data
+            return Response(serializados)
     
     elif request.method == 'POST':
         serializer = ProductoSerializer(data=request.data)
