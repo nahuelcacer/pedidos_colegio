@@ -1,0 +1,8 @@
+#cardDetalle {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.452);
+    margin: 10px;
+    /* padding: 20px; */
+    height: auto;
+    background-color: white;
+    border-radius: 5px;
+} 

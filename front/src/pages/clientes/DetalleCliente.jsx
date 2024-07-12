@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { detailCliente, updateCliente } from "../../service/clientes";
 import { formatDateTime } from "../../tools/formateDate";
-import { Button } from "@mui/material";
+import { Button, FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import { palette } from "../../theme";
+import CardDetalle from "../../component/cards/CardDetalle";
 
 const ButtonsHandler = () => {
   const navigate = useNavigate();
@@ -34,7 +35,7 @@ const DetalleCliente = () => {
     setEditingContacto(false);
     setNewContacto('');
   }
-  
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -52,67 +53,30 @@ const DetalleCliente = () => {
     setCliente({ ...cliente, [name]: value });
   };
   return (
-    <div className="card">
-      <h2>Cliente</h2>
-
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          margin: "10px 0 10px 0",
-        }}
-      >
-        <p style={{ width: "100px", margin: 0 }}>Nombre</p>
-        <input
-          name="nombre"
-          value={cliente.nombre}
-          onChange={(e) => {
-            handleChange(e);
-          }}
-        ></input>
-      </div>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          margin: "10px 0 10px 0",
-        }}
-      >
-        <p style={{ width: "100px", margin: 0 }}>DNI/CUIT</p>
-        <input
-          name="identificacion"
-          value={cliente.identificacion}
-          onChange={(e) => {
-            handleChange(e);
-          }}
-        ></input>
+    <CardDetalle title={'Detalle cliente'} width="500px">
+      <div style={{ display: "flex", flexDirection: "column", margin: "10px 0 10px 0", gap: '20px' }}>
+        <TextField size="small" label={'Nombre'} value={cliente?.nombre || ''} focused={true} onChange={(e) => { handleChange(e) }}></TextField>
+        <TextField size="small" label={'DNI/CUIT'} value={cliente?.identificacion || ''} focused={true} onChange={(e) => { handleChange(e) }}></TextField>
+        <FormControl fullWidth>
+          <InputLabel htmlFor="escribano">Escribano</InputLabel>
+          <Select
+            size="small"
+            labelId="escribano"
+            id="escribano"
+            label="Escribano"
+            name="escribano"
+            value={cliente?.escribano || ''}
+            onChange={handleChange}
+            focused={true}
+          >
+            <MenuItem value={true}>SI</MenuItem>
+            <MenuItem value={false}>NO</MenuItem>
+          </Select>
+        </FormControl>
       </div>
 
       <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          margin: "10px 0 10px 0",
-        }}
-      >
-        <p style={{ width: "100px", margin: 0 }}>Escribano </p>
-
-        <select
-          name="escribano"
-          value={cliente.escribano}
-          onChange={handleChange}
-        >
-          <option value={true}>SI</option>
-          <option value={false}>NO</option>
-        </select>
-      </div>
-
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          margin: "10px 0 10px 0",
-        }}
+        
       >
         <p style={{ width: "100px", margin: 0 }}>Fecha</p>
         <p style={{ color: palette.text, fontWeight: "400", margin: 0 }}>
@@ -121,29 +85,29 @@ const DetalleCliente = () => {
       </div>
       <div>
         <h4>Contacto</h4>
-        {cliente.contactos? <div></div>:<div>{editingContacto ? (
-        <div>
-          <input
-            type="text"
-            value={newContacto}
-            onChange={(e) => setNewContacto(e.target.value)}
-            placeholder="Nuevo contacto"
-          />
-          <button onClick={handleSaveContacto}>Guardar</button>
-          <button onClick={handleCancelContacto}>Cancelar</button>
-        </div>
-      ) : (
-        <button variant="contained" onClick={handleAgregarClick}>
-          Agregar
-        </button>
-      )}</div>}
+        {cliente.contactos ? <div></div> : <div>{editingContacto ? (
+          <div>
+            <input
+              type="text"
+              value={newContacto}
+              onChange={(e) => setNewContacto(e.target.value)}
+              placeholder="Nuevo contacto"
+            />
+            <button onClick={handleSaveContacto}>Guardar</button>
+            <button onClick={handleCancelContacto}>Cancelar</button>
+          </div>
+        ) : (
+          <button variant="contained" onClick={handleAgregarClick}>
+            Agregar
+          </button>
+        )}</div>}
       </div>
       <div>
         <h4>Email</h4>
-        {cliente.emails? <div></div>:<Button variant="contained">agregar</Button>}
+        {cliente.emails ? <div></div> : <Button variant="contained">agregar</Button>}
 
       </div>
-      <div style={{display:'flex', gap:'10px',marginTop:'20px'}}>
+      <div style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
         <Button
           onClick={() => {
             navigate(-1);
@@ -164,7 +128,9 @@ const DetalleCliente = () => {
           Eliminar
         </Button>
       </div>
-    </div>
+    </CardDetalle>
+
+    // </div>
   );
 };
 

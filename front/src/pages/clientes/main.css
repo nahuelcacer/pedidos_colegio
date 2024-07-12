@@ -34,3 +34,11 @@
     background-color: rgba(170, 195, 233, 0.507);
 
 }
+
+#rowClickleable {
+    cursor: pointer;
+    
+}
+#rowClickleable:hover {
+    background-color: rgba(64, 135, 241, 0.068);
+}

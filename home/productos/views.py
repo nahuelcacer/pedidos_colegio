@@ -34,3 +34,16 @@ def producto(request, pk=None):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+@api_view(['GET', 'POST', 'PUT', 'PATCH'])
+@authentication_classes([SessionAuthentication, TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def producto_detalle(request, pk=None):
+    if request.method == 'GET':
+        query = Producto.objects.get(id=pk)
+        serializer = ProductoSerializer(query)
+
+        return Response(serializer.data)

@@ -2,7 +2,7 @@ import { Button, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/m
 import React, { Children, useEffect, useState } from 'react'
 import { getProductos } from '../../service/productos'
 import Paginador from '../../component/paginador/Paginador'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 
 
@@ -13,17 +13,23 @@ const ButtonAdd = () => {
         </Link>
     )
 }
-const ListData = ({ data }) => (
-    <>
+const ListData = ({ data }) => {
+    const navigate = useNavigate()
+
+    const handleRowClick = (producto) => {
+        const iden = producto.id
+        navigate(`/productos/${iden}`);
+    }
+    return (<>
         {data.map((producto) => (
-            <TableRow key={producto.id}>
+            <TableRow id="rowClickleable" onClick={() => { handleRowClick(producto) }}>
                 <TableCell>{producto?.nombre}</TableCell>
                 <TableCell>{producto?.precio}</TableCell>
                 <TableCell>{producto?.notarial}</TableCell>
             </TableRow>
         ))}
-    </>
-);
+    </>)
+}
 const MainProductos = () => {
     const headers = [{ nombre: 'NOMBRE' }, { nombre: 'PRECIO' }, { nombre: 'NOTARIAL' }]
     const [productos, setProductos] = useState([])
@@ -40,7 +46,7 @@ const MainProductos = () => {
     }, [search])
     return (
         <div className='card'>
-            <Paginador data={productos} headers={headers} title={"Productos"} setSearch={setSearch} buttonAdd={<ButtonAdd/>}>
+            <Paginador data={productos} headers={headers} title={"Productos"} setSearch={setSearch} buttonAdd={<ButtonAdd />}>
                 {(dataVisibles) => (
                     <ListData data={dataVisibles} />
                 )}
