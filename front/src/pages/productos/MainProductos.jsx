@@ -3,6 +3,7 @@ import React, { Children, useEffect, useState } from 'react'
 import { getProductos } from '../../service/productos'
 import Paginador from '../../component/paginador/Paginador'
 import { Link, useNavigate } from 'react-router-dom'
+import CardDetalle from '../../component/cards/CardDetalle'
 
 
 
@@ -45,13 +46,14 @@ const MainProductos = () => {
             .then(res => { setProductos(res) })
     }, [search])
     return (
-        <div className='card'>
+        <CardDetalle title={'Listado de productos'} width='95%'>
             <Paginador data={productos} headers={headers} title={"Productos"} setSearch={setSearch} buttonAdd={<ButtonAdd />}>
                 {(dataVisibles) => (
                     <ListData data={dataVisibles} />
                 )}
             </Paginador>
-        </div>
+        </CardDetalle>
+
     )
 }
 

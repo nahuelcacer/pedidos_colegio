@@ -34,13 +34,6 @@ const Paginador = ({ children, data, itemsPerPage = 10, headers, title, setSearc
     const colspan = headers.length
     return (
         <Table>
-
-            <TableHead>
-                <TableRow>
-                    <h2>{title}</h2>
-
-                </TableRow>
-            </TableHead>
             <TableHead>
                 <TableCell colSpan={colspan}>
                     <div style={{display:'flex', flexDirection:'row', justifyContent:'space-between'}}>

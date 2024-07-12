@@ -16,7 +16,7 @@ export const theme = createTheme({
             main: '#4087F1', // Cambia el color principal según tu preferencia
         },
         error: {
-            main:'#f19740',
+            main:'#f14040',
             contrastText:'#fff'
         }
         // Define más colores según tus necesidades

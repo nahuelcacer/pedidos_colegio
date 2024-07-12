@@ -4,6 +4,7 @@ import "./main.css";
 import { getClientes } from "../../service/clientes";
 import Paginador from "../../component/paginador/Paginador";
 import { Button, TableCell, TableRow } from "@mui/material";
+import CardDetalle from "../../component/cards/CardDetalle";
 
 
 const ButtonAdd = () => {
@@ -24,7 +25,7 @@ const ListData = ({ data }) => {
 
     <>
       {data.map((cliente) => (
-        <TableRow id="rowClickleable" style={{ cursor: 'pointer' }} onClick={() => { handleRowClick(cliente) }}>
+        <TableRow id="rowClickleable" onClick={() => { handleRowClick(cliente) }}>
           <TableCell>{cliente.nombre}</TableCell>
           <TableCell>{cliente.identificacion}</TableCell>
           <TableCell>
@@ -43,7 +44,7 @@ const ListData = ({ data }) => {
   )
 }
 const MainClientes = () => {
-  const headers = [{ nombre: 'NOMBRE' }, { nombre: 'PRECIO' }, { nombre: 'NOTARIAL' }]
+  const headers = [{ nombre: 'NOMBRE' }, { nombre: 'PRECIO' }, { nombre: 'ESCRIBANO' }]
 
 
   const [clientes, setClientes] = useState([]);
@@ -67,13 +68,14 @@ const MainClientes = () => {
 
 
   return (
-    <div className="card">
-      <Paginador data={clientes} headers={headers} setSearch={setSearch} title={'Clientes'} buttonAdd={<ButtonAdd />}>
+    <CardDetalle title={'Listado de clientes'} width="95%">
+      <Paginador data={clientes} headers={headers} setSearch={setSearch} buttonAdd={<ButtonAdd />}>
         {(dataVisibles) => (
           <ListData data={dataVisibles} />
         )}
       </Paginador>
-    </div>
+    </CardDetalle>
+
   );
 };
 

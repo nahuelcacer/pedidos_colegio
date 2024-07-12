@@ -6,15 +6,6 @@ import { Button, FormControl, InputLabel, MenuItem, Select, TextField } from "@m
 import { palette } from "../../theme";
 import CardDetalle from "../../component/cards/CardDetalle";
 
-const ButtonsHandler = () => {
-  const navigate = useNavigate();
-  return (
-    <div style={{ display: "flex", gap: "10px" }}>
-      {/* <Button type="submit">Guardar</Button> */}
-    </div>
-  );
-};
-
 const DetalleCliente = () => {
   const { id } = useParams();
   const [cliente, setCliente] = useState({});
@@ -55,8 +46,8 @@ const DetalleCliente = () => {
   return (
     <CardDetalle title={'Detalle cliente'} width="500px">
       <div style={{ display: "flex", flexDirection: "column", margin: "10px 0 10px 0", gap: '20px' }}>
-        <TextField size="small" label={'Nombre'} value={cliente?.nombre || ''} focused={true} onChange={(e) => { handleChange(e) }}></TextField>
-        <TextField size="small" label={'DNI/CUIT'} value={cliente?.identificacion || ''} focused={true} onChange={(e) => { handleChange(e) }}></TextField>
+        <TextField size="small" label={'Nombre'} value={cliente?.nombre} focused={true} onChange={(e) => { handleChange(e) }} name="nombre"></TextField>
+        <TextField size="small" label={'DNI/CUIT'} value={cliente?.identificacion || ''} focused={true} onChange={(e) => { handleChange(e) }} name="identificacion"></TextField>
         <FormControl fullWidth>
           <InputLabel htmlFor="escribano">Escribano</InputLabel>
           <Select
@@ -119,7 +110,7 @@ const DetalleCliente = () => {
         <Button
           variant="contained"
           onClick={(e) => {
-            updateCliente(id, cliente);
+            updateCliente(cliente.id, cliente);
           }}
         >
           Guardar

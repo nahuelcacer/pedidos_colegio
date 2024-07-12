@@ -38,7 +38,7 @@ def cliente_lista(request, pk=None):
 
     elif request.method in ['PUT', 'PATCH']:
         if pk:
-            cliente = get_object_or_404(Cliente, identificacion=pk)
+            cliente = get_object_or_404(Cliente, id=pk)
             serializer = ClienteSerializer(cliente, data=request.data, partial=(request.method == 'PATCH'))
             if serializer.is_valid():
                 serializer.save()

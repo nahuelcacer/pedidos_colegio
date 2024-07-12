@@ -48,7 +48,7 @@ const SeleccionPedido = () => {
       })
   }, []);
   return (
-    <div className="card">
+    <div >
       <div>
         <Autocomplete
           onChange={(event, newValue) => {
