@@ -6,7 +6,7 @@ from .models import Cliente, Contacto, Email
 class ContactoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Contacto
-        fields = ['id','telefono'] 
+        fields = ['id','telefono', 'cliente'] 
 
 class EmailSerializer(serializers.ModelSerializer):
     class Meta:

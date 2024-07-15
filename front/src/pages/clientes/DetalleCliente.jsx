@@ -5,6 +5,7 @@ import { formatDateTime } from "../../tools/formateDate";
 import { Button, FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import { palette } from "../../theme";
 import CardDetalle from "../../component/cards/CardDetalle";
+import AgregarContacto from "./AgregarContacto";
 
 const DetalleCliente = () => {
   const { id } = useParams();
@@ -75,23 +76,8 @@ const DetalleCliente = () => {
         </p>
       </div>
       <div>
-        <h4>Contacto</h4>
-        {cliente.contactos ? <div></div> : <div>{editingContacto ? (
-          <div>
-            <input
-              type="text"
-              value={newContacto}
-              onChange={(e) => setNewContacto(e.target.value)}
-              placeholder="Nuevo contacto"
-            />
-            <button onClick={handleSaveContacto}>Guardar</button>
-            <button onClick={handleCancelContacto}>Cancelar</button>
-          </div>
-        ) : (
-          <button variant="contained" onClick={handleAgregarClick}>
-            Agregar
-          </button>
-        )}</div>}
+        <AgregarContacto contactos={cliente.contactos}></AgregarContacto>
+       
       </div>
       <div>
         <h4>Email</h4>

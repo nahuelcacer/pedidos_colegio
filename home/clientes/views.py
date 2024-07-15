@@ -2,7 +2,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Cliente
-from .serializers import ClienteSerializer, ClienteCompletoSerializer
+from .serializers import ClienteSerializer, ClienteCompletoSerializer, ContactoSerializer
 from rest_framework.decorators import authentication_classes, permission_classes
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -57,3 +57,15 @@ def cliente_detalle(request, pk=None):
         serializer = ClienteCompletoSerializer(query)
 
         return Response(serializer.data)
+
+
+@api_view(['GET', 'POST', 'PUT', 'PATCH'])
+# @authentication_classes([SessionAuthentication, TokenAuthentication])
+# @permission_classes([IsAuthenticated])
+def agregar_contacto(request, pk=None):
+    if request.method == 'POST':
+        serializer = ContactoSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
