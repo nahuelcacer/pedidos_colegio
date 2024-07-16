@@ -1,17 +1,16 @@
 import { Button, TextField } from '@mui/material';
 import React, { useState } from 'react'
+import { addContacto } from '../../service/clientes';
 
-const AgregarContacto = ({ contactos }) => {
-    const [editing, setEditing] = useState(null)
-    const [newContacto, setNewContacto] = useState('');
+const AgregarContacto = ({ id, contactos, editing, setEditing, newContacto, setNewContacto }) => {
 
     const handleAgregarClick = () => {
         setEditing(true)
     }
 
     const handleSaveContacto = () => {
-        // Aquí podrías guardar el nuevo contacto en la base de datos o hacer lo necesario
         console.log('Guardando contacto:', newContacto);
+        addContacto({"cliente":id, "telefono":newContacto})
         setEditing(false);
         setNewContacto('');
     };

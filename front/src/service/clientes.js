@@ -112,4 +112,38 @@ export const updateCliente = async (pk, data) => {
         console.error('Error:', error);
         return null;
     }
-};;
+};
+
+export const addContacto = async (datos) => {
+    const token = getToken()
+
+    try {
+        const response = await fetch("http://127.0.0.1:8002/clientes/agregarContacto/",
+            {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Token ${token}`,
+                    'Content-Type': 'application/json' // Incluye esta cabecera si envías datos JSON
+                },
+                body: JSON.stringify(datos)
+            })
+        const data = await response.json();
+        if (response.ok) {
+            toast.success('Contacto agregado con éxito', {
+                autoClose:2000,
+                position: "bottom-right",
+                
+            });
+        } else {
+            toast.error('Error al agregar el cliente', {
+                autoClose:2000,
+                position: "bottom-right",
+                
+            });
+        }
+        return data;
+    } catch (error) {
+        console.error('Error:', error);
+        return null; // O devuelve un valor por defecto o maneja el error según lo necesites
+    }
+}

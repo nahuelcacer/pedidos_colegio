@@ -2,7 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { detailCliente, updateCliente } from "../../service/clientes";
 import { formatDateTime } from "../../tools/formateDate";
-import { Button, FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
+import {
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from "@mui/material";
 import { palette } from "../../theme";
 import CardDetalle from "../../component/cards/CardDetalle";
 import AgregarContacto from "./AgregarContacto";
@@ -10,23 +17,9 @@ import AgregarContacto from "./AgregarContacto";
 const DetalleCliente = () => {
   const { id } = useParams();
   const [cliente, setCliente] = useState({});
-  const [editingContacto, setEditingContacto] = useState(false);
+  const [editing, setEditing] = useState(null)
   const [newContacto, setNewContacto] = useState('');
-  const handleAgregarClick = () => {
-    setEditingContacto(true);
-  };
 
-  const handleSaveContacto = () => {
-    // Aquí podrías guardar el nuevo contacto en la base de datos o hacer lo necesario
-    console.log('Guardando contacto:', newContacto);
-    setEditingContacto(false);
-    setNewContacto('');
-  };
-
-  const handleCancelContacto = () => {
-    setEditingContacto(false);
-    setNewContacto('');
-  }
 
   const navigate = useNavigate();
 
@@ -38,17 +31,42 @@ const DetalleCliente = () => {
       .catch((error) => {
         console.error("Error al obtener clientes:", error);
       });
-  }, [id]);
+  }, [id,editing,newContacto]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setCliente({ ...cliente, [name]: value });
   };
   return (
-    <CardDetalle title={'Detalle cliente'} width="500px">
-      <div style={{ display: "flex", flexDirection: "column", margin: "10px 0 10px 0", gap: '20px' }}>
-        <TextField size="small" label={'Nombre'} value={cliente?.nombre} focused={true} onChange={(e) => { handleChange(e) }} name="nombre"></TextField>
-        <TextField size="small" label={'DNI/CUIT'} value={cliente?.identificacion || ''} focused={true} onChange={(e) => { handleChange(e) }} name="identificacion"></TextField>
+    <CardDetalle title={"Detalle cliente"} width="500px">
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          margin: "10px 0 10px 0",
+          gap: "20px",
+        }}
+      >
+        <TextField
+          size="small"
+          label={"Nombre"}
+          value={cliente?.nombre}
+          focused={true}
+          onChange={(e) => {
+            handleChange(e);
+          }}
+          name="nombre"
+        ></TextField>
+        <TextField
+          size="small"
+          label={"DNI/CUIT"}
+          value={cliente?.identificacion || ""}
+          focused={true}
+          onChange={(e) => {
+            handleChange(e);
+          }}
+          name="identificacion"
+        ></TextField>
         <FormControl fullWidth>
           <InputLabel htmlFor="escribano">Escribano</InputLabel>
           <Select
@@ -57,7 +75,7 @@ const DetalleCliente = () => {
             id="escribano"
             label="Escribano"
             name="escribano"
-            value={cliente?.escribano || ''}
+            value={cliente?.escribano || ""}
             onChange={handleChange}
             focused={true}
           >
@@ -67,24 +85,24 @@ const DetalleCliente = () => {
         </FormControl>
       </div>
 
-      <div
-        
-      >
+      <div>
         <p style={{ width: "100px", margin: 0 }}>Fecha</p>
         <p style={{ color: palette.text, fontWeight: "400", margin: 0 }}>
           {formatDateTime(cliente.created_at)}
         </p>
       </div>
       <div>
-        <AgregarContacto contactos={cliente.contactos}></AgregarContacto>
-       
+        <AgregarContacto id={cliente.id} contactos={cliente.contactos} editing={editing} setEditing={setEditing} newContacto={newContacto} setNewContacto={setNewContacto}></AgregarContacto>
       </div>
       <div>
         <h4>Email</h4>
-        {cliente.emails ? <div></div> : <Button variant="contained">agregar</Button>}
-
+        {cliente.emails ? (
+          <div></div>
+        ) : (
+          <Button variant="contained">agregar</Button>
+        )}
       </div>
-      <div style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
+      <div style={{ display: "flex", gap: "10px", marginTop: "20px" }}>
         <Button
           onClick={() => {
             navigate(-1);
