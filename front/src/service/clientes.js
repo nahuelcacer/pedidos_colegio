@@ -43,13 +43,13 @@ export const addClientes = async (datos) => {
             toast.success('Cliente agregado con éxito', {
                 autoClose:2000,
                 position: "bottom-right",
-                
+                theme:'colored'
             });
         } else {
             toast.error('Error al agregar el cliente', {
                 autoClose:2000,
                 position: "bottom-right",
-                
+                theme:'colored'
             });
         }
         return data;

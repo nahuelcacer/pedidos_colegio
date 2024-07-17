@@ -4,6 +4,7 @@ import { addClientes } from '../../service/clientes'
 import './main.css'
 import { Button, TextField } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
+import CardDetalle from '../../component/cards/CardDetalle'
 
 const HandlerButtons = ({ values }) => {
     const navigate = useNavigate();
@@ -23,7 +24,7 @@ const HandlerButtons = ({ values }) => {
     }
 
     return (
-        <div style={{display:'flex',gap:'10px'}}>
+        <div style={{ display: 'flex', gap: '10px' }}>
             <Button variant='outlined' onClick={handleBackClick}>Volver</Button>
             <Button variant='contained' onClick={handleAddClick}>Agregar</Button>
         </div>
@@ -33,8 +34,7 @@ const AgregarClientes = () => {
     const { values, onChange } = useInput({})
 
     return (
-        <div className='card agregarcliente'>
-            <h4>Agregar</h4>
+        <CardDetalle title={'Agregar Cliente'}>
             <div className='container-inputs'>
                 <TextField
                     type="text"
@@ -52,7 +52,7 @@ const AgregarClientes = () => {
                 ></TextField>
                 <HandlerButtons values={values}></HandlerButtons>
             </div>
-        </div>
+        </CardDetalle>
     )
 }
 
