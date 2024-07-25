@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { getClientes } from "../../service/clientes";
 import { getProductos } from "../../service/productos";
 
-const SeleccionPedido = () => {
+const SeleccionPedido = ({items, setItems}) => {
   const [cliente, setCliente] = useState([]);
   const [producto, setProductos] = useState([]);
 
@@ -12,7 +12,7 @@ const SeleccionPedido = () => {
   const [productoselecccionado, setProductoSeleccionado] = useState(null)
   const [clienteSeleccionado, setClienteSeleccionado] = useState(null)
   const [errors, setErrors] = useState({ clienteSeleccionado: false, productoselecccionado: false, cantidad: false });
-  const [items, setItems] = useState([])
+  // const [items, setItems] = useState([])
 
   const agregarItem = () => {
     if (!clienteSeleccionado || !productoselecccionado || !cantidad) {
@@ -23,7 +23,7 @@ const SeleccionPedido = () => {
       });
       return;
     }
-    setItems([...items, { producto: productoselecccionado, cantidad }]);
+    setItems([...items, { producto: productoselecccionado, cantidad, totalItem:cantidad*productoselecccionado.precio}]);
     console.log('Item agregado:', { producto: productoselecccionado, cantidad });
   };
 
