@@ -28,8 +28,12 @@ const SeleccionPedido = ({items, setItems}) => {
   };
 
   const handleKeyPress = (event) => {
-    if (event.key === 'Enter') {
-      event.preventDefault(); // Prevent form submission if inside a form
+    if (event.ctrlKey && event.key === 'Enter') {
+      alert('Pedido agregado');
+      // Evitar que se ejecute agregarItem en este caso
+      event.preventDefault();
+    } else if (event.key === 'Enter') {
+      event.preventDefault(); // Prevenir el envío del formulario si está dentro de un formulario
       agregarItem();
     }
   };
