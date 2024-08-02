@@ -23,13 +23,19 @@ class PedidoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Pedido
         fields = ['id', 'fecha', 'cliente', 'pedido_items']
+        
+    # def create(self, validated_data):
+    #     pedido_items_data = validated_data.pop('pedido_items')
+    #     pedido = Pedido.objects.create(**validated_data)
 
-    def create(self, validated_data):
-        pedido_items_data = validated_data.pop('pedido_items')
-        pedido = Pedido.objects.create(**validated_data)
-        for pedido_item_data in pedido_items_data:
-            PedidoItem.objects.create(pedido=pedido, **pedido_item_data)
-        return pedido
+        
+    #     for pedido_item_data in pedido_items_data:
+    #         serializer = PedidoItemSerializer(data=pedido_item_data)
+    #         if serializer.is_valid():
+    #             serializer.save(pedido=pedido)
+    #         else:
+    #             print(serializer.errors)
+    #     return pedido
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)

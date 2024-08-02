@@ -2,8 +2,9 @@ import { Autocomplete, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { getClientes } from "../../service/clientes";
 import { getProductos } from "../../service/productos";
+import { agregarPedidoService } from "../../service/pedidos";
 
-const SeleccionPedido = ({ items, setItems }) => {
+const SeleccionPedido = ({ items, setItems, setPedido, pedido }) => {
   const [cliente, setCliente] = useState([]);
   const [producto, setProductos] = useState([]);
 
@@ -45,7 +46,7 @@ const SeleccionPedido = ({ items, setItems }) => {
     if (!validateInputs()) {
       return;
     }
-    alert('PEDIDO AGREGADO');
+    agregarPedidoService(pedido)
   };
   const handleKeyPress = (event) => {
     if (event.ctrlKey && event.key === 'Enter') {
@@ -63,6 +64,9 @@ const SeleccionPedido = ({ items, setItems }) => {
       agregarItem();
 
     } };
+    useEffect(()=> {
+      setPedido({cliente:clienteSeleccionado, pedido:items})
+    }, [items, clienteSeleccionado])
     useEffect(() => {
       getClientes()
         .then((res) => {

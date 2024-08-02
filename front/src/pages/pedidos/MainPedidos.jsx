@@ -19,7 +19,7 @@ const MainPedidos = () => {
 
         <CardDetalle title={'Agregar pedidos'} width='95%'>
 
-          <SeleccionPedido setPedido={setPedido} setItems={setItems} items={items}></SeleccionPedido>
+          <SeleccionPedido pedido={pedido} setPedido={setPedido} setItems={setItems} items={items}></SeleccionPedido>
 
         </CardDetalle>
 
