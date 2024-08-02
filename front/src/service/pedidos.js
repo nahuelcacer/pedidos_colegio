@@ -23,6 +23,10 @@ export const getPedidos = async (searchParams) => {
 }
 
 export const agregarPedidoService = async (pedido) => {
+    const data_item = pedido.pedido.map(item => {
+        return {cantidad:item.cantidad, producto:item.producto.id, pedido:pedido.id}
+    })
+    const user = localStorage.getItem('user')
     const token = getToken()
     try  {
         const response = await fetch ("http://127.0.0.1:8002/pedidos/", {
@@ -31,7 +35,7 @@ export const agregarPedidoService = async (pedido) => {
                 'Authorization': `Token ${token}`,
                 'Content-Type': 'application/json' // Incluye esta cabecera si envías datos JSON
             },
-            body:JSON.stringify({cliente:pedido.cliente.id, pedido_items:pedido.pedido})
+            body:JSON.stringify({cliente:pedido.cliente.id, pedido_items:data_item, user_creator:JSON.parse(user).id})
         })
     }catch (error) {
         console.error('Error:', error);

@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .serializers import PedidoSerializer
+from .serializers import PedidoSerializer, PedidoReadSerializer
 from .models import Pedido
 from rest_framework.response import Response
 from rest_framework import status
@@ -15,12 +15,11 @@ from rest_framework.permissions import IsAuthenticated
 def pedido(request, pk=None):
     if request.method == 'GET':
         todos = Pedido.objects.all()
-        serializados = PedidoSerializer(todos, many=True).data
+        serializados = PedidoReadSerializer(todos, many=True).data
         return Response(serializados)
     
     elif request.method == 'POST':
         serializer = PedidoSerializer(data=request.data)
-        print(request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)

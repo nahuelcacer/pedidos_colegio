@@ -128,7 +128,7 @@ const SeleccionPedido = ({ items, setItems, setPedido, pedido }) => {
 
           <TextField
             onChange={(event) => {
-              setCantidad(event.target.value);
+              setCantidad(parseInt(event.target.value));
               setErrors({ ...errors, cantidad: false });
             }}
             placeholder="Cantidad"
