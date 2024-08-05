@@ -21,14 +21,18 @@ def pedido(request, pk=None):
             return Response(serializer)
 
         queryset = Pedido.objects.all()
+
         q = request.query_params.get('q', None)
+        fecha = request.query_params.get('fecha', None)
+
         if q:
-            queryset = queryset.filter(Q(cliente__nombre__icontains=q) | Q(fecha__icontains=q))
-            serializer = PedidoReadSerializer(queryset, many=True)
-            return Response(serializer.data)
-        else:
-            serializer = PedidoReadSerializer(queryset, many=True)
-            return Response(serializer.data)
+            queryset = queryset.filter(Q(cliente__nombre__icontains=q) | Q(cliente__identificacion__icontains=q))
+         
+        if fecha:
+            queryset = queryset.filter(Q(fecha__icontains=fecha))
+
+        serializer = PedidoReadSerializer(queryset, many=True)
+        return Response(serializer.data)
         
 
         # todos = Pedido.objects.all()

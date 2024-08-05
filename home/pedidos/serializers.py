@@ -5,6 +5,7 @@ from clientes.serializers import ClienteCompletoSerializer, ClienteSerializer
 from usuario.serializers import UserSerializer
 from productos.serializers import ProductoSerializer
 from django.contrib.auth.models import User
+from django.db.models import Sum
 
 
 class EstadoSerializer(serializers.ModelSerializer):
@@ -66,11 +67,18 @@ class PedidoReadSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
-        user_serializado = UserSerializer(instance.user_creator).data
+        if instance.user_creator:
+            user_serializado = UserSerializer(instance.user_creator).data
+            representation['user_creator'] = user_serializado
+
         items_set = PedidoItem.objects.filter(pedido=representation['id'])
 
 
+
         items_serializados = PedidoItemReadSerializer(items_set, many=True).data
+        total_suma = sum((item['total_item']) for item in items_serializados)
+
+
         representation['items'] = items_serializados
-        representation['user_creator'] = user_serializado
+        representation['total_pedido'] = total_suma
         return representation

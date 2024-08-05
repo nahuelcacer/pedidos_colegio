@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { getClientes } from "../../service/clientes";
 import { getProductos } from "../../service/productos";
 import { agregarPedidoService } from "../../service/pedidos";
+import { toast } from "react-toastify";
 
 const SeleccionPedido = ({ items, setItems, setPedido, pedido }) => {
   const [cliente, setCliente] = useState([]);
@@ -16,9 +17,14 @@ const SeleccionPedido = ({ items, setItems, setPedido, pedido }) => {
   // const [items, setItems] = useState([])
 
   const limpiarAutocomplete = () => {
+    setItems([])
     setClienteSeleccionado(null);
     setProductoSeleccionado(null)
     setErrors({ ...errors, clienteSeleccionado: false, productoselecccionado: false });
+    toast.info('Campos limpiados' ,{
+      position:'bottom-right',
+      autoClose:1000
+    })
   };
 
 
