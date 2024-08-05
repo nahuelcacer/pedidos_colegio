@@ -5,14 +5,19 @@ import SeleccionPedido from './SeleccionPedido'
 import CardDetalle from '../../component/cards/CardDetalle'
 import useItemsOrder from '../../hooks/useItemsOrder'
 import formatArs from '../../tools/formatArs'
+import { getPedidos } from '../../service/pedidos'
 
 const MainPedidos = () => {
+  const [listadoPedidos, setListadoPedidos] = useState(null)
   const [items, setItems] = useState([])
   const [pedido, setPedido] = useState({
     cliente: null,
     pedido: []
   })
-
+  useEffect(()=> {
+    getPedidos()
+    .then(res=>{setListadoPedidos(res)})
+  }, [])
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.5fr' }}>
       <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -63,7 +68,14 @@ const MainPedidos = () => {
       </div>
 
       <CardDetalle title={'Listado de pedidos'} width='95%'>
-
+             {listadoPedidos?.map(item => {
+              return (
+                <>
+                <div style={{fontSize:'12px'}}>{item.cliente.nombre}</div>
+                <div>{item.user_creator.username}</div>
+                </>
+              )
+             })}
       </CardDetalle>
     </div>
   )

@@ -4,5 +4,7 @@ from . import views
 
 
 urlpatterns = [
-   path('', views.pedido, name="pedidos")
+   path('', views.pedido, name="pedidos"),
+   path('<int:pk>', views.pedido, name="pedidos_id")
+
 ]

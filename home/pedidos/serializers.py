@@ -1,9 +1,17 @@
 # serializers.py
 from rest_framework import serializers
-from .models import Pedido, PedidoItem
+from .models import Pedido, PedidoItem, EstadoPedido
 from clientes.serializers import ClienteCompletoSerializer, ClienteSerializer
 from usuario.serializers import UserSerializer
 from productos.serializers import ProductoSerializer
+from django.contrib.auth.models import User
+
+
+class EstadoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EstadoPedido
+        fields = '__all__'
+
 
 class PedidoItemSerializer(serializers.ModelSerializer):
     pedido = serializers.PrimaryKeyRelatedField(read_only=True)
@@ -17,10 +25,16 @@ class PedidoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Pedido
         fields = ['id', 'fecha', 'cliente', 'pedido_items', 'user_creator']
+        extra_kwargs = {
+
+        }
         
     def create(self, validated_data):
         pedido_items_data = validated_data.pop('pedido_items')
         pedido = Pedido.objects.create(**validated_data)
+
+        pedido.agregarEstado()
+        pedido.save()
         # Crear los PedidoItem asociados con el pedido creado
         for item_data in pedido_items_data:
             PedidoItem.objects.create(pedido=pedido, **item_data)
@@ -43,15 +57,20 @@ class PedidoItemReadSerializer(serializers.ModelSerializer):
 
 class PedidoReadSerializer(serializers.ModelSerializer):
     cliente = ClienteSerializer()
+    estado = EstadoSerializer()
+
+    
     class Meta:
         model = Pedido
         fields = '__all__'
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
+        user_serializado = UserSerializer(instance.user_creator).data
         items_set = PedidoItem.objects.filter(pedido=representation['id'])
 
 
         items_serializados = PedidoItemReadSerializer(items_set, many=True).data
         representation['items'] = items_serializados
+        representation['user_creator'] = user_serializado
         return representation

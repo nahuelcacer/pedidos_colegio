@@ -12,7 +12,7 @@ class EstadoPedido(models.Model):
     en_preparacion = models.BooleanField()
 
 class Pedido(models.Model):
-    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE, null=False)
     fecha = models.DateTimeField(auto_now_add=True)
     estado = models.OneToOneField(EstadoPedido, on_delete=models.CASCADE, null=True)
     user_creator = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
@@ -40,8 +40,8 @@ class Pedido(models.Model):
         return self.fecha.strftime("%d-%m-%Y")
 
 class PedidoItem(models.Model):
-    pedido = models.ForeignKey(Pedido,related_name='pedido_items',  on_delete=models.CASCADE)
-    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+    pedido = models.ForeignKey(Pedido,related_name='pedido_items',  on_delete=models.CASCADE, null=False)
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE, null=False)
     cantidad = models.IntegerField()
     precio_unitario = models.IntegerField(null=True, default=None)
 

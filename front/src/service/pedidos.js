@@ -4,7 +4,7 @@ export const getPedidos = async (searchParams) => {
     const token = getToken()
 
     try {
-        const response = await fetch(`http://127.0.0.1:8002/productos?${searchParams}`,
+        const response = await fetch(`http://127.0.0.1:8002/pedidos?${searchParams}`,
             {
                 method: 'GET',
                 headers:

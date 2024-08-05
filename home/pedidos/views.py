@@ -6,6 +6,7 @@ from rest_framework import status
 from rest_framework.decorators import authentication_classes, permission_classes, api_view
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
+from django.db.models import Q
 # Create your views here.
 
 
@@ -14,9 +15,25 @@ from rest_framework.permissions import IsAuthenticated
 # @permission_classes([IsAuthenticated])
 def pedido(request, pk=None):
     if request.method == 'GET':
-        todos = Pedido.objects.all()
-        serializados = PedidoReadSerializer(todos, many=True).data
-        return Response(serializados)
+        if pk:
+            query = Pedido.objects.get(pk=pk)
+            serializer = PedidoReadSerializer(query).data
+            return Response(serializer)
+
+        queryset = Pedido.objects.all()
+        q = request.query_params.get('q', None)
+        if q:
+            queryset = queryset.filter(Q(cliente__nombre__icontains=q) | Q(fecha__icontains=q))
+            serializer = PedidoReadSerializer(queryset, many=True)
+            return Response(serializer.data)
+        else:
+            serializer = PedidoReadSerializer(queryset, many=True)
+            return Response(serializer.data)
+        
+
+        # todos = Pedido.objects.all()
+        # serializados = PedidoReadSerializer(todos, many=True).data
+        # return Response(serializados)
     
     elif request.method == 'POST':
         serializer = PedidoSerializer(data=request.data)
