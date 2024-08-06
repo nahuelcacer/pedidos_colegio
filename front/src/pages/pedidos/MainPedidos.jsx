@@ -15,6 +15,7 @@ import { useBusqueda } from "../../context/BusquedaContext";
 
 const ListData = ({ data }) => {
   const renderedRows = useMemo(() => {
+    
     return data.map((item) => (
       <TableRow key={item.id}>
         <TableCell>{item.cliente.nombre}</TableCell>
@@ -33,7 +34,7 @@ const ListData = ({ data }) => {
             />
           ) : null}
         </TableCell>
-        <TableCell>{item.total_pedido}</TableCell>
+        <TableCell>{formatArs.format(item.total_pedido)}</TableCell>
       </TableRow>
     ));
   }, [data]);
@@ -42,11 +43,11 @@ const ListData = ({ data }) => {
 };
 
 const MainPedidos = () => {
-  const { search, fecha } = useBusqueda();
+  const { search, fecha, factura } = useBusqueda();
   const headers = [
     { nombre: "NOMBRE" },
     { nombre: "DNI/CUIT" },
-    { nombre: "USUARIO CARGA" },
+    { nombre: "USUARIO" },
     { nombre: "IMPORTE TOTAL" },
   ];
 
@@ -59,22 +60,30 @@ const MainPedidos = () => {
 
   const searchParams = new URLSearchParams({
     q: search,
-    fecha:fecha
+    fecha:fecha,
+    // factura:false
   });
 
   useEffect(()=> {
     getPedidos(searchParams).then((res) => {
       setListadoPedidos(res);
+    }).catch((error)=> {
+      console.log(error)
+      setListadoPedidos([])
     });
 
   }, [search, fecha])
 
   useEffect(() => {
-    setInterval(() => {
-      getPedidos(searchParams).then((res) => {
-        setListadoPedidos(res);
-      });
-    }, 15000);
+    const intervalId = setInterval(()=>{
+      getPedidos(searchParams).then((res)=>{
+        setListadoPedidos(res)
+      })
+      .catch(res=>{
+        setListadoPedidos([])
+      })
+    }, 2000);
+    return () => clearInterval(intervalId);
   }, []);
 
   return (
@@ -152,7 +161,7 @@ const MainPedidos = () => {
           itemsPerPage={10}
           headers={headers}
         >
-          {(dataVisibles) => <ListData data={dataVisibles}></ListData>}
+          {(dataVisibles) => dataVisibles ? <ListData data={dataVisibles}></ListData> : <><p style={{padding:'20px 0px'}}>No se encontraron registros</p></>}
         </PaginadorPedidos>
       </CardDetalle>
     </div>

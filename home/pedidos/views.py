@@ -24,6 +24,10 @@ def pedido(request, pk=None):
 
         q = request.query_params.get('q', None)
         fecha = request.query_params.get('fecha', None)
+        factura = request.query_params.get('factura', None)
+
+        if factura:
+            queryset = Pedido.objects.filter(Q(estado__factura=True))
 
         if q:
             queryset = queryset.filter(Q(cliente__nombre__icontains=q) | Q(cliente__identificacion__icontains=q))

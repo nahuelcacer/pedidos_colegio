@@ -10,9 +10,10 @@ export const BusquedaProvider = ({ children }) => {
 
     const [search, setSearch] = useState('');
     const [fecha , setFecha] = useState(hoy.toISOString().slice(0, 10),)
+    const [factura, setFactura] = useState(false)
 
   return (
-    <BusquedaContext.Provider value={{ search, setSearch, fecha, setFecha }}>
+    <BusquedaContext.Provider value={{ search, setSearch, fecha, setFecha, factura, setFactura }}>
       {children}
     </BusquedaContext.Provider>
   );
