@@ -12,12 +12,14 @@ import formatArs from "../../tools/formatArs";
 import { getPedidos } from "../../service/pedidos";
 import PaginadorPedidos from "./PaginadorPedidos";
 import { useBusqueda } from "../../context/BusquedaContext";
+import { deepOrange } from "@mui/material/colors";
+import CustomModal from "../../component/modal/CustomModal";
+import EditarPedido from "./EditarPedido";
 
-const ListData = ({ data }) => {
+const ListData = ({ data, handleOpen }) => {
   const renderedRows = useMemo(() => {
-    
     return data.map((item) => (
-      <TableRow key={item.id}>
+      <TableRow id="rowClickleable" key={item.id} onClick={() => handleOpen(item)}>
         <TableCell>{item.cliente.nombre}</TableCell>
         <TableCell>{item.cliente.identificacion}</TableCell>
         <TableCell>
@@ -26,8 +28,8 @@ const ListData = ({ data }) => {
               size="small"
               variant="outlined"
               avatar={
-                <Avatar>
-                  {item.user_creator.username.charAt(0).toUpperCase()}
+                <Avatar sx={{ bgcolor: deepOrange[300] }}>
+                  <div style={{ color: 'white' }}>{item.user_creator.username.charAt(0).toUpperCase()}</div>
                 </Avatar>
               }
               label={item.user_creator.username}
@@ -43,6 +45,16 @@ const ListData = ({ data }) => {
 };
 
 const MainPedidos = () => {
+  const [open, setOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
+
+  const handleOpen = (item) => {
+    setSelectedItem(item);
+    console.log(item)
+    setOpen(true);
+  };
+  const handleClose = () => setOpen(false);
+
   const { search, fecha, factura } = useBusqueda();
   const headers = [
     { nombre: "NOMBRE" },
@@ -60,28 +72,30 @@ const MainPedidos = () => {
 
   const searchParams = new URLSearchParams({
     q: search,
-    fecha:fecha,
+    fecha: fecha,
     // factura:false
   });
 
-  useEffect(()=> {
-    getPedidos(searchParams).then((res) => {
-      setListadoPedidos(res);
-    }).catch((error)=> {
-      console.log(error)
-      setListadoPedidos([])
-    });
-
-  }, [search, fecha])
+  useEffect(() => {
+    getPedidos(searchParams)
+      .then((res) => {
+        setListadoPedidos(res);
+      })
+      .catch((error) => {
+        console.log(error);
+        setListadoPedidos([]);
+      });
+  }, [search, fecha]);
 
   useEffect(() => {
-    const intervalId = setInterval(()=>{
-      getPedidos(searchParams).then((res)=>{
-        setListadoPedidos(res)
-      })
-      .catch(res=>{
-        setListadoPedidos([])
-      })
+    const intervalId = setInterval(() => {
+      getPedidos(searchParams)
+        .then((res) => {
+          setListadoPedidos(res);
+        })
+        .catch((res) => {
+          setListadoPedidos([]);
+        });
     }, 2000);
     return () => clearInterval(intervalId);
   }, []);
@@ -95,7 +109,7 @@ const MainPedidos = () => {
             setPedido={setPedido}
             setItems={setItems}
             items={items}
-          ></SeleccionPedido>
+          />
         </CardDetalle>
 
         <CardDetalle title={"Items agregados"} width="95%" maxHeight="240px">
@@ -137,7 +151,7 @@ const MainPedidos = () => {
               marginRight: "25px",
             }}
           >
-            {items.reduce((acc, item) => acc + item.totalItem, 0) == 0 ? (
+            {items.reduce((acc, item) => acc + item.totalItem, 0) === 0 ? (
               ""
             ) : (
               <span style={{ fontWeight: 700 }}>
@@ -150,7 +164,7 @@ const MainPedidos = () => {
         </CardDetalle>
         <div style={{ textAlign: "right", marginRight: "23px" }}>
           <Button sx={{ width: "200px" }} variant="contained">
-            Agregar{" "}
+            Agregar
           </Button>
         </div>
       </div>
@@ -161,9 +175,20 @@ const MainPedidos = () => {
           itemsPerPage={10}
           headers={headers}
         >
-          {(dataVisibles) => dataVisibles ? <ListData data={dataVisibles}></ListData> : <><p style={{padding:'20px 0px'}}>No se encontraron registros</p></>}
+          {(dataVisibles) =>
+            dataVisibles ? (
+              <ListData handleOpen={handleOpen} data={dataVisibles} />
+            ) : (
+              <p style={{ padding: '20px 0px' }}>No se encontraron registros</p>
+            )
+          }
         </PaginadorPedidos>
       </CardDetalle>
+      <CustomModal open={open} handleClose={handleClose}>
+        <div>
+          {selectedItem ? <EditarPedido pedido={selectedItem}></EditarPedido>: <></>}
+        </div>
+      </CustomModal>
     </div>
   );
 };
