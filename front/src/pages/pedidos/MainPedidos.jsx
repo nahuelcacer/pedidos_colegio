@@ -2,6 +2,7 @@ import {
   Avatar,
   Button,
   Chip,
+  IconButton,
   TableCell,
   TableRow,
 } from "@mui/material";
@@ -15,6 +16,9 @@ import { useBusqueda } from "../../context/BusquedaContext";
 import { deepOrange } from "@mui/material/colors";
 import CustomModal from "../../component/modal/CustomModal";
 import EditarPedido from "./EditarPedido";
+import { ReactComponent as DeleteIcon } from '../../icons/trash-bin-trash-svgrepo-com.svg';
+
+
 
 const ListData = ({ data, handleOpen }) => {
   const renderedRows = useMemo(() => {
@@ -75,6 +79,9 @@ const MainPedidos = () => {
     fecha: fecha,
     // factura:false
   });
+  const handleDelete = (index) => {
+    setItems(prevItems => prevItems.filter((_, i) => i !== index));
+  };
 
   useEffect(() => {
     getPedidos(searchParams)
@@ -125,7 +132,7 @@ const MainPedidos = () => {
               </tr>
             </thead>
             <tbody>
-              {items?.map((item) => (
+              {items?.map((item, index) => (
                 <tr key={item.producto.id}>
                   <td style={{ textAlign: "center", paddingTop: "10px" }}>
                     {item.producto.nombre}
@@ -139,6 +146,10 @@ const MainPedidos = () => {
                   <td style={{ textAlign: "center", paddingTop: "10px" }}>
                     {formatArs.format(item.totalItem)}
                   </td>
+                  <td style={{ textAlign: "center", paddingTop: "10px" }}>
+                    <IconButton size="small" onClick={(e)=>{handleDelete(index)}}><DeleteIcon width="18px" height="18px"/></IconButton>
+                  </td>
+
                 </tr>
               ))}
             </tbody>

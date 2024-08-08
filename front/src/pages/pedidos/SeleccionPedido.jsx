@@ -91,6 +91,7 @@ const SeleccionPedido = ({ items, setItems, setPedido, pedido }) => {
       <div >
         <div>
           <Autocomplete
+            
             value={clienteSeleccionado}
             onChange={(event, newValue) => {
               setClienteSeleccionado(newValue);
@@ -99,6 +100,7 @@ const SeleccionPedido = ({ items, setItems, setPedido, pedido }) => {
             options={cliente}
             renderInput={(params) => (
               <TextField {...params}
+                autoFocus
                 label="Seleccion un cliente"
                 onKeyDown={handleKeyPress}
                 error={errors.clienteSeleccionado}
