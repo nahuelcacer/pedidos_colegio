@@ -5,8 +5,10 @@ import { useData } from '../../context/DataContext'
 import formatArs from '../../tools/formatArs'
 
 const EditarPedido = ({ pedido }) => {
-  const { clientes } = useData()
+  const { clientes, state, dispatch} = useData()
   const [items, setItems] = useState(pedido.items)
+  const [clienteSeleccionado, setClienteSeleccionado] = useState(pedido.cliente)
+
 
   const handleCantidadChange = (e, index) => {
     const nuevaCantidad = parseInt(e.target.value, 10); // Asegúrate de convertir a número
@@ -31,7 +33,8 @@ const EditarPedido = ({ pedido }) => {
       <h2>Editar pedido</h2>
       <div className='container-inputs'>
         <Autocomplete
-          value={pedido?.cliente}
+          value={clienteSeleccionado}
+          onChange={(event, newValue)=> {dispatch({type:'select customer', payload:newValue})}}
           options={clientes}
           getOptionLabel={(option) => option.nombre}
           renderInput={(params) => (
