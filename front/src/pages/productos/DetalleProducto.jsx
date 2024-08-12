@@ -13,6 +13,13 @@ const DetalleProducto = () => {
       setProducto(res);
     });
   }, []);
+
+  const handleChangeBox = (e) => {
+    setProducto({
+      ...producto,
+      ["notarial"]: e.target.checked,
+    });
+  };
   return (
     <CardDetalle title={"Detalle producto"}>
       <TextField
@@ -27,7 +34,17 @@ const DetalleProducto = () => {
         value={producto?.precio || ""}
         focused={true}
       ></TextField>
-      <FormControlLabel value={true} control={<Checkbox name="notarial" checked={producto?.notarial} />} label="Notarial" />
+      <FormControlLabel
+        value={true}
+        control={
+          <Checkbox
+            name="notarial"
+            checked={producto?.notarial ? true : false}
+            onChange={(e) => handleChangeBox(e)}
+          />
+        }
+        label="Notarial"
+      />
       <Button variant="contained">Guardar</Button>
     </CardDetalle>
   );
