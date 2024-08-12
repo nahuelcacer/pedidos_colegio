@@ -36,17 +36,25 @@ export const DataProvider = ({ children }) => {
   const [clientes, setClientes] = useState([]);
   const [productos, setProductos] = useState([]);
   const [state, dispatch] = useReducer(pedidoReducer, initialState);
+  const [search, setSearch] = useState('')
+
+
+  const searchParams = new URLSearchParams({
+    q: search,
+    escribano: false
+  })
+
 
   useEffect(() => {
-    fetchClientes();
-  }, []);
+    fetchClientes(searchParams);
+  }, [search]);
   useEffect(()=>{
-    fetchProductos()    
-  }, [])
+    fetchProductos(searchParams)    
+  }, [search])
 
-  const fetchClientes = async () => {
+  const fetchClientes = async (searchParams) => {
     try {
-      const response = await getClientes();
+      const response = await getClientes(searchParams);
       setClientes(response);
     } catch (error) {
       console.error('Error fetching clients:', error);
@@ -57,9 +65,9 @@ export const DataProvider = ({ children }) => {
     await fetchClientes();
   };
 
-  const fetchProductos = async () => {
+  const fetchProductos = async (searchParams) => {
     try {
-      const response = await getProductos();
+      const response = await getProductos(searchParams);
       setProductos(response);
     } catch (error) {
       console.error('Error fetchings products', error)
@@ -70,7 +78,7 @@ export const DataProvider = ({ children }) => {
     await fetchProductos();
   }
   return (
-    <DataContext.Provider value={{ clientes, setClientes, updateClientes, productos, updateProductos, state, dispatch }}>
+    <DataContext.Provider value={{ clientes,setSearch, setClientes, updateClientes, productos, updateProductos, state, dispatch }}>
       {children}
     </DataContext.Provider>
   );

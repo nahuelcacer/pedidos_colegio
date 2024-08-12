@@ -16,15 +16,17 @@ import { useBusqueda } from "../../context/BusquedaContext";
 import { deepOrange } from "@mui/material/colors";
 import CustomModal from "../../component/modal/CustomModal";
 import EditarPedido from "./EditarPedido";
-import { ReactComponent as DeleteIcon } from '../../icons/trash-bin-trash-svgrepo-com.svg';
+import { ReactComponent as DeleteIcon } from "../../icons/trash-bin-trash-svgrepo-com.svg";
 import { usePedido } from "../../context/PedidoContext";
-
-
 
 const ListData = ({ data, handleOpen }) => {
   const renderedRows = useMemo(() => {
     return data.map((item) => (
-      <TableRow id="rowClickleable" key={item.id} onClick={() => handleOpen(item)}>
+      <TableRow
+        id="rowClickleable"
+        key={item.id}
+        onClick={() => handleOpen(item)}
+      >
         <TableCell>{item.cliente.nombre}</TableCell>
         <TableCell>{item.cliente.identificacion}</TableCell>
         <TableCell>
@@ -34,7 +36,9 @@ const ListData = ({ data, handleOpen }) => {
               variant="outlined"
               avatar={
                 <Avatar sx={{ bgcolor: deepOrange[300] }}>
-                  <div style={{ color: 'white' }}>{item.user_creator.username.charAt(0).toUpperCase()}</div>
+                  <div style={{ color: "white" }}>
+                    {item.user_creator.username.charAt(0).toUpperCase()}
+                  </div>
                 </Avatar>
               }
               label={item.user_creator.username}
@@ -51,12 +55,12 @@ const ListData = ({ data, handleOpen }) => {
 
 const MainPedidos = () => {
   const [open, setOpen] = useState(false);
-  const { state, dispatch, pedidos} = usePedido()
+  const { state, dispatch, pedidos } = usePedido();
   const [selectedItem, setSelectedItem] = useState(null);
 
   const handleOpen = (item) => {
     setSelectedItem(item);
-    console.log(item)
+    console.log(item);
     setOpen(true);
   };
   const handleClose = () => setOpen(false);
@@ -69,23 +73,20 @@ const MainPedidos = () => {
     { nombre: "IMPORTE TOTAL" },
   ];
 
- 
-
   const searchParams = new URLSearchParams({
     q: search,
     fecha: fecha,
     // factura:false
   });
   const handleDelete = (index) => {
-    dispatch({type:'delete item', payload:index})
+    dispatch({ type: "delete item", payload: index });
   };
 
- 
   return (
     <div style={{ display: "grid", gridTemplateColumns: "1fr 1.5fr" }}>
       <div style={{ display: "flex", flexDirection: "column" }}>
         <CardDetalle title={"Agregar pedidos"} width="95%">
-          <SeleccionPedido/>
+          <SeleccionPedido />
         </CardDetalle>
 
         <CardDetalle title={"Items agregados"} width="95%" maxHeight="240px">
@@ -116,14 +117,19 @@ const MainPedidos = () => {
                     {formatArs.format(item.totalItem)}
                   </td>
                   <td style={{ textAlign: "center", paddingTop: "10px" }}>
-                    <IconButton size="small" onClick={(e)=>{handleDelete(index)}}><DeleteIcon width="18px" height="18px"/></IconButton>
+                    <IconButton
+                      size="small"
+                      onClick={(e) => {
+                        handleDelete(index);
+                      }}
+                    >
+                      <DeleteIcon width="18px" height="18px" />
+                    </IconButton>
                   </td>
-
                 </tr>
               ))}
             </tbody>
           </table>
-          
         </CardDetalle>
         <div style={{ textAlign: "right", marginRight: "23px" }}>
           <Button sx={{ width: "200px" }} variant="contained">
@@ -133,23 +139,23 @@ const MainPedidos = () => {
       </div>
 
       <CardDetalle title={"Listado de pedidos"} width="95%">
-        <PaginadorPedidos
-          pedidos={pedidos}
-          itemsPerPage={10}
-          headers={headers}
-        >
+        <PaginadorPedidos pedidos={pedidos} itemsPerPage={10} headers={headers}>
           {(dataVisibles) =>
             dataVisibles ? (
               <ListData handleOpen={handleOpen} data={dataVisibles} />
             ) : (
-              <p style={{ padding: '20px 0px' }}>No se encontraron registros</p>
+              <p style={{ padding: "20px 0px" }}>No se encontraron registros</p>
             )
           }
         </PaginadorPedidos>
       </CardDetalle>
       <CustomModal open={open} handleClose={handleClose}>
         <div>
-          {selectedItem ? <EditarPedido pedido={selectedItem}></EditarPedido>: <></>}
+          {selectedItem ? (
+            <EditarPedido pedido={selectedItem}></EditarPedido>
+          ) : (
+            <></>
+          )}
         </div>
       </CustomModal>
     </div>

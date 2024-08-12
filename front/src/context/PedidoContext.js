@@ -24,7 +24,6 @@ function pedidoReducer(state, action) {
                 ...state, cantidad: action.payload
             }
         case 'add item':
-            console.log('GAGREGARE')
             return {
                 ...state,
                 items: [...state.items, action.payload]

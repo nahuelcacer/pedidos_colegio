@@ -12,9 +12,11 @@ import {
     TextField,
 } from "@mui/material";
 import { ReactComponent as SearchIcon } from "../../icons/search-svgrepo-com.svg";
+import { useData } from '../../context/DataContext';
 
 
-const Paginador = ({ children, data, itemsPerPage = 10, headers, title, setSearch, buttonAdd }) => {
+const Paginador = ({ children, data, itemsPerPage = 10, headers, title, buttonAdd }) => {
+    const { setSearch } = useData()
     // PAGINADOR
     const totalPages = Math.ceil(data.length / itemsPerPage);
 
