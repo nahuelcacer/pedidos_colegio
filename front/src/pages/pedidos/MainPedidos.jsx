@@ -6,11 +6,10 @@ import {
   TableCell,
   TableRow,
 } from "@mui/material";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import SeleccionPedido from "./SeleccionPedido";
 import CardDetalle from "../../component/cards/CardDetalle";
 import formatArs from "../../tools/formatArs";
-import { getPedidos } from "../../service/pedidos";
 import PaginadorPedidos from "./PaginadorPedidos";
 import { useBusqueda } from "../../context/BusquedaContext";
 import { deepOrange } from "@mui/material/colors";
@@ -49,8 +48,7 @@ const ListData = ({ data, handleOpen }) => {
       </TableRow>
     ));
   }, [data]);
-
-  return <>{renderedRows}</>;
+  return  renderedRows.length > 0 ? <>{renderedRows}</> : <TableCell colSpan={5}><p style={{textAlign:'center', padding:'20px'}}>No se encontraron registros</p></TableCell>
 };
 
 const MainPedidos = () => {
@@ -64,8 +62,6 @@ const MainPedidos = () => {
     setOpen(true);
   };
   const handleClose = () => setOpen(false);
-
-  const { search, fecha, factura } = useBusqueda();
   const headers = [
     { nombre: "NOMBRE" },
     { nombre: "DNI/CUIT" },
@@ -73,11 +69,6 @@ const MainPedidos = () => {
     { nombre: "IMPORTE TOTAL" },
   ];
 
-  const searchParams = new URLSearchParams({
-    q: search,
-    fecha: fecha,
-    // factura:false
-  });
   const handleDelete = (index) => {
     dispatch({ type: "delete item", payload: index });
   };

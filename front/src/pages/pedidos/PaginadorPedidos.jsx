@@ -9,11 +9,10 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import TableFooterPaginator from "../../component/tools/TableFooterPaginator";
-import { useBusqueda } from "../../context/BusquedaContext";
-import TextFieldP from "../../component/textfield/TextField";
+import { usePedido } from "../../context/PedidoContext";
 
 const PaginadorPedidos = ({ children, pedidos=[], itemsPerPage, headers }) => {
-  const { setSearch, setFecha } = useBusqueda();
+  const { handleSearch } = usePedido()
   const totalPages = pedidos ? Math.ceil(pedidos.length / itemsPerPage) : 0;
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -34,7 +33,8 @@ const PaginadorPedidos = ({ children, pedidos=[], itemsPerPage, headers }) => {
               <TextField
                 placeholder="Buscar..."
                 size="small"
-                onChange={(e) => setSearch(e.target.value)}
+                name='q'
+                onChange={(e) => handleSearch(e)}
                 sx={{ marginRight: 1 }}
               />
               {/* <TextFieldP sx={{ marginRight: 1 }} /> */}
