@@ -43,6 +43,9 @@ function pedidoReducer(state, action) {
             return { ...state, editPedido: action.payload }
         case 'select customer edit':
             return { ...state, editPedido: { ...state.editPedido, cliente: action.payload } };
+        case 'add quantity item edit':
+            return null
+        
     }
 }
 const PedidoContext = createContext();
