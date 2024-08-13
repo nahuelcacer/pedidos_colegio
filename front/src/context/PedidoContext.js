@@ -6,7 +6,8 @@ const initialState = {
     cliente: null,
     producto: null,
     cantidad: null,
-    items: []
+    items: [],
+    editPedido:null
 }
 
 function pedidoReducer(state, action) {
@@ -37,6 +38,11 @@ function pedidoReducer(state, action) {
 
         case 'restart':
             return initialState
+
+        case 'select pedido edit':
+            return { ...state, editPedido: action.payload }
+        case 'select customer edit':
+            return { ...state, editPedido: { ...state.editPedido, cliente: action.payload } };
     }
 }
 const PedidoContext = createContext();

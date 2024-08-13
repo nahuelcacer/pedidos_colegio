@@ -26,6 +26,10 @@ const Root = () => {
                 <div id="header">
                   <Outlet />
                 </div>
+                <footer style={{marginTop:'auto', textAlign:'center', padding:'3px'}} >
+                  <p>&copy; 2024 Nahuel Caceres. Todos los derechos reservados.</p>
+                  <p>Desarrollado por Nahuel Caceres</p>
+                </footer>
               </div>
             </BusquedaProvider>
           </DataProvider>

@@ -1,40 +1,39 @@
-import { Autocomplete, Chip, TableCell, TableRow, TextField } from '@mui/material'
-import React, { useEffect, useState } from 'react'
-import { getClientes } from '../../service/clientes'
+import { Autocomplete, TableCell, TableRow, TextField } from '@mui/material'
+import React, { useState } from 'react'
 import { useData } from '../../context/DataContext'
 import formatArs from '../../tools/formatArs'
+import { usePedido } from '../../context/PedidoContext'
 
-const EditarPedido = ({ pedido }) => {
-  const { clientes, state, dispatch} = useData()
-  const [items, setItems] = useState(pedido.items)
-  const [clienteSeleccionado, setClienteSeleccionado] = useState(pedido.cliente)
+const EditarPedido = () => {
+  const { state: stateEdit, dispatch } = usePedido()
+  const { clientes } = useData()
 
 
   const handleCantidadChange = (e, index) => {
     const nuevaCantidad = parseInt(e.target.value, 10); // Asegúrate de convertir a número
-  
-    setItems(prevItems => {
-      return prevItems.map((item, idx) => {
-        if (idx === index) { // Usa el índice para identificar el elemento
-          console.log(`Cambiando cantidad del item con índice: ${index}`);
-          return {
-            ...item,
-            cantidad: nuevaCantidad,
-            total_item: item.producto.precio * nuevaCantidad
-          };
-        }
-        return item;
-      });
-    });
+
+    // setItems(prevItems => {
+    //   return prevItems.map((item, idx) => {
+    //     if (idx === index) { // Usa el índice para identificar el elemento
+    //       console.log(`Cambiando cantidad del item con índice: ${index}`);
+    //       return {
+    //         ...item,
+    //         cantidad: nuevaCantidad,
+    //         total_item: item.producto.precio * nuevaCantidad
+    //       };
+    //     }
+    //     return item;
+    //   });
+    // });
   };
-  
+
   return (
     <div>
       <h2>Editar pedido</h2>
       <div className='container-inputs'>
         <Autocomplete
-          value={clienteSeleccionado}
-          onChange={(event, newValue)=> {dispatch({type:'select customer', payload:newValue})}}
+          value={stateEdit.editPedido.cliente}
+          onChange={(event, newValue) => { dispatch({ type: 'select customer edit', payload: newValue }) }}
           options={clientes}
           getOptionLabel={(option) => option.nombre}
           renderInput={(params) => (
@@ -45,7 +44,7 @@ const EditarPedido = ({ pedido }) => {
           )}
         />
 
-        {items.map((item,index) => {
+        {stateEdit.editPedido.items.map((item,index) => {
           return (
             <TableRow id="rowClickleable" key={index} >
               <TableCell>{item?.producto.nombre}</TableCell>
@@ -56,7 +55,7 @@ const EditarPedido = ({ pedido }) => {
                   value={item.cantidad}
                   size='small'
                   sx={{ width: '60px' }}
-                  onChange={(e) => {handleCantidadChange(e, index)}}
+                  // onChange={(e) => {handleCantidadChange(e, index)}}
                 />
               </TableCell>
               <TableCell>{formatArs.format(item.total_item)}</TableCell>

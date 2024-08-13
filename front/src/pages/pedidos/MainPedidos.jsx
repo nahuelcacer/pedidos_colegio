@@ -11,20 +11,23 @@ import SeleccionPedido from "./SeleccionPedido";
 import CardDetalle from "../../component/cards/CardDetalle";
 import formatArs from "../../tools/formatArs";
 import PaginadorPedidos from "./PaginadorPedidos";
-import { useBusqueda } from "../../context/BusquedaContext";
 import { deepOrange } from "@mui/material/colors";
 import CustomModal from "../../component/modal/CustomModal";
 import EditarPedido from "./EditarPedido";
 import { ReactComponent as DeleteIcon } from "../../icons/trash-bin-trash-svgrepo-com.svg";
 import { usePedido } from "../../context/PedidoContext";
 
-const ListData = ({ data, handleOpen }) => {
+const ListData = ({ data, setOpen }) => {
+  const { dispatch } = usePedido()
   const renderedRows = useMemo(() => {
     return data.map((item) => (
       <TableRow
         id="rowClickleable"
         key={item.id}
-        onClick={() => handleOpen(item)}
+        onClick={() => {
+          dispatch({type:'select pedido edit', payload:item})
+          setOpen(true)
+        }}
       >
         <TableCell>{item.cliente.nombre}</TableCell>
         <TableCell>{item.cliente.identificacion}</TableCell>
@@ -54,13 +57,8 @@ const ListData = ({ data, handleOpen }) => {
 const MainPedidos = () => {
   const [open, setOpen] = useState(false);
   const { state, dispatch, pedidos } = usePedido();
-  const [selectedItem, setSelectedItem] = useState(null);
 
-  const handleOpen = (item) => {
-    setSelectedItem(item);
-    console.log(item);
-    setOpen(true);
-  };
+
   const handleClose = () => setOpen(false);
   const headers = [
     { nombre: "NOMBRE" },
@@ -133,7 +131,7 @@ const MainPedidos = () => {
         <PaginadorPedidos pedidos={pedidos} itemsPerPage={10} headers={headers}>
           {(dataVisibles) =>
             dataVisibles ? (
-              <ListData handleOpen={handleOpen} data={dataVisibles} />
+              <ListData setOpen={setOpen} data={dataVisibles} />
             ) : (
               <p style={{ padding: "20px 0px" }}>No se encontraron registros</p>
             )
@@ -142,8 +140,8 @@ const MainPedidos = () => {
       </CardDetalle>
       <CustomModal open={open} handleClose={handleClose}>
         <div>
-          {selectedItem ? (
-            <EditarPedido pedido={selectedItem}></EditarPedido>
+          {open ? (
+            <EditarPedido></EditarPedido>
           ) : (
             <></>
           )}
