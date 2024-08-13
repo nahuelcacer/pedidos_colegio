@@ -1,4 +1,5 @@
 import {
+  FormControlLabel,
   Table,
   TableBody,
   TableCell,
@@ -10,6 +11,7 @@ import {
 import React, { useState } from "react";
 import TableFooterPaginator from "../../component/tools/TableFooterPaginator";
 import { usePedido } from "../../context/PedidoContext";
+import { AndroidSwitch } from "../../component/switch/AndroidSwitch";
 
 const PaginadorPedidos = ({ children, pedidos=[], itemsPerPage, headers }) => {
   const { handleSearch } = usePedido()
@@ -29,7 +31,7 @@ const PaginadorPedidos = ({ children, pedidos=[], itemsPerPage, headers }) => {
       <Table size="small">
       <TableHead>
           <TableRow>
-            <TableCell colSpan={headers.length}>
+            <TableCell colSpan={headers.length} >
               <TextField
                 placeholder="Buscar..."
                 size="small"
@@ -37,9 +39,8 @@ const PaginadorPedidos = ({ children, pedidos=[], itemsPerPage, headers }) => {
                 onChange={(e) => handleSearch(e)}
                 sx={{ marginRight: 1 }}
               />
-              {/* <TextFieldP sx={{ marginRight: 1 }} /> */}
-              
             </TableCell>
+            
           </TableRow>
           <TableRow>
             {headers.map((header) => (

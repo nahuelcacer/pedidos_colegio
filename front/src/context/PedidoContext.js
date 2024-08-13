@@ -47,14 +47,16 @@ export const PedidoProvider = ({ children }) => {
     const [state, dispatch] = useReducer(pedidoReducer, initialState);
     const [pedidos, setPedidos] = useState([])
     const [search, setSearch] = useState({
-        q:'', fecha:new Date().toISOString().slice(0,10)
+        q:'', fecha:new Date().toISOString().slice(0,10),
+        factura:false, recibo:false
     })
 
 
-    const searchParams = new URLSearchParams(search)
-
-
-    const fetchPedidos = async (searchParams) => {
+    
+    
+    const fetchPedidos = async () => {
+        const searchParams = new URLSearchParams(search);
+       
         try {
             const response = await getPedidos(searchParams);
             setPedidos(response);
@@ -62,18 +64,19 @@ export const PedidoProvider = ({ children }) => {
             console.error('Error fetching pedidos:', error);
         }
     }
-    const updatePedidos = async () => {
-        await fetchPedidos()
+    const updatePedidos = () => {
+        fetchPedidos();
     }
+
     useEffect(() => {
-        fetchPedidos(searchParams)
+        fetchPedidos()
     }, [search])
 
     const handleSearch = (e) => {
-        const {value, name} = e.target
-        console.log(value)
-        setSearch({...search, [name]:value})
+        const { value, name } = e.target;
+        setSearch(prevSearch => ({ ...prevSearch, [name]: value }));
     }
+
     return (
         <PedidoContext.Provider value={{ state, dispatch, pedidos, updatePedidos, handleSearch }}>
             {children}

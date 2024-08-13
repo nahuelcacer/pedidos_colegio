@@ -1,6 +1,7 @@
 import { toast } from "react-toastify";
 import { getToken } from "./token";
 
+
 const toastConfig = {
     autoClose: 2000,
     position: 'bottom-right'
@@ -45,6 +46,7 @@ export const agregarPedidoService = async (pedido) => {
 
         if (response.ok) {
             toast.success('Pedido agregado', toastConfig)
+            
         }
     } catch (error) {
         toast.error('Error al agregar pedido', toastConfig)

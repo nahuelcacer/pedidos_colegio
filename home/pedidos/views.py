@@ -7,7 +7,18 @@ from rest_framework.decorators import authentication_classes, permission_classes
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from django.db.models import Q
+from django.core.exceptions import ValidationError
+
 # Create your views here.
+
+def str_to_bool(value):
+    if value is None:
+        return None
+    if value.lower() in ['true', '1']:
+        return True
+    elif value.lower() in ['false', '0']:
+        return False
+    raise ValidationError(f"Invalid boolean value: {value}")
 
 
 @api_view(['GET', 'POST'])
@@ -24,10 +35,16 @@ def pedido(request, pk=None):
 
         q = request.query_params.get('q', None)
         fecha = request.query_params.get('fecha', None)
-        factura = request.query_params.get('factura', None)
+        factura = str_to_bool(request.query_params.get('factura', None))
+        recibo = str_to_bool(request.query_params.get('recibo', None))
+
+
+        print('recibo', recibo)
+        if recibo:
+            queryset = queryset.filter(Q(estado__recibo=recibo))
 
         if factura:
-            queryset = Pedido.objects.filter(Q(estado__factura=True))
+            queryset = queryset.filter(Q(estado__factura=factura))
 
         if q:
             queryset = queryset.filter(Q(cliente__nombre__icontains=q) | Q(cliente__identificacion__icontains=q))

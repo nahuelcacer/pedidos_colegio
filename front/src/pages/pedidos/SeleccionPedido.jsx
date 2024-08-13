@@ -6,11 +6,13 @@ import { usePedido } from "../../context/PedidoContext";
 import { useData } from "../../context/DataContext";
 
 const SeleccionPedido = () => {
-  const { state, dispatch } = usePedido()
-  const { productos, clientes } = useData()
-  const [errors, setErrors] = useState({ clienteSeleccionado: false, productoselecccionado: false, cantidad: false });
-
-
+  const { state, dispatch, updatePedidos } = usePedido();
+  const { productos, clientes } = useData();
+  const [errors, setErrors] = useState({
+    clienteSeleccionado: false,
+    productoselecccionado: false,
+    cantidad: false,
+  });
 
   const validateInputs = () => {
     if (!state.cliente || !state.producto || !state.cantidad) {
@@ -31,106 +33,112 @@ const SeleccionPedido = () => {
     const newItem = {
       producto: state.producto,
       cantidad: state.cantidad,
-      totalItem: state.cantidad * state.producto.precio
+      totalItem: state.cantidad * state.producto.precio,
     };
-    dispatch({ type: 'add item', payload: newItem })
+    dispatch({ type: "add item", payload: newItem });
   };
 
-  const agregarPedido = () => {
+  const agregarPedido = async () => {
     if (!validateInputs()) {
-      return;
+        return;
     }
-    agregarPedidoService({ cliente: state.cliente, pedido: state.items })
-  };
+    try {
+        await agregarPedidoService({ cliente: state.cliente, pedido: state.items });
+        updatePedidos();
+    } catch (error) {
+        console.error('Error al agregar pedido:', error);
+    }
+};
   const handleKeyPress = (event) => {
-    if (event.ctrlKey && event.key === 'Enter') {
-
+    if (event.ctrlKey && event.key === "Enter") {
       // Evitar que se ejecute agregarItem en este caso
       event.preventDefault();
-      agregarPedido()
-
-    } else if (event.ctrlKey && event.key === 'Backspace') {
+      agregarPedido();
+    } else if (event.ctrlKey && event.key === "Backspace") {
       event.preventDefault();
 
-      dispatch({ type: 'restart' })
-      toast.info('Campos limpiados', {
-        position: 'bottom-right',
-        autoClose: 1000
-      })
-    }
-    else if (event.key === 'Enter') {
+      dispatch({ type: "restart" });
+      toast.info("Campos limpiados", {
+        position: "bottom-right",
+        autoClose: 1000,
+      });
+    } else if (event.key === "Enter") {
       event.preventDefault(); // Prevenir el envío del formulario si está dentro de un formulario
       agregarItem();
-
     }
   };
 
-
-
   return (
-    <div >
+    <div>
       <div>
         <Autocomplete
-
           value={state.cliente}
           onChange={(event, newValue) => {
-            dispatch({ type: 'select customer', payload: newValue })
+            dispatch({ type: "select customer", payload: newValue });
             setErrors({ ...errors, clienteSeleccionado: false });
           }}
           options={clientes}
           renderInput={(params) => (
-            <TextField {...params}
+            <TextField
+              {...params}
               autoFocus
               label="Seleccion un cliente"
               onKeyDown={handleKeyPress}
               error={errors.clienteSeleccionado}
-              helperText={errors.clienteSeleccionado ? 'El cliente es obligatorio' : ''}
+              helperText={
+                errors.clienteSeleccionado ? "El cliente es obligatorio" : ""
+              }
             />
           )}
           getOptionLabel={(option) => option.nombre}
         ></Autocomplete>
       </div>
-      <div style={{ display: 'grid', gridTemplateColumns: '3fr 1fr', marginTop: '20px', gap: '20px' }}>
-
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "3fr 1fr",
+          marginTop: "20px",
+          gap: "20px",
+        }}
+      >
         <Autocomplete
           value={state.producto}
           onChange={(event, newValue) => {
-            dispatch({ type: 'select product', payload: newValue })
+            dispatch({ type: "select product", payload: newValue });
             setErrors({ ...errors, productoselecccionado: false });
           }}
           key={(option) => option.id || option.nombre}
           options={productos}
           renderInput={(params) => (
-            <TextField {...params}
+            <TextField
+              {...params}
               label="Selecciona un producto"
               onKeyDown={handleKeyPress}
               error={errors.productoselecccionado}
-              helperText={errors.productoselecccionado ? 'El producto es obligatorio' : ''}
-
+              helperText={
+                errors.productoselecccionado ? "El producto es obligatorio" : ""
+              }
             ></TextField>
           )}
           getOptionLabel={(option) => option.nombre}
-
         ></Autocomplete>
-
 
         <TextField
           onChange={(event) => {
-            dispatch({ type: 'select quantity', payload: event.target.value })
+            dispatch({ type: "select quantity", payload: event.target.value });
             setErrors({ ...errors, cantidad: false });
           }}
           value={state.cantidad}
           placeholder="Cantidad"
           onKeyDown={handleKeyPress}
           error={errors.cantidad}
-          helperText={errors.cantidad ? 'Ingrese cantidad' : ''}
+          helperText={errors.cantidad ? "Ingrese cantidad" : ""}
           InputProps={{
             style: {
-              color: errors.cantidad ? 'red' : 'inherit',
+              color: errors.cantidad ? "red" : "inherit",
             },
           }}
-        >
-        </TextField>
+        ></TextField>
       </div>
     </div>
   );
