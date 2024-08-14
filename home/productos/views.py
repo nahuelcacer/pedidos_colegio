@@ -42,8 +42,20 @@ def producto(request, pk=None):
 @authentication_classes([SessionAuthentication, TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def producto_detalle(request, pk=None):
-    if request.method == 'GET':
-        query = Producto.objects.get(id=pk)
-        serializer = ProductoSerializer(query)
+    try:
+        producto = Producto.objects.get(id=pk)
+    except Producto.DoesNotExist:
+        return Response({"error": "Producto no encontrado."}, status=status.HTTP_404_NOT_FOUND)
 
+    if request.method == 'GET':
+        serializer = ProductoSerializer(producto)
         return Response(serializer.data)
+
+    elif request.method == 'PUT':
+        serializer = ProductoSerializer(producto, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    # Puedes implementar el manejo de otros métodos como POST y PATCH aquí

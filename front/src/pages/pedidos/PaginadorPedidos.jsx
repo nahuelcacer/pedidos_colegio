@@ -11,7 +11,6 @@ import {
 import React, { useState } from "react";
 import TableFooterPaginator from "../../component/tools/TableFooterPaginator";
 import { usePedido } from "../../context/PedidoContext";
-import { AndroidSwitch } from "../../component/switch/AndroidSwitch";
 
 const PaginadorPedidos = ({ children, pedidos=[], itemsPerPage, headers }) => {
   const { handleSearch } = usePedido()

@@ -1,8 +1,9 @@
-import { Autocomplete, TableCell, TableRow, TextField } from '@mui/material'
+import { Autocomplete, IconButton, TableCell, TableRow, TextField } from '@mui/material'
 import React, { useState } from 'react'
 import { useData } from '../../context/DataContext'
 import formatArs from '../../tools/formatArs'
 import { usePedido } from '../../context/PedidoContext'
+import { ReactComponent as DeleteIcon } from "../../icons/trash-bin-trash-svgrepo-com.svg";
 
 const EditarPedido = () => {
   const { state: stateEdit, dispatch } = usePedido()
@@ -32,6 +33,7 @@ const EditarPedido = () => {
       <h2>Editar pedido</h2>
       <div className='container-inputs'>
         <Autocomplete
+          size='small'
           value={stateEdit.editPedido.cliente}
           onChange={(event, newValue) => { dispatch({ type: 'select customer edit', payload: newValue }) }}
           options={clientes}
@@ -43,25 +45,53 @@ const EditarPedido = () => {
             />
           )}
         />
+        <table>
+          <thead>
+            <tr>
+              <th>Producto</th>
+              <th>Precio unitario</th>
+              <th>Cantidad</th>
+              <th>Total item</th>
+            </tr>
+          </thead>
+          {stateEdit.editPedido.items.map((item, index) => {
+            return (
+              <tr key={item.producto.id}>
+                <td style={{ textAlign: "center", paddingTop: "10px" }}>
+                  {item.producto.nombre}
+                </td>
+                <td style={{ textAlign: "center", paddingTop: "10px" }}>
+                  {formatArs.format(item.producto.precio)}
+                </td>
+                <td style={{ textAlign: "center", paddingTop: "10px" }}>
+                  <TextField 
+                  type='number' 
+                  size="small" 
+                  value={item.cantidad} 
+                  onChange={(e)=> {dispatch({type: 'add quantity item edit',payload: {index: index, cantidad: e.target.value}})
+                  ;}}>
 
-        {stateEdit.editPedido.items.map((item,index) => {
-          return (
-            <TableRow id="rowClickleable" key={index} >
-              <TableCell>{item?.producto.nombre}</TableCell>
-              <TableCell>{formatArs.format(item.producto.precio)}</TableCell>
-              <TableCell>
-                <TextField
-                  type='number'
-                  value={item.cantidad}
-                  size='small'
-                  sx={{ width: '60px' }}
-                  // onChange={(e) => {handleCantidadChange(e, index)}}
-                />
-              </TableCell>
-              <TableCell>{formatArs.format(item.total_item)}</TableCell>
-            </TableRow>
-          )
-        })}
+                  </TextField>
+                </td>
+                <td style={{ textAlign: "center", paddingTop: "10px" }}>
+                  {formatArs.format(item.total_item)}
+                </td>
+                <td style={{ textAlign: "center", paddingTop: "10px" }}>
+                  <IconButton
+                    size="small"
+                    onClick={(e) => {
+                      // handleDelete(index);
+                    }}
+                  >
+                    <DeleteIcon width="18px" height="18px" />
+                  </IconButton>
+                </td>
+              </tr>
+
+            )
+          })}
+        </table>
+
       </div>
     </div>
   )

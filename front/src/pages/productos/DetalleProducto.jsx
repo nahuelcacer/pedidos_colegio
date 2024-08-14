@@ -1,37 +1,40 @@
 import { Button, Checkbox, FormControlLabel, TextField } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { detailProducto } from "../../service/productos";
+import React, { useEffect } from "react";
 import CardDetalle from "../../component/cards/CardDetalle";
+import { useData } from "../../context/DataContext";
+import { detailProducto, saveEditProduct } from "../../service/productos";
+import { useParams } from "react-router-dom";
 
 const DetalleProducto = () => {
-  const { id } = useParams();
-  const [producto, setProducto] = useState(null);
+  const { state, dispatch, saveEditProductRed } = useData()
+  const { id } = useParams()
   useEffect(() => {
-    detailProducto(id).then((res) => {
-      console.log(res);
-      setProducto(res);
-    });
-  }, []);
-
-  const handleChangeBox = (e) => {
-    setProducto({
-      ...producto,
-      ["notarial"]: e.target.checked,
-    });
-  };
+    if (!state.editProduct) {
+      detailProducto(id).then(res => dispatch({ type: 'select producto to edit', payload: res }))
+    }
+  }, [])
   return (
     <CardDetalle title={"Detalle producto"}>
       <TextField
         size="small"
         label={"Nombre"}
-        value={producto?.nombre || ""}
+        value={state.editProduct?.nombre || ""}
+        onChange={(e) => {
+          dispatch({
+            type: 'change product edit',
+            payload: {
+              name: e.target.name,
+              value: e.target.value
+            }
+          });
+        }}
+        name="nombre" // Asegúrate de agregar el atributo name
         focused={true}
-      ></TextField>
+      />
       <TextField
         size="small"
         label={"Precio"}
-        value={producto?.precio || ""}
+        value={state.editProduct?.precio || ""}
         focused={true}
       ></TextField>
       <FormControlLabel
@@ -39,13 +42,13 @@ const DetalleProducto = () => {
         control={
           <Checkbox
             name="notarial"
-            checked={producto?.notarial ? true : false}
-            onChange={(e) => handleChangeBox(e)}
+            checked={state.editProduct?.notarial ? true : false}
+            onChange={(e) => dispatch({ type: 'change checkbox product edit', payload: e.target.checked })}
           />
         }
         label="Notarial"
       />
-      <Button variant="contained">Guardar</Button>
+      <Button variant="contained" onClick={(e) => { saveEditProduct(state.editProduct) }}>Guardar</Button>
     </CardDetalle>
   );
 };

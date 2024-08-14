@@ -21,8 +21,10 @@ const ButtonAdd = () => {
 };
 const ListData = ({ data }) => {
   const navigate = useNavigate();
+  const { dispatch } = useData()
 
   const handleRowClick = (producto) => {
+      dispatch({type:'select producto to edit', payload:producto})
     const iden = producto.id;
     navigate(`/productos/${iden}`);
   };

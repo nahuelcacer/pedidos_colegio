@@ -1,13 +1,15 @@
 import React, { createContext, useState, useContext, useEffect, useReducer } from 'react';
 import { getClientes } from '../service/clientes';
-import { getProductos } from '../service/productos';
+import { getProductos, saveEditProduct } from '../service/productos';
+import { toast } from 'react-toastify';
 
 
 
 const initialState = {
   cliente:null,
   producto:null,
-  cantidad:0
+  cantidad:0,
+  editProduct:null
 }
 
 function pedidoReducer(state,action){
@@ -26,6 +28,15 @@ function pedidoReducer(state,action){
       }
     case 'restart':
       return initialState
+
+    case 'select producto to edit':
+      return {
+        ...state, editProduct:action.payload
+      }
+    case 'change checkbox product edit':
+      return { ...state, editProduct:{...state.editProduct, notarial:action.payload }}
+    case 'change product edit':
+      return {...state, editProduct: {...state.editProduct, [action.payload.name]: action.payload.value}}
   }
 }
 const DataContext = createContext();
@@ -77,6 +88,8 @@ export const DataProvider = ({ children }) => {
   const updateProductos = async () => {
     await fetchProductos();
   }
+
+ 
   return (
     <DataContext.Provider value={{ clientes,setSearch, setClientes, updateClientes, productos, updateProductos, state, dispatch }}>
       {children}

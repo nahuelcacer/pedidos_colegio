@@ -44,7 +44,15 @@ function pedidoReducer(state, action) {
         case 'select customer edit':
             return { ...state, editPedido: { ...state.editPedido, cliente: action.payload } };
         case 'add quantity item edit':
-            return null
+            return { 
+                ...state, 
+                editPedido: {
+                    ...state.editPedido, 
+                    items: state.editPedido.items.map((item, idx) => 
+                        idx === action.payload.index ? { ...item, cantidad: action.payload.cantidad, total_item:action.payload.cantidad * item.producto.precio } : item
+                    )
+                } 
+            };
         
     }
 }
@@ -85,7 +93,7 @@ export const PedidoProvider = ({ children }) => {
         const { value, name } = e.target;
         setSearch(prevSearch => ({ ...prevSearch, [name]: value }));
     }
-
+    
     return (
         <PedidoContext.Provider value={{ state, dispatch, pedidos, updatePedidos, handleSearch }}>
             {children}
