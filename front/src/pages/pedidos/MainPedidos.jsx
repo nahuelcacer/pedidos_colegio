@@ -48,6 +48,7 @@ const ListData = ({ data, setOpen }) => {
           ) : null}
         </TableCell>
         <TableCell>{formatArs.format(item.total_pedido)}</TableCell>
+        <TableCell>Delete</TableCell>
       </TableRow>
     ));
   }, [data]);
@@ -65,6 +66,7 @@ const MainPedidos = () => {
     { nombre: "DNI/CUIT" },
     { nombre: "USUARIO" },
     { nombre: "IMPORTE TOTAL" },
+    { nombre: "ACCION" },
   ];
 
   const handleDelete = (index) => {

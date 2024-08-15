@@ -7,7 +7,9 @@ const initialState = {
     producto: null,
     cantidad: null,
     items: [],
-    editPedido:null
+    editPedido:null,
+    errors:null
+
 }
 
 function pedidoReducer(state, action) {
@@ -53,6 +55,8 @@ function pedidoReducer(state, action) {
                     )
                 } 
             };
+        case 'set error':
+            return {...state, errors: {...state.errors, [action.payload.name]:action.payload.value}}
         
     }
 }
