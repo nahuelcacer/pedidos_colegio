@@ -1,8 +1,6 @@
 import React, { createContext, useState, useContext, useEffect, useReducer } from 'react';
 import { getClientes } from '../service/clientes';
-import { getProductos, saveEditProduct } from '../service/productos';
-import { toast } from 'react-toastify';
-
+import { getProductos } from '../service/productos';
 
 
 const initialState = {
@@ -15,24 +13,15 @@ const initialState = {
 function pedidoReducer(state,action){
   switch(action.type){
     case 'select customer':
-      return {
-        ...state, cliente:action.payload
-      }
+      return {...state, cliente:action.payload}
     case 'select product':
-      return {
-        ...state, producto:action.payload
-      }
+      return {...state, producto:action.payload}
     case 'select quantity':
-      return {
-        ...state, cantidad:action.payload
-      }
+      return {...state, cantidad:action.payload}
     case 'restart':
       return initialState
-
     case 'select producto to edit':
-      return {
-        ...state, editProduct:action.payload
-      }
+      return {...state, editProduct:action.payload}
     case 'change checkbox product edit':
       return { ...state, editProduct:{...state.editProduct, notarial:action.payload }}
     case 'change product edit':

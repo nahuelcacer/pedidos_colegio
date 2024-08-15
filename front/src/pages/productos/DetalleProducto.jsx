@@ -6,7 +6,7 @@ import { detailProducto, saveEditProduct } from "../../service/productos";
 import { useParams } from "react-router-dom";
 
 const DetalleProducto = () => {
-  const { state, dispatch, saveEditProductRed } = useData()
+  const { state, dispatch } = useData()
   const { id } = useParams()
   useEffect(() => {
     if (!state.editProduct) {
@@ -33,8 +33,18 @@ const DetalleProducto = () => {
       />
       <TextField
         size="small"
+        name="precio"
         label={"Precio"}
         value={state.editProduct?.precio || ""}
+        onChange={(e) => {
+          dispatch({
+            type: 'change product edit',
+            payload: {
+              name: e.target.name,
+              value: e.target.value
+            }
+          });
+        }}
         focused={true}
       ></TextField>
       <FormControlLabel
