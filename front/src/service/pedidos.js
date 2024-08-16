@@ -55,3 +55,27 @@ export const agregarPedidoService = async (pedido) => {
     }
 
 }
+
+
+
+export const eliminarPedido = async (pedido) => {
+    const token = getToken()
+    try {
+        const response = await fetch(`http://127.0.0.1:8002/pedidos/${pedido}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Token ${token}`,
+                'Content-Type': 'application/json' // Incluye esta cabecera si envías datos JSON
+            },
+        })
+
+        if (response.ok) {
+            toast.success('Pedido eliminado con exito', toastConfig)
+            
+        }
+    } catch (error) {
+        toast.error('Error al agregar pedido', toastConfig)
+        console.error('Error:', error);
+        return null; // O devuelve un valor por defecto o maneja el error según lo necesites
+    }
+}

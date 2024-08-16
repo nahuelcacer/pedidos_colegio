@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .serializers import PedidoSerializer, PedidoReadSerializer
 from .models import Pedido
 from rest_framework.response import Response
@@ -21,7 +21,7 @@ def str_to_bool(value):
     raise ValidationError(f"Invalid boolean value: {value}")
 
 
-@api_view(['GET', 'POST'])
+@api_view(['GET', 'POST', 'DELETE'])
 # @authentication_classes([SessionAuthentication, TokenAuthentication])
 # @permission_classes([IsAuthenticated])
 def pedido(request, pk=None):
@@ -66,3 +66,11 @@ def pedido(request, pk=None):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+    elif request.method == 'DELETE':
+        if pk:
+            pedido = get_object_or_404(Pedido, pk=pk)
+            pedido.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response({'detail': 'Not found'}, status=status.HTTP_404_NOT_FOUND)

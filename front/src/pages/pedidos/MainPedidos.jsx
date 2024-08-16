@@ -16,6 +16,7 @@ import CustomModal from "../../component/modal/CustomModal";
 import EditarPedido from "./EditarPedido";
 import { ReactComponent as DeleteIcon } from "../../icons/trash-bin-trash-svgrepo-com.svg";
 import { usePedido } from "../../context/PedidoContext";
+import { eliminarPedido } from "../../service/pedidos";
 
 const ListData = ({ data, setOpen }) => {
   const { dispatch } = usePedido()
@@ -48,7 +49,7 @@ const ListData = ({ data, setOpen }) => {
           ) : null}
         </TableCell>
         <TableCell>{formatArs.format(item.total_pedido)}</TableCell>
-        <TableCell>Delete</TableCell>
+        <TableCell onClick={()=>{eliminarPedido(item.id)}}> Delete</TableCell>
       </TableRow>
     ));
   }, [data]);
