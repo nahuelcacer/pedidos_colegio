@@ -1,14 +1,20 @@
-import { Autocomplete, IconButton, TableCell, TableRow, TextField } from '@mui/material'
-import React, { useState } from 'react'
-import { useData } from '../../context/DataContext'
-import formatArs from '../../tools/formatArs'
-import { usePedido } from '../../context/PedidoContext'
+import {
+  Autocomplete,
+  Button,
+  IconButton,
+  TableCell,
+  TableRow,
+  TextField,
+} from "@mui/material";
+import React, { useState } from "react";
+import { useData } from "../../context/DataContext";
+import formatArs from "../../tools/formatArs";
+import { usePedido } from "../../context/PedidoContext";
 import { ReactComponent as DeleteIcon } from "../../icons/trash-bin-trash-svgrepo-com.svg";
 
 const EditarPedido = () => {
-  const { state: stateEdit, dispatch } = usePedido()
-  const { clientes } = useData()
-
+  const { state: stateEdit, dispatch } = usePedido();
+  const { clientes } = useData();
 
   const handleCantidadChange = (e, index) => {
     const nuevaCantidad = parseInt(e.target.value, 10); // Asegúrate de convertir a número
@@ -30,19 +36,21 @@ const EditarPedido = () => {
 
   return (
     <div>
-      <h2>Editar pedido</h2>
-      <div className='container-inputs'>
+      <div style={{display:'flex', alignItems:'center', justifyContent:'space-between'}}>
+        <h2>Editar pedido</h2>
+        <Button variant="contained" color='error'>Eliminar</Button>
+      </div>
+      <div className="container-inputs">
         <Autocomplete
-          size='small'
+          size="small"
           value={stateEdit.editPedido.cliente}
-          onChange={(event, newValue) => { dispatch({ type: 'select customer edit', payload: newValue }) }}
+          onChange={(event, newValue) => {
+            dispatch({ type: "select customer edit", payload: newValue });
+          }}
           options={clientes}
           getOptionLabel={(option) => option.nombre}
           renderInput={(params) => (
-            <TextField
-              {...params}
-              label="Selecciona un cliente"
-            />
+            <TextField {...params} label="Selecciona un cliente" />
           )}
         />
         <table>
@@ -64,14 +72,17 @@ const EditarPedido = () => {
                   {formatArs.format(item.producto.precio)}
                 </td>
                 <td style={{ textAlign: "center", paddingTop: "10px" }}>
-                  <TextField 
-                  type='number' 
-                  size="small" 
-                  value={item.cantidad} 
-                  onChange={(e)=> {dispatch({type: 'add quantity item edit',payload: {index: index, cantidad: e.target.value}})
-                  ;}}>
-
-                  </TextField>
+                  <TextField
+                    type="number"
+                    size="small"
+                    value={item.cantidad}
+                    onChange={(e) => {
+                      dispatch({
+                        type: "add quantity item edit",
+                        payload: { index: index, cantidad: e.target.value },
+                      });
+                    }}
+                  ></TextField>
                 </td>
                 <td style={{ textAlign: "center", paddingTop: "10px" }}>
                   {formatArs.format(item.total_item)}
@@ -87,14 +98,12 @@ const EditarPedido = () => {
                   </IconButton>
                 </td>
               </tr>
-
-            )
+            );
           })}
         </table>
-
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default EditarPedido
+export default EditarPedido;
