@@ -6,6 +6,9 @@ from usuario.serializers import UserSerializer
 from productos.serializers import ProductoSerializer
 from django.contrib.auth.models import User
 from django.db.models import Sum
+from django.db import transaction
+
+
 
 
 class EstadoSerializer(serializers.ModelSerializer):
@@ -18,7 +21,7 @@ class PedidoItemSerializer(serializers.ModelSerializer):
     pedido = serializers.PrimaryKeyRelatedField(read_only=True)
     class Meta:
         model = PedidoItem
-        fields = ['producto', 'cantidad', 'pedido']
+        fields = ['producto', 'cantidad', 'pedido', 'id']
 
 class PedidoSerializer(serializers.ModelSerializer):
     pedido_items = PedidoItemSerializer(many=True)
@@ -32,14 +35,20 @@ class PedidoSerializer(serializers.ModelSerializer):
         
     def create(self, validated_data):
         pedido_items_data = validated_data.pop('pedido_items')
-        pedido = Pedido.objects.create(**validated_data)
-
-        pedido.agregarEstado()
-        pedido.save()
-        # Crear los PedidoItem asociados con el pedido creado
-        for item_data in pedido_items_data:
-            PedidoItem.objects.create(pedido=pedido, **item_data)
         
+        # Crear el pedido en una transacción atómica
+        with transaction.atomic():
+            # Crear el pedido
+            pedido = Pedido.objects.create(**validated_data)
+
+            # Crear los PedidoItem asociados con el pedido creado
+            for item_data in pedido_items_data:
+                PedidoItem.objects.create(pedido=pedido, **item_data)
+            
+            state = False
+            # Crear el EstadoPedido asociado con el pedido creado
+            EstadoPedido.objects.create(pedido=pedido, factura=state, recibo=state, en_preparacion=state)
+            
         return pedido
 
 

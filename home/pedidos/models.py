@@ -6,22 +6,12 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
-class EstadoPedido(models.Model):
-    factura = models.BooleanField()
-    recibo = models.BooleanField()
-    en_preparacion = models.BooleanField()
+
 
 class Pedido(models.Model):
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE, null=False)
     fecha = models.DateTimeField(auto_now_add=True)
-    estado = models.OneToOneField(EstadoPedido, on_delete=models.CASCADE, null=True)
     user_creator = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-
-
-    def agregarEstado(self):
-        nuevo_estado = EstadoPedido.objects.create(factura=False,recibo=False,en_preparacion=False)
-        self.estado = nuevo_estado
-        self.estado.save()
 
     def modificarEstado(self, estado):
         if self.estado:
@@ -38,6 +28,13 @@ class Pedido(models.Model):
 
     def obtener_fecha(self):
         return self.fecha.strftime("%d-%m-%Y")
+
+
+class EstadoPedido(models.Model):
+    pedido = models.OneToOneField(Pedido, on_delete=models.CASCADE, null=True)
+    factura = models.BooleanField()
+    recibo = models.BooleanField()
+    en_preparacion = models.BooleanField()
 
 class PedidoItem(models.Model):
     pedido = models.ForeignKey(Pedido,related_name='pedido_items',  on_delete=models.CASCADE, null=False)

@@ -12,5 +12,6 @@ urlpatterns = [
     path('user/', include('usuario.urls')),
     path('pedidos/', include('pedidos.urls')),
     path('productos/', include('productos.urls')),
+    path('prueba/', views.prueba, name='prueba'),
     path('', TemplateView.as_view(template_name="index.html")),
 ]

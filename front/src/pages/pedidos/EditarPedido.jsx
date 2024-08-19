@@ -11,6 +11,7 @@ import { useData } from "../../context/DataContext";
 import formatArs from "../../tools/formatArs";
 import { usePedido } from "../../context/PedidoContext";
 import { ReactComponent as DeleteIcon } from "../../icons/trash-bin-trash-svgrepo-com.svg";
+import { eliminarPedido } from "../../service/pedidos";
 
 const EditarPedido = () => {
   const { state: stateEdit, dispatch } = usePedido();
@@ -38,7 +39,7 @@ const EditarPedido = () => {
     <div>
       <div style={{display:'flex', alignItems:'center', justifyContent:'space-between'}}>
         <h2>Editar pedido</h2>
-        <Button variant="contained" color='error'>Eliminar</Button>
+        <Button variant="contained" color='error' onClick={(e)=>{eliminarPedido(stateEdit.editPedido.id)}}>Eliminar</Button>
       </div>
       <div className="container-inputs">
         <Autocomplete
