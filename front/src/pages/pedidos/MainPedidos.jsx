@@ -143,7 +143,7 @@ const MainPedidos = () => {
       <CustomModal open={open} handleClose={handleClose}>
         <div>
           {open ? (
-            <EditarPedido></EditarPedido>
+            <EditarPedido setOpen={setOpen}></EditarPedido>
           ) : (
             <></>
           )}

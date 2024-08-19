@@ -40,13 +40,6 @@ class PedidoItem(models.Model):
     pedido = models.ForeignKey(Pedido,related_name='pedido_items',  on_delete=models.CASCADE, null=False)
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE, null=False)
     cantidad = models.IntegerField()
-    precio_unitario = models.IntegerField(null=True, default=None)
-
-    def save(self, *args, **kwargs):
-        # Si es una nueva instancia, guarda el precio del producto en el momento del pedido
-        if not self.pk:
-            self.precio_unitario = self.producto.precio
-        super().save(*args, **kwargs)
 
 # ==============================================TRACKING===============================================
 PASOS_DEL_TRAMITE = {
@@ -69,6 +62,7 @@ class Sectores(models.Model):
                 return i[1]
 
 class OrderStatus(models.Model):
+    sd = Sectores()
     sector = models.ForeignKey(Sectores, on_delete=models.CASCADE)
     pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE)
     creado_en = models.DateTimeField(auto_now_add=True)

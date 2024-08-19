@@ -49,6 +49,7 @@ const SeleccionPedido = () => {
     try {
         await agregarPedidoService({ cliente: state.cliente, pedido: state.items });
         updatePedidos();
+        dispatch({type:'restart'})
     } catch (error) {
         console.error('Error al agregar pedido:', error);
     }

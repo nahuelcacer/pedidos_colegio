@@ -13,33 +13,28 @@ import { usePedido } from "../../context/PedidoContext";
 import { ReactComponent as DeleteIcon } from "../../icons/trash-bin-trash-svgrepo-com.svg";
 import { eliminarPedido } from "../../service/pedidos";
 
-const EditarPedido = () => {
-  const { state: stateEdit, dispatch } = usePedido();
+const EditarPedido = ({setOpen}) => {
+  const { state: stateEdit, dispatch, updatePedidos } = usePedido();
   const { clientes } = useData();
 
-  const handleCantidadChange = (e, index) => {
-    const nuevaCantidad = parseInt(e.target.value, 10); // Asegúrate de convertir a número
+  const borrarPedido = async (id) => {
+    try {
+      await eliminarPedido(id)
+      updatePedidos()
+      setOpen(false)
 
-    // setItems(prevItems => {
-    //   return prevItems.map((item, idx) => {
-    //     if (idx === index) { // Usa el índice para identificar el elemento
-    //       console.log(`Cambiando cantidad del item con índice: ${index}`);
-    //       return {
-    //         ...item,
-    //         cantidad: nuevaCantidad,
-    //         total_item: item.producto.precio * nuevaCantidad
-    //       };
-    //     }
-    //     return item;
-    //   });
-    // });
-  };
+    }
+    catch (error) {
+      console.error('Error al eliminar pedido:', error);
+    }
+  }
+
 
   return (
     <div>
       <div style={{display:'flex', alignItems:'center', justifyContent:'space-between'}}>
         <h2>Editar pedido</h2>
-        <Button variant="contained" color='error' onClick={(e)=>{eliminarPedido(stateEdit.editPedido.id)}}>Eliminar</Button>
+        <Button variant="contained" color='error' onClick={(e)=>{borrarPedido(stateEdit.editPedido.id)}}>Eliminar</Button>
       </div>
       <div className="container-inputs">
         <Autocomplete
@@ -92,7 +87,7 @@ const EditarPedido = () => {
                   <IconButton
                     size="small"
                     onClick={(e) => {
-                      // handleDelete(index);
+                      dispatch({type:'delete item edit', payload:index})
                     }}
                   >
                     <DeleteIcon width="18px" height="18px" />
@@ -102,6 +97,7 @@ const EditarPedido = () => {
             );
           })}
         </table>
+        <Button>Guardar</Button>
       </div>
     </div>
   );

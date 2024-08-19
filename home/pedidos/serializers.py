@@ -1,6 +1,6 @@
 # serializers.py
 from rest_framework import serializers
-from .models import Pedido, PedidoItem, EstadoPedido
+from .models import Pedido, PedidoItem, EstadoPedido, PedidoItem
 from clientes.serializers import ClienteCompletoSerializer, ClienteSerializer
 from usuario.serializers import UserSerializer
 from productos.serializers import ProductoSerializer
@@ -14,7 +14,7 @@ from django.db import transaction
 class EstadoSerializer(serializers.ModelSerializer):
     class Meta:
         model = EstadoPedido
-        fields = '__all__'
+        fields = ["id","factura","recibo","en_preparacion"]
 
 
 class PedidoItemSerializer(serializers.ModelSerializer):
@@ -51,6 +51,12 @@ class PedidoSerializer(serializers.ModelSerializer):
             
         return pedido
 
+    def update(self, instance, validated_data):
+        pedido_items_data = validated_data.pop('pedido_items', [])  
+        print(self.data)
+        return instance
+
+
 
 class PedidoItemReadSerializer(serializers.ModelSerializer):
     producto = ProductoSerializer()
@@ -67,7 +73,6 @@ class PedidoItemReadSerializer(serializers.ModelSerializer):
 
 class PedidoReadSerializer(serializers.ModelSerializer):
     cliente = ClienteSerializer()
-    estado = EstadoSerializer()
 
     
     class Meta:
@@ -82,12 +87,29 @@ class PedidoReadSerializer(serializers.ModelSerializer):
 
         items_set = PedidoItem.objects.filter(pedido=representation['id'])
 
+        try:
+            estado = EstadoPedido.objects.get(pedido=instance)
+            estado_serializer = EstadoSerializer(estado).data
+        except EstadoPedido.DoesNotExist:
+        # Manejar el caso cuando no exista el EstadoPedido
+            estado = None
+            estado_serializer = estado
+    # O realizar alguna acción predeterminada
 
 
+        print(estado)
         items_serializados = PedidoItemReadSerializer(items_set, many=True).data
         total_suma = sum((item['total_item']) for item in items_serializados)
 
-
+        representation['estado'] = estado_serializer
         representation['items'] = items_serializados
         representation['total_pedido'] = total_suma
         return representation
+
+
+
+class PedidoItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PedidoItem
+        fields = '__all__'
+
