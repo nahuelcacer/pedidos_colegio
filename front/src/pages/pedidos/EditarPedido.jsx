@@ -63,6 +63,7 @@ const EditarPedido = ({setOpen}) => {
               <th>Precio unitario</th>
               <th>Cantidad</th>
               <th>Total item</th>
+              <th>*</th>
             </tr>
           </thead>
           {stateEdit.editPedido.items.map((item, index) => {
@@ -78,6 +79,7 @@ const EditarPedido = ({setOpen}) => {
                 </td>
                 <td style={{ textAlign: "center", paddingTop: "10px" }}>
                   <TextField
+                    sx={{width:'75px'}}
                     type="number"
                     size="small"
                     value={item.cantidad}
