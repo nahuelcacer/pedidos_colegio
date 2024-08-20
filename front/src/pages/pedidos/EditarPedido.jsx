@@ -2,11 +2,9 @@ import {
   Autocomplete,
   Button,
   IconButton,
-  TableCell,
-  TableRow,
   TextField,
 } from "@mui/material";
-import React, { useState } from "react";
+import React from "react";
 import { useData } from "../../context/DataContext";
 import formatArs from "../../tools/formatArs";
 import { usePedido } from "../../context/PedidoContext";
@@ -75,7 +73,7 @@ const EditarPedido = ({setOpen}) => {
                     onChange={(e) => {
                       dispatch({
                         type: "add quantity item edit",
-                        payload: { index: index, cantidad: e.target.value },
+                        payload: { index: index, cantidad: parseInt(e.target.value,10) },
                       });
                     }}
                   ></TextField>
@@ -97,7 +95,6 @@ const EditarPedido = ({setOpen}) => {
             );
           })}
         </table>
-        <Button>Guardar</Button>
       </div>
     </div>
   );

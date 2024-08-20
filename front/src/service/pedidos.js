@@ -104,3 +104,29 @@ export const updatePedido = async (pedido) => {
     }
 
 }
+
+export const updateItem = async (item) => {
+    const token = getToken()
+
+    try {
+            const response = await fetch(`http://127.0.0.1:8002/pedidos/items/${item.id}` , {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Token ${token}`,
+                    'Content-Type': 'application/json' // Incluye esta cabecera si envías datos JSON
+                },
+                body:JSON.stringify(item)
+            })
+            if (response.ok) {
+                toast.success('Item actualizado con exito', toastConfig)
+                
+            }
+
+        }
+        catch (error) {
+            toast.error('Error al agregar Item', toastConfig)
+            console.error('Error:', error);
+            return null; // O devuelve un valor por defecto o maneja el error según lo necesites
+    }
+
+}

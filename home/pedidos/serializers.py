@@ -63,7 +63,7 @@ class PedidoItemReadSerializer(serializers.ModelSerializer):
     pedido = serializers.PrimaryKeyRelatedField(read_only=True)
     class Meta:
         model = PedidoItem
-        fields = ['producto', 'cantidad', 'pedido', ]
+        fields = ['producto', 'cantidad', 'pedido', 'id']
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
