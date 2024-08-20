@@ -1,6 +1,7 @@
 import {
   Autocomplete,
   Button,
+  FormLabel,
   IconButton,
   TextField,
 } from "@mui/material";
@@ -9,7 +10,8 @@ import { useData } from "../../context/DataContext";
 import formatArs from "../../tools/formatArs";
 import { usePedido } from "../../context/PedidoContext";
 import { ReactComponent as DeleteIcon } from "../../icons/trash-bin-trash-svgrepo-com.svg";
-import { eliminarPedido } from "../../service/pedidos";
+import { eliminarPedido, updateItem } from "../../service/pedidos";
+
 
 const EditarPedido = ({setOpen}) => {
   const { state: stateEdit, dispatch, updatePedidos } = usePedido();
@@ -30,11 +32,16 @@ const EditarPedido = ({setOpen}) => {
 
   return (
     <div>
-      <div style={{display:'flex', alignItems:'center', justifyContent:'space-between'}}>
-        <h2>Editar pedido</h2>
-        <Button variant="contained" color='error' onClick={(e)=>{borrarPedido(stateEdit.editPedido.id)}}>Eliminar</Button>
+      <div style={{display:'flex', alignItems:'center', justifyContent:'center'}}>
+        <h2 >Editar pedido #{stateEdit.editPedido.id}</h2>
+        {/* <Button variant="contained" color='error' onClick={(e)=>{borrarPedido(stateEdit.editPedido.id)}}>Eliminar</Button> */}
       </div>
-      <div className="container-inputs">
+      <div className="container-inputs" style={{gap:'40px'}}>
+        <div>
+
+        <label style={{fontWeight:700}}>
+          Selecciona un cliente
+        </label>
         <Autocomplete
           size="small"
           value={stateEdit.editPedido.cliente}
@@ -44,19 +51,23 @@ const EditarPedido = ({setOpen}) => {
           options={clientes}
           getOptionLabel={(option) => option.nombre}
           renderInput={(params) => (
-            <TextField {...params} label="Selecciona un cliente" />
+            <TextField {...params}  />
           )}
         />
+        </div>
+
         <table>
           <thead>
             <tr>
-              <th>Producto</th>
+              <th><span>Producto</span></th>
               <th>Precio unitario</th>
               <th>Cantidad</th>
               <th>Total item</th>
             </tr>
           </thead>
           {stateEdit.editPedido.items.map((item, index) => {
+            const itemForUpdated  = {id:item.id, cantidad:item.cantidad, producto:item.producto.id}
+
             return (
               <tr key={item.producto.id}>
                 <td style={{ textAlign: "center", paddingTop: "10px" }}>
@@ -75,6 +86,7 @@ const EditarPedido = ({setOpen}) => {
                         type: "add quantity item edit",
                         payload: { index: index, cantidad: parseInt(e.target.value,10) },
                       });
+                      // updateItem(itemForUpdated)
                     }}
                   ></TextField>
                 </td>

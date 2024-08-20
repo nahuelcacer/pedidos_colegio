@@ -41,6 +41,9 @@ class PedidoItem(models.Model):
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE, null=False)
     cantidad = models.IntegerField()
 
+
+    
+
 # ==============================================TRACKING===============================================
 PASOS_DEL_TRAMITE = {
     ("1", "RECEPCION"),
