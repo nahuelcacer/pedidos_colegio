@@ -1,5 +1,6 @@
 import { toast } from "react-toastify";
 import { getToken } from "./token";
+import pedidoAdapter from "../adapters/adapterPedido";
 
 
 const toastConfig = {
@@ -81,6 +82,7 @@ export const eliminarPedido = async (pedido) => {
 }
 
 export const updatePedido = async (pedido) => {
+    const dataAdapted = pedidoAdapter(pedido)
     const token = getToken()
     try {
         const response = await fetch(`http://127.0.0.1:8002/pedidos/${pedido.id}` , {
@@ -89,7 +91,7 @@ export const updatePedido = async (pedido) => {
                 'Authorization': `Token ${token}`,
                 'Content-Type': 'application/json' // Incluye esta cabecera si envías datos JSON
             },
-            body:JSON.stringify(pedido)
+            body:JSON.stringify(dataAdapted)
         })
         if (response.ok) {
             toast.success('Pedido eliminado con exito', toastConfig)

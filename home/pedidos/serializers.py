@@ -52,10 +52,25 @@ class PedidoSerializer(serializers.ModelSerializer):
         return pedido
 
     def update(self, instance, validated_data):
-        pedido_items_data = validated_data.pop('pedido_items', [])  
-        print(self.data)
-        return instance
+    # Extraer `pedido_items` de los datos validados
+        pedido_items_data = validated_data.pop('pedido_items', None)
+        
+        # Actualizar los demás campos normalmente
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        
+        # Si se proporcionaron nuevos `pedido_items`, actualízalos
+        if pedido_items_data:
+            # Primero, eliminar todos los `PedidoItem` existentes para este `Pedido`
+            # instance.pedido_items.all().delete()
 
+            # Crear nuevos `PedidoItem`
+            for item_data in pedido_items_data:
+                PedidoItem.objects.update(pedido=instance, **item_data)
+        
+        # Guardar la instancia actualizada
+        instance.save()
+        return instance
 
 
 class PedidoItemReadSerializer(serializers.ModelSerializer):

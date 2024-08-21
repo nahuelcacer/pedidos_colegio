@@ -21,7 +21,7 @@ def str_to_bool(value):
     raise ValidationError(f"Invalid boolean value: {value}")
 
 
-@api_view(['GET', 'POST', 'DELETE', 'PATCH'])
+@api_view(['GET', 'POST', 'DELETE', 'PUT'])
 # @authentication_classes([SessionAuthentication, TokenAuthentication])
 # @permission_classes([IsAuthenticated])
 def pedido(request, pk=None):
@@ -63,11 +63,17 @@ def pedido(request, pk=None):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    elif request.method == 'PATCH':
-        serializer = PedidoSerializer(data=request.data)
-        print(serializer)
+    elif request.method == 'PUT':
+        try:
+            pedido = Pedido.objects.get(pk=pk)
+        except Pedido.DoesNotExist:
+            return Response({'error': 'PedidoItem not found'}, status=404)
+
+        serializer = PedidoSerializer(pedido, data=request.data)
+        # print(serializer.initial_data, 'serializer initial data')
+        # print(serializer)
         if serializer.is_valid():
-            # serializer.save()
+            serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
