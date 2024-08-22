@@ -1,6 +1,7 @@
 import { toast } from "react-toastify";
 import { getToken } from "./token";
 import pedidoAdapter from "../adapters/adapterPedido";
+import itemAdapter from "../adapters/adapterItem";
 
 
 const toastConfig = {
@@ -108,16 +109,17 @@ export const updatePedido = async (pedido) => {
 }
 
 export const updateItem = async (item) => {
+    const adaptedData = itemAdapter(item)
     const token = getToken()
 
     try {
-            const response = await fetch(`http://127.0.0.1:8002/pedidos/items/${item.id}` , {
+            const response = await fetch(`http://127.0.0.1:8002/pedidos/items/${adaptedData.id}` , {
                 method: 'PUT',
                 headers: {
                     'Authorization': `Token ${token}`,
                     'Content-Type': 'application/json' // Incluye esta cabecera si envías datos JSON
                 },
-                body:JSON.stringify(item)
+                body:JSON.stringify(adaptedData)
             })
             if (response.ok) {
                 toast.success('Item actualizado con exito', toastConfig)

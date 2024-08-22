@@ -22,6 +22,15 @@ class PedidoItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = PedidoItem
         fields = ['producto', 'cantidad', 'pedido', 'id']
+    
+    def update(self, instance, validated_data):
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+
+        instance.save()
+        return instance
+        
+    
 
 class PedidoSerializer(serializers.ModelSerializer):
     pedido_items = PedidoItemSerializer(many=True)
@@ -122,9 +131,4 @@ class PedidoReadSerializer(serializers.ModelSerializer):
         return representation
 
 
-
-class PedidoItemSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = PedidoItem
-        fields = '__all__'
 
